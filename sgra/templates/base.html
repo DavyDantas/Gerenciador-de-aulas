@@ -1,0 +1,115 @@
+
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>
+      {% block title %}
+      SGRA
+    {% endblock title %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+        content="Behold My Awesome Project!" />
+  <meta name="author"
+        content="Davy Dantas & Luis Dantas" />
+  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
+  {% block css %}
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<!-- Your stuff: Third-party CSS libraries go here -->
+<!-- This file stores project-specific CSS -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link href="{% static 'css/project.css' %}" rel="stylesheet" />
+
+
+{% endblock css %}
+<!-- Le javascript
+    ================================================== -->
+{# Placed at the top of the document so pages load faster with defer #}
+{% block javascript %}
+
+
+<!-- Bootstrap JS -->
+
+<!-- Your stuff: Third-party javascript libraries go here -->
+
+
+<!-- place project specific Javascript in this file -->
+
+
+
+{% endblock javascript %}
+</head>
+<body>
+
+  <aside>
+    <nav class="sidebar">
+
+      <div id="head-menu">
+        <div class="logo">
+          
+          <span>SGRA</span>
+        </div>
+
+        <div class="btn-expandir">
+          <span class="icon-item-menu"><i class="bi bi-list"></i></span>
+        </div>
+      </div>
+
+      <div class="nav-user">
+        <a href="#" class="nav-link">
+          <span class="user-image-menu"> <img class="user-image" src="{% static 'images/favicons/user-profile-icon.jpg' %}" alt=""></span>
+          <span id="user-name-menu">Nome Usuário</span>
+        </a>
+      </div>
+
+      <hr class="line-menu">
+
+      <ul>
+          <li class="item-menu">
+            <a href="#" class="nav-link">
+              <span class="icon-item-menu"><i class="bi bi-bar-chart"></i></span>
+              <span class="text-item-menu">Tabelas</span>
+              <span class="drop-item-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+              </svg></span>
+            </a>
+          </li>
+          <li class="item-menu">
+            <a href="#" class="nav-link">
+              <span class="icon-item-menu"><i class="bi bi-pen"></i></span>
+              <span class="text-item-menu">Adicionar/Editar</span>
+              <span class="drop-item-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+              </svg>
+            </a>
+          </li>
+          <li class="item-menu">
+            <a href="#" class="nav-link">
+              <span class="icon-item-menu"><i class="bi bi-journal-bookmark-fill"></i></span>
+              <span class="text-item-menu">Aviso Professores</span>
+            </a>
+          </li>
+      </ul>
+
+      
+      <div id="end-menu">
+        <a href="" class="nav-link">
+          <span class="icon-item-menu"><i class="bi bi-door-open"></i></span>
+          <span class="text-item-menu">Sair</span>
+        </a>
+      </div>
+
+    </nav>
+  </aside>
+
+</body>
+</html>
