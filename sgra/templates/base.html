@@ -50,22 +50,22 @@
 </head>
 <body>
 
-  <aside>
+  <aside id="aside" class="">
     <nav class="sidebar">
 
       <div id="head-menu">
-        <div class="logo">
-          
-          <span>SGRA</span>
-        </div>
 
         <div class="btn-expandir">
-          <span class="icon-item-menu"><i class="bi bi-list"></i></span>
+          <i class="bi bi-list" id="btn-exp"></i>
+        </div>
+
+        <div class="logo">
+          <span>SGRA</span>
         </div>
       </div>
 
       <div class="nav-user">
-        <a href="#" class="nav-link">
+        <a href="#" id="nav-user-link">
           <span class="user-image-menu"> <img class="user-image" src="{% static 'images/favicons/user-profile-icon.jpg' %}" alt=""></span>
           <span id="user-name-menu">Nome Usuário</span>
         </a>
@@ -74,7 +74,7 @@
       <hr class="line-menu">
 
       <ul>
-          <li class="item-menu">
+          <li class="item-menu ativo">
             <a href="#" class="nav-link">
               <span class="icon-item-menu"><i class="bi bi-bar-chart"></i></span>
               <span class="text-item-menu">Tabelas</span>
@@ -111,5 +111,6 @@
     </nav>
   </aside>
 
+  <script src="{% static 'js/sidebar.js' %}"></script>
 </body>
 </html>

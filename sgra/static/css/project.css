@@ -11,6 +11,7 @@
 body{
   background: radial-gradient(ellipse at 83.41% 23.56%, #444 0%, #252A2C 37.5%, #191F21 75%);
   background-attachment: fixed;
+  height: 2000px;
 }
 
 aside{
@@ -22,7 +23,25 @@ aside{
   top: 0;
   left: 0;
   box-shadow: 7px 0px 20px 1px rgba(5, 5, 5, 0.40);
+  overflow: hidden;
+  transition: 0.3s;
+}
 
+aside.reduce .icon-item-menu{
+  font-size: 30px;
+}
+
+aside.reduce .text-item-menu, aside.reduce .drop-item-menu, aside.reduce #user-name-menu, aside.reduce .logo{
+  display: none;
+}
+
+aside.reduce {
+  width: 74px;
+}
+
+aside.reduce *{
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #head-menu{
@@ -62,6 +81,24 @@ aside{
   margin: 0 0 0 15px;
 }
 
+#nav-user-link{
+  width: fit-content;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+#nav-user-link:hover span{
+  color: var(--color1);
+}
+
+ul li.ativo .nav-link, ul li.ativo .nav-link path, ul li.ativo .nav-link .icon-item-menu{
+  color: var(--color1);
+  fill: var(--color1);
+}
+
 .user-image-menu{
   width: auto;
   height: auto;
@@ -91,17 +128,18 @@ aside{
 
 .item-menu{
   width: fit-content;
-  cursor: pointer;
   list-style: none;
   margin: 0 0 20px 15px;
 }
 
-.nav-link:hover span{
+.nav-link:hover span, .nav-link:hover path {
   color: var(--color1);
+  fill: var(--color1);
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #ffffff21;
 }
-.nav-link:hover span path{
-  fill: var(--color1)
-}
+
 
 .item-menu span path{
   transition: 0.3s;
@@ -109,7 +147,7 @@ aside{
 
 .nav-link{
   width: fit-content;
-  cursor: auto;
+  cursor: pointer;
   text-decoration: none;
   color: #ffffff;
   font-size: 14pt;
@@ -135,13 +173,14 @@ aside{
 }
 
 .btn-expandir{
-  margin-left: auto;
+  margin-right: auto;
   display: flex;
   align-items: end;
 }
 
-.btn-expandir > span{
+.btn-expandir > i{
   margin: 0;
+  color: var(--color1);
 }
 
 .bi-list{
