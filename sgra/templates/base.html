@@ -28,6 +28,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;600;700&display=swap" rel="stylesheet">
   
   <link href="{% static 'css/project.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" />
 
 
 {% endblock css %}
@@ -73,24 +74,37 @@
 
       <hr class="line-menu">
 
-      <ul>
-          <li class="item-menu ativo">
-            <a href="#" class="nav-link">
+      <ul class="ul-menu">
+          <li class="item-menu dropdown ativo">
+            <a href="" class="nav-link nav-drop">
               <span class="icon-item-menu"><i class="bi bi-bar-chart"></i></span>
               <span class="text-item-menu">Tabelas</span>
-              <span class="drop-item-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+              <span class="drop-icon-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
                 <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
               </svg></span>
             </a>
+
+            <ul class="drop-ul">
+              <li class="item-drop"><a href="#" class="drop-link">Turmas</a></li>
+              <li class="item-drop"><a href="#" class="drop-link">Professores</a></li>
+            </ul>
+
           </li>
-          <li class="item-menu">
-            <a href="#" class="nav-link">
+          <li class="item-menu dropdown">
+            <a href="#" class="nav-link nav-drop">
               <span class="icon-item-menu"><i class="bi bi-pen"></i></span>
               <span class="text-item-menu">Adicionar/Editar</span>
-              <span class="drop-item-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+              <span class="drop-icon-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
                 <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
               </svg>
             </a>
+
+            <ul class="drop-ul">
+              <li class="item-drop"><a href="#" class="drop-link">Turmas</a></li>
+              <li class="item-drop"><a href="#" class="drop-link">Professores</a></li>
+              <li class="item-drop"><a href="#" class="drop-link">Disciplinas</a></li>
+            </ul>
+
           </li>
           <li class="item-menu">
             <a href="#" class="nav-link">
@@ -110,6 +124,17 @@
 
     </nav>
   </aside>
+
+  <div class="main-body">
+    <div class="main">
+
+  {% block main %}
+      <h1>TESTE</h1>
+  {% endblock %}
+
+    </div>
+  </div>
+  </section>  
 
   <script src="{% static 'js/sidebar.js' %}"></script>
 </body>

@@ -1,0 +1,16 @@
+*{
+    font-family: 'Maven Pro', sans-serif;
+  }
+  
+  body{
+    display: flex;
+    background: radial-gradient(ellipse at 83.41% 23.56%, #444 0%, #252A2C 37.5%, #191F21 75%);
+    background-attachment: fixed;
+    height: 2000px;
+  }
+
+.main-body{
+    margin-left: aside.width;
+    width: 200px;
+    height: 200px;
+}

@@ -4,20 +4,14 @@
   --color2: #287086;
 }
 
-*{
-  font-family: 'Maven Pro', sans-serif;
-}
 
-body{
-  background: radial-gradient(ellipse at 83.41% 23.56%, #444 0%, #252A2C 37.5%, #191F21 75%);
-  background-attachment: fixed;
-  height: 2000px;
-}
 
 aside{
+  clear: right;
   width: 260px;
   height: 700px;
   position: fixed;
+  display: block;
   border-radius: 0px 0px 20px 0px;
   background: #efefef00;
   top: 0;
@@ -27,11 +21,15 @@ aside{
   transition: 0.3s;
 }
 
+.item-menu.dropdown.down .drop-ul{
+  display: block;
+}
+
 aside.reduce .icon-item-menu{
   font-size: 30px;
 }
 
-aside.reduce .text-item-menu, aside.reduce .drop-item-menu, aside.reduce #user-name-menu, aside.reduce .logo{
+aside.reduce .drop-ul, aside.reduce .text-item-menu, aside.reduce .drop-icon-menu, aside.reduce #user-name-menu, aside.reduce .logo{
   display: none;
 }
 
@@ -94,7 +92,7 @@ aside.reduce *{
   color: var(--color1);
 }
 
-ul li.ativo .nav-link, ul li.ativo .nav-link path, ul li.ativo .nav-link .icon-item-menu{
+.ul-menu>li.ativo .nav-link, .ul-menu>li.ativo .nav-link path, .ul-menu>li.ativo .nav-link .icon-item-menu, .drop-ul>li.ativo .drop-link{
   color: var(--color1);
   fill: var(--color1);
 }
@@ -132,6 +130,32 @@ ul li.ativo .nav-link, ul li.ativo .nav-link path, ul li.ativo .nav-link .icon-i
   margin: 0 0 20px 15px;
 }
 
+.drop-ul{
+  transition: 0.3s;
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 15px 40px;
+}
+
+.item-drop>a{
+  text-decoration: none;
+  color: white;
+  font-size: 13pt;
+  font-weight: 400;
+}
+
+.item-drop{
+  width: fit-content;
+  list-style: none;
+  margin: 0 0 20px 15px;
+}
+
+.item-menu.dropdown.down path{
+  transform-origin: center;
+  transform: rotate(180deg);
+}
+
 .nav-link:hover span, .nav-link:hover path {
   color: var(--color1);
   fill: var(--color1);
@@ -162,11 +186,11 @@ ul li.ativo .nav-link, ul li.ativo .nav-link path, ul li.ativo .nav-link .icon-i
   transition: 0.3s;
 }
 
-.drop-item-menu{
+.drop-icon-menu{
   margin-left: 10px;
 }
 
-.sidebar ul{
+.sidebar>ul{
   margin: 0;
   padding: 0;
 
