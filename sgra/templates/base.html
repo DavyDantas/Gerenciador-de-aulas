@@ -17,19 +17,19 @@
   <meta name="author"
         content="Davy Dantas & Luis Dantas" />
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
-  {% block css %}
-    <!-- Latest compiled and minified Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<!-- Your stuff: Third-party CSS libraries go here -->
-<!-- This file stores project-specific CSS -->
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Your stuff: Third-party CSS libraries go here -->
+  <!-- This file stores project-specific CSS -->
   
-  <link href="{% static 'css/project.css' %}" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link href="{% static 'css/sidebar.css' %}" rel="stylesheet" />
   <link href="{% static 'css/main.css' %}" rel="stylesheet" />
-
+  
+{% block css %}
 
 {% endblock css %}
 <!-- Le javascript
@@ -61,8 +61,9 @@
         </div>
 
         <div class="logo">
-          <span>SGRA</span>
+          <a href="{% url 'listarTurmas' %}">SGRA</a>
         </div>
+
       </div>
 
       <div class="nav-user">
@@ -76,7 +77,7 @@
 
       <ul class="ul-menu">
           <li class="item-menu dropdown ativo">
-            <a href="" class="nav-link nav-drop">
+            <a class="nav-link nav-drop">
               <span class="icon-item-menu"><i class="bi bi-bar-chart"></i></span>
               <span class="text-item-menu">Tabelas</span>
               <span class="drop-icon-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
@@ -85,13 +86,13 @@
             </a>
 
             <ul class="drop-ul">
-              <li class="item-drop"><a href="#" class="drop-link">Turmas</a></li>
-              <li class="item-drop"><a href="#" class="drop-link">Professores</a></li>
+              <li class="item-drop"><a href="{% url 'listarTurmas' %}" class="drop-link">Turmas</a></li>
+              <li class="item-drop"><a href="{% url 'listarProfessores' %}" class="drop-link">Professores</a></li>
             </ul>
 
           </li>
           <li class="item-menu dropdown">
-            <a href="#" class="nav-link nav-drop">
+            <a class="nav-link nav-drop">
               <span class="icon-item-menu"><i class="bi bi-pen"></i></span>
               <span class="text-item-menu">Adicionar/Editar</span>
               <span class="drop-icon-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
@@ -100,9 +101,9 @@
             </a>
 
             <ul class="drop-ul">
-              <li class="item-drop"><a href="#" class="drop-link">Turmas</a></li>
-              <li class="item-drop"><a href="#" class="drop-link">Professores</a></li>
-              <li class="item-drop"><a href="#" class="drop-link">Disciplinas</a></li>
+              <li class="item-drop"><a href="{% url 'FormClass' %}" class="drop-link">Turmas</a></li>
+              <li class="item-drop"><a href="{% url 'FormTeacher' %}" class="drop-link">Professores</a></li>
+              <li class="item-drop"><a href="{% url 'FormSubject' %}" class="drop-link">Disciplinas</a></li>
             </ul>
 
           </li>
@@ -126,15 +127,18 @@
   </aside>
 
   <div class="main-body">
-    <div class="main">
 
   {% block main %}
-      <h1>TESTE</h1>
+      
   {% endblock %}
 
     </div>
   </div>
   </section>  
+
+  <script>
+
+  </script>
 
   <script src="{% static 'js/sidebar.js' %}"></script>
 </body>

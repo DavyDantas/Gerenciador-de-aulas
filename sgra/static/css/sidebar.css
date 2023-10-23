@@ -52,20 +52,13 @@ aside.reduce *{
   align-items: first baseline;
 }
 
-.logo > span{
+.logo > a{
+  text-decoration: none;
   height: auto;
   color: var(--color1);
   font-size: 20pt; 
   font-weight: bold; 
 }
-
-.logo > img{
-  width: auto;
-  height: 45px;
-  filter: invert(1);
-  margin-right: 10px;
-}
-
 
 .sidebar{
   display: flex;
@@ -143,11 +136,14 @@ aside.reduce *{
   color: white;
   font-size: 13pt;
   font-weight: 400;
+  pointer-events: all;
 }
 
 .item-drop{
+  pointer-events: none;
   width: fit-content;
   list-style: none;
+  cursor: auto;
   margin: 0 0 20px 15px;
 }
 
