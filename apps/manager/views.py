@@ -157,7 +157,7 @@ def classForm(request):
 def subjectsClass(request, pk):
 
     turm = Class.objects.get(pk=pk)
-    
+ 
     return render (request, "aulasTurma.html", {"turm":turm})
 
 def subjectsTeacher(request, pk):
