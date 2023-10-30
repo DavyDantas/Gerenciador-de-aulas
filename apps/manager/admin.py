@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Teacher)
 admin.site.register(categoryCourse)
 admin.site.register(Class)
+admin.site.register(dayClasses)

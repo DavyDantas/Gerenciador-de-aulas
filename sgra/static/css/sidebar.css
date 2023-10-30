@@ -2,6 +2,8 @@
 :root{
   --color1: #3FC2EA;
   --color2: #287086;
+    --color3: #3c8ba3;
+  --color4: #D9D9D9;
 }
 
 
@@ -13,10 +15,12 @@ aside{
   position: fixed;
   display: block;
   border-radius: 0px 0px 20px 0px;
-  background: #efefef00;
+  background: rgba(0, 0, 0, 0.616);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.178);
+  border-right: 1px solid rgba(255, 255, 255, 0.178);
   top: 0;
   left: 0;
-  box-shadow: 7px 0px 20px 1px rgba(5, 5, 5, 0.40);
+  box-shadow: 7px 0px 10px 1px rgba(5, 5, 5, 0.40);
   overflow: hidden;
   transition: 0.3s;
 }

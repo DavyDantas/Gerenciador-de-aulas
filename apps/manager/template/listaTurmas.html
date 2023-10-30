@@ -13,7 +13,7 @@
             {% for class in course.class_set.all %}
 
             <div class="div-class">
-                <a href="#" class="class-acronym">
+                <a href="{% url 'SubjectsClass' class.pk %}" class="class-acronym">
                     <span >{{class.acronym}}</span>
                 </a>
             </div>

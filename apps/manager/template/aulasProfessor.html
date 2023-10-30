@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock css %}
+
+
+{% block main %}
+
+<h1 class="title-main">Tabelas | Professores : <span class="title-name-class">{{teacher}}</span></h1>
+
+
+<div class="view-class">
+<div class="sub-form">
+
+    <div class="table-class">
+
+        <div class="profile-teacher">
+            <img class="img-teacher" src="{{teacher.imgProfile.url}}" alt="">
+            <span>{{teacher}}</span>
+        </div>
+
+        <div class="box-subjects-class">
+
+            <div class="timeHour">
+                <span class="vacu"></span>
+                <span>
+                    13:00
+                </span>
+                <span>
+                    13:45
+                </span>
+                <span>
+                    14:50
+                </span>
+                <span>
+                    15:35
+                </span>
+                <span>
+                    16:30
+                </span>
+                <span>
+                    17:15
+                </span>
+            </div>
+
+
+            {% for days in dayss %}
+
+                <div class="days-subjects">
+                    
+                    <span class="day-name">{{days}}</span>
+
+                    <div class="box-subject teacher">
+
+                        <span class="subject-teacher-name" >Desenvolvimento Web</span>
+                        <span class="class-teacher">ADS6V</span>
+                    </div>
+                    <div class="box-subject teacher">
+                        
+
+                        <span class="subject-teacher-name">Desenvolvimento Web</span>
+                        <span class="class-teacher">ADS6V</span>
+                    </div>
+                    <div class="box-subject teacher">
+                        
+
+                        <span>{{days.third.acronym}}</span>
+                        
+                    </div>
+                    <div class="box-subject teacher">
+                        
+
+                        <span>{{days.fourth.acronym}}</span>
+                        
+                    </div>
+                    <div class="box-subject teacher">
+                        
+
+                        <span class="subject-teacher-name">Informática</span>
+                        <span class="class-teacher">ADS4V</span>
+                        
+                    </div>
+                    <div class="box-subject teacher">
+                        
+
+                        <span class="subject-teacher-name">Informática</span>
+                        <span class="class-teacher">ADS4V</span>
+                    </div>
+    
+                </div>
+
+            {% endfor %}
+        </div>
+        
+    </div>
+
+</div>
+
+    <div class="form-absent">
+        <div class="div-form">
+            <h2>Ausencias</h4>
+                <form action="">
+                    <div class="form-group absent">
+                        <label for="">Número de Ausencias:</label>
+                        <input class="form-element" type="" value="0">
+                    </div>
+                    <div class="submit-btn">
+                        <button type="submit">Salvar</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock main %}

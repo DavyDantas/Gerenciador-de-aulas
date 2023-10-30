@@ -9,7 +9,7 @@ class formsTeacher(forms.ModelForm):
             'name' : forms.TextInput(attrs={'class': 'form-element'}),
             'matriculation' : forms.TextInput(attrs={'class': 'form-element'}),
             'imgProfile': forms.FileInput(attrs={'class': 'form-element', 'accept': 'image/*'}),
-
+            'telefone': forms.NumberInput(attrs={'class': 'form-element'}),
         }
 
 class formsSubject(forms.ModelForm):
@@ -36,16 +36,20 @@ class formsDayClasses(forms.ModelForm):
             'sixth': forms.Select(attrs={'class': 'form-element-select'}),
         }
 
+    def verify_all_none(self):
+        self.is_valid()
+        if all(value is None for value in self.cleaned_data.values()):
+            return True
+
 class formsClass(forms.ModelForm):
     class Meta:
         model = Class
         fields = '__all__'
         widgets = {
-        'name' : forms.TextInput(attrs={'class': 'form-element'}),
-        'acronym' : forms.TextInput(attrs={'class': 'form-element'}),
         'course': forms.Select(attrs={'class': 'form-element-select'}),
-        'period': forms.TextInput(attrs={'class': 'form-element'}),
         'timeTable': forms.Select(attrs={'class': 'form-element-select'}),
+        'period': forms.NumberInput(attrs={'class': 'form-element'}),
+        'acronym' : forms.TextInput(attrs={'class': 'form-element'}),
         }
 
 class formsCourse(forms.ModelForm):
@@ -54,6 +58,8 @@ class formsCourse(forms.ModelForm):
         fields = '__all__'
         widgets = {
         'name' : forms.TextInput(attrs={'class': 'form-element'}),
+        'coordinator': forms.Select(attrs={'class': 'form-element-select'}),
+        'periods': forms.NumberInput(attrs={'class': 'form-element'}),
         }
 
 

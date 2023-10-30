@@ -3,6 +3,9 @@ from .models import *
 from .forms import *
 
 # Create your views here.
+def Login(request):
+
+    return render(request, "login.html")
 
 def listarProfessores(request):
     teachers = Teacher.objects.all()
@@ -53,58 +56,121 @@ def subjectForm(request):
         }
     return render(request, "formsDisciplina.html", context)
 
-def classForm(request):
+def courseForm(request):
+
     courses = categoryCourse.objects.all()
+    if request.method == "GET":
+        form = formsCourse()
+        
+    
+    else:
+        form = formsCourse(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('FormCourse')
+
+    context={
+        'form': form,
+        'courses': courses,
+        }
+    return render(request, "formsCurso.html", context)
+
+def classForm(request):
+
+    classes = Class.objects.all()
 
     if request.method == "GET":
-        courseForm = formsCourse()
-        formClass = formsClass()
-        dayClasses_list = [formsDayClasses(prefix=str(i)) for i in range(5)]
-        for i, dayClasses in enumerate(dayClasses_list):
-            if i == 0:
-                dayClasses.day = 'Segunda-feira'
-            elif i == 1:
-                dayClasses.day = 'Terça-feira'
-            elif i == 2:
-                dayClasses.day = 'Quarta-feira'
-            elif i == 3:
-                dayClasses.day = 'Quinta-feira'
-            elif i == 4:
-                dayClasses.day = 'Sexta-feira'
 
+        days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+                'Quinta-feira','Sexta-feira']
+        formClass = formsClass()
+
+        
+        dayClasses_list_morning = [formsDayClasses(prefix=str(i)) for i in range(0,5)]
+        dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]
+        dayClasses_list_night = [formsDayClasses(prefix=str(i)) for i in range(10, 15)]
+        for i, dayClasses in enumerate(dayClasses_list_morning):
+            dayClasses.day = days[i]
+            dayClasses_list_afternoon[i].day = days[i]
+            dayClasses_list_night[i].day = days[i]
+                
 
 
     else:
-        courseForm = formsCourse(request.POST)
+        days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+                'Quinta-feira','Sexta-feira']
         formClass = formsClass(request.POST)
-        dayClasses_list = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5)]
+        dayClasses_list_morning = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5)]
+        dayClasses_list_afternoon = [formsDayClasses(request.POST,prefix=str(i)) for i in range(5,10)]
+        dayClasses_list_night = [formsDayClasses(request.POST,prefix=str(i)) for i in range(10, 15)]
+        
 
-        if courseForm.is_valid():
-            print("\nFORMULARIO CORRETO CURSO\n")
-            courseForm.save()
-            return redirect('FormClass')
-        
         if formClass.is_valid():
-            courseForm.cleaned_data()
-            formSaveClass = formClass.save(commit=False)
-            print("\nFORMULARIO CORRETO\n")
-            if all([form.is_valid() for form in dayClasses_list]):
-                print("\nVERIFICANDO VALIDADE AULAS\n")
-                for form in dayClasses_list:
-                    new_form = form.save(commit=False)
-                    new_form.classObj = formSaveClass
-                    new_form.save()
-            formClass.save()
-            return redirect('FormClass')
-        
+            
+            if not all(form.verify_all_none() for form in dayClasses_list_morning) or not all(form.verify_all_none() for form in dayClasses_list_afternoon) or not all( form.verify_all_none() for form in dayClasses_list_night):
+                print("dddddddddddddddddd ALGUM FORM VALIDO")
+                formSaveClass = formClass.save()
+
+                if not all(form.verify_all_none() for form in dayClasses_list_morning):
+                    for i, form in enumerate(dayClasses_list_morning):
+                        form.instance.timeTable =  "Matutino"
+                        form.instance.classObj = formSaveClass
+                        form.instance.day = days[i] 
+                        form.save() 
+
+                if not all(form.verify_all_none() for form in dayClasses_list_afternoon):
+                    for i, form in enumerate(dayClasses_list_afternoon):
+                        form.instance.timeTable =  "Vespertino"
+                        form.instance.classObj = formSaveClass
+                        form.instance.day = days[i] 
+                        form.save() 
+                        
+                if not all(form.verify_all_none() for form in dayClasses_list_night):
+                    for i, form in enumerate(dayClasses_list_night):
+                        form.instance.timeTable =  "Noturno"
+                        form.instance.classObj = formSaveClass
+                        form.instance.day = days[i] 
+                        form.save() 
+                        
+                return redirect('FormClass')
+            else:
+
+                dayClasses_list_morning = [formsDayClasses(prefix=str(i)) for i in range(0,5)]
+                dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]
+                dayClasses_list_night = [formsDayClasses(prefix=str(i)) for i in range(10, 15)]
+                for i, dayClasses in enumerate(dayClasses_list_morning):
+                    dayClasses.day = days[i]
+                    dayClasses_list_afternoon[i].day = days[i]
+                    dayClasses_list_night[i].day = days[i]
+
+                print("aaaaaaaaaaaaaaaaaa TODOS OS FORMS VZIOS")
     context = {
         'formClass': formClass,
-        'dayClasses_list': dayClasses_list,
-        'courseForm': courseForm,
-        'courses':  courses,
+        'class_morning': dayClasses_list_morning,
+        'class_afternoon': dayClasses_list_afternoon,
+        'class_night': dayClasses_list_night,
+        'classes':  classes,
     }
 
     return render(request, 'formsTurma.html', context)
 
+def subjectsClass(request, pk):
+
+    turm = Class.objects.get(pk=pk)
+    
+    return render (request, "aulasTurma.html", {"turm":turm})
+
+def subjectsTeacher(request, pk):
+
+    dayss = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+                'Quinta-feira','Sexta-feira']
+    
+    teacher = Teacher.objects.get(pk=pk)
+    
+    return render (request, "aulasProfessor.html", {"teacher":teacher, "dayss": dayss})
+
+def absentsTeachers(request):
+    
+    return render (request, "professoresAusentes.html")
 
         

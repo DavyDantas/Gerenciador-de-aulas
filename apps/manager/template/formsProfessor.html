@@ -23,10 +23,13 @@
         {{ form.matriculation }}
     </div>
     <div class="form-group">
+        <label for="{{ form.telefone.id_for_label }}">Número de Celular:</label>
+        {{ form.telefone }}
+    </div>
+    <div class="form-group">
         <label for="{{ form.imgProfile.id_for_label }}">Imagem de Perfil:</label>
         {{ form.imgProfile }}
     </div>
-
     <div class="submit-btn">
     <button type="submit" class="">Salvar</button>
     </div>

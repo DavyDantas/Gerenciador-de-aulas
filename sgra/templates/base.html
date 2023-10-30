@@ -24,7 +24,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <link href="{% static 'css/sidebar.css' %}" rel="stylesheet" />
   <link href="{% static 'css/main.css' %}" rel="stylesheet" />
@@ -51,7 +51,7 @@
 </head>
 <body>
 
-  <aside id="aside" class="">
+  <aside id="aside" class="{% if request.COOKIES.sidebar_state == 'reduce' %}expanded{% else %}{% endif %}">
     <nav class="sidebar">
 
       <div id="head-menu">
@@ -76,7 +76,7 @@
       <hr class="line-menu">
 
       <ul class="ul-menu">
-          <li class="item-menu dropdown ativo">
+          <li class="item-menu dropdown {% if '/lista-' in request.path%}ativo{% endif %} ">
             <a class="nav-link nav-drop">
               <span class="icon-item-menu"><i class="bi bi-bar-chart"></i></span>
               <span class="text-item-menu">Tabelas</span>
@@ -91,7 +91,7 @@
             </ul>
 
           </li>
-          <li class="item-menu dropdown">
+          <li class="item-menu dropdown {% if '/form-' in request.path%}ativo{% endif %}">
             <a class="nav-link nav-drop">
               <span class="icon-item-menu"><i class="bi bi-pen"></i></span>
               <span class="text-item-menu">Adicionar/Editar</span>
@@ -101,23 +101,24 @@
             </a>
 
             <ul class="drop-ul">
-              <li class="item-drop"><a href="{% url 'FormClass' %}" class="drop-link">Turmas</a></li>
               <li class="item-drop"><a href="{% url 'FormTeacher' %}" class="drop-link">Professores</a></li>
               <li class="item-drop"><a href="{% url 'FormSubject' %}" class="drop-link">Disciplinas</a></li>
+              <li class="item-drop"><a href="{% url 'FormCourse' %}" class="drop-link">Cursos</a></li>
+              <li class="item-drop"><a href="{% url 'FormClass' %}" class="drop-link">Turmas</a></li>
             </ul>
 
           </li>
-          <li class="item-menu">
-            <a href="#" class="nav-link">
+          <li class="item-menu {% if '/Professores-Ausentes' in request.path%}ativo{% endif %}">
+            <a href="{% url 'AbsentsTeachers' %}" class="nav-link">
               <span class="icon-item-menu"><i class="bi bi-journal-bookmark-fill"></i></span>
-              <span class="text-item-menu">Aviso Professores</span>
+              <span class="text-item-menu">Professores Ausentes</span>
             </a>
           </li>
       </ul>
 
       
       <div id="end-menu">
-        <a href="" class="nav-link">
+        <a href="{% url 'login' %}" class="nav-link">
           <span class="icon-item-menu"><i class="bi bi-door-open"></i></span>
           <span class="text-item-menu">Sair</span>
         </a>

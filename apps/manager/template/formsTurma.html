@@ -10,40 +10,13 @@
 
 <h1 class="title-main">Adicionar/Editar | Turmas</h1>
 
-<div class="sub-form">
-    <h2>Formulário de Curso</h2>
-    <div class="div-form">
 
-        <form action="{% url 'FormClass' %}" method="post">
-            {% csrf_token %}
 
-            <div class="form-group">
-                <label for="{{ courseForm.id_name }}">Nome:</label>
-                {{ courseForm.name }}
-            </div>
-            <div class="submit-btn">
-                <button type="submit">Salvar Curso</button>
-            </div>
-            
-        </form>
-
-    </div>
-</div>
-
-<div class="sub-form">
-    <h2>Formulário de Turma</h2>
+<div class="sub-form" >
     <form action="{% url 'FormClass' %}" method="post">
         {% csrf_token %}
     <div class="div-form">
             
-            <div class="form-group">
-                <label for="">Nome:</label>
-                {{ formClass.name }}
-            </div>
-            <div class="form-group">
-                <label for="">Período/Ano:</label>
-                {{ formClass.period }}
-            </div>
             <div class="form-group">
                 <label for="">Curso:</label>
                 {{ formClass.course }}
@@ -53,6 +26,10 @@
                 {{ formClass.timeTable }}
             </div>
             <div class="form-group">
+                <label for="">Período/Ano:</label>
+                {{ formClass.period }}
+            </div>
+            <div class="form-group">
                 <label for="">Abreviação:</label>
                 {{ formClass.acronym }}
             </div>
@@ -60,8 +37,11 @@
 
     <h3>Aulas da Turma</h3>
     <div class="div-form formClass">
-
-                    {% for form in dayClasses_list %}
+        <div class="timaTable-subjects">    
+            <span>Horários da Manhã</span>
+        </div>
+                <div class="group-day-subjects">
+                    {% for form in class_morning %}
                         <div class="dayClass">
                         <h4>{{ form.day }}</h4>
 
@@ -92,10 +72,89 @@
                         
                         </div>
                     {% endfor %}
+                </div>
 
 
+
+        </div>
+
+    <div class="div-form formClass">
+        <div class="timaTable-subjects">
+            <span>Horários da Tarde</span>
+        </div>
+                <div class="group-day-subjects">
+                    {% for form in class_afternoon %}
+                        <div class="dayClass">
+                        <h4>{{ form.day }}</h4>
+
+                        <div class="form-group">
+                            <label for="">13:00</label>
+                            {{ form.first }}
+                        </div>
+                        <div class="form-group">
+                            <label for="">13:45</label>
+                            {{ form.second }}
+                        </div>
+                        <div class="form-group">
+                            <label for="">14:50</label>
+                            {{ form.third }}
+                        </div>
+                        <div class="form-group">
+                            <label for="">15:35</label>
+                            {{ form.fourth }}
+                        </div>
+                        <div class="form-group">
+                            <label for="">16:30</label>
+                            {{ form.fifth }}
+                        </div>
+                        <div class="form-group">
+                            <label for="">17:15</label>
+                            {{ form.sixth }}
+                        </div>
+                        
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+
+        </div>
+
+    <div class="div-form formClass">
+        <div class="timaTable-subjects">   
+            <span>Horários da Noite</span>
+        </div>
+
+            <div class="group-day-subjects">
+            {% for form in class_night %}
+                <div class="dayClass">
+                    <h4>{{ form.day }}</h4>
+
+                    <div class="form-group">
+                        <label for="">19:00</label>
+                        {{ form.first }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">19:45</label>
+                        {{ form.second }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">20:40</label>
+                        {{ form.third }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">21:25</label>
+                        {{ form.fourth }}
+                    </div>
 
                 </div>
+            {% endfor %}
+            </div>
+
+
+
+        </div>
+                
             <div class="submit-btn">
                 <button type="submit">Salvar Turma</button>
             </div>
@@ -103,26 +162,15 @@
 </div>
 
 <div class="div-courses-classes">
-
-    {% for course in courses %}
-    <div class="div-courses">
-
-    <p class="course-name">{{course}}</p>
-        <div class="box-classes">
-            {% for class in course.class_set.all %}
-
-            <div class="div-class">
-                <a href="#" class="class-acronym">
-                    <span >{{class.acronym}}</span>
-                </a>
-            </div>
-            {% endfor %}
+    <div class="box-classes">
+    {% for class in classes %}
+        <div class="div-class">
+            <a href="#" class="class-acronym">
+                <span >{{class.acronym}}</span>
+            </a>
         </div>
-
-
+    {% endfor %}
     </div>
-        {% endfor %}
-
 
 </div>
 
