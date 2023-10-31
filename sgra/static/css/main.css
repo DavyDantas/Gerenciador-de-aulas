@@ -193,7 +193,8 @@ h4{
 .box-subjects-class{
   display: flex;
   flex-direction: row;
-  width: fit-content;
+  width: auto;
+  margin-bottom: 10px;
 }
 
 .timeHour{
@@ -203,23 +204,54 @@ h4{
 
 .timeHour > span{
   margin: 5px 5px 0 0;
-  background-color: #414141;
   width: 60px;
   height: 100px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  color: white;
   font-size: 12pt;
   border-radius: 5px;
   font-weight: 600;
 }
 
-.timeHour > .vacu{
+.timeHour.morning > span{
+  background-color: #A8A890;
+  color: black;
+}
+
+.timeHour.afternoon > span{
+  background-color: #6D6D5E;
+  color: white;
+}
+
+.timeHour.night > span{
+  background-color: #33332C;
+  color: white;
+}
+
+.days-week > .vacu{
   width: 60px;
   height: 25px;
-  background-color: #414141;
+  background-color: var(--color4);
+  border-radius: 5px;
+  margin: 5px 5px 0 0;
+}
+
+.days-week{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: auto;
+
+}
+
+.days-subjects{
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  flex: 1;
 }
 
 .days-subjects > *{
@@ -230,7 +262,9 @@ h4{
 }
 
 .day-name{
+  margin: 5px 5px 0 0;
   max-width: 200px;
+  width: auto;
   min-width: 130px;
   background-color: var(--color4);
   border-radius: 5px;
@@ -240,6 +274,7 @@ h4{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 .teacher-subject{
@@ -249,7 +284,7 @@ h4{
   width: auto;
   height: 54px;
   align-items: center;
-  font-size: 11pt;
+  font-size: 10pt;
   font-weight: 600;
   color: var(--color2);
   text-align: left;
@@ -260,6 +295,11 @@ h4{
   height: 35px;
 }
 
+.group-all-horary{
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
 .box-subject{
   font-weight: 500;
   background-color: var(--color4);
@@ -272,6 +312,8 @@ h4{
   justify-content: space-between;
   min-width: 120px;
   max-width: 190px;
+  width: auto;
+  flex: 1;
 }
 
 

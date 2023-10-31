@@ -158,7 +158,20 @@ def subjectsClass(request, pk):
 
     turm = Class.objects.get(pk=pk)
  
-    return render (request, "aulasTurma.html", {"turm":turm})
+    dayClasses_list_morning = turm.dayclasses_set.filter(timeTable="Matutino")
+    dayClasses_list_afternoon = turm.dayclasses_set.filter(timeTable="Vespertino")
+    for day in dayClasses_list_afternoon:
+        print(day.first)
+    dayClasses_list_night = turm.dayclasses_set.filter(timeTable="Noturno")
+
+    context = {
+        'class_morning': dayClasses_list_morning,
+        'class_afternoon': dayClasses_list_afternoon,
+        'class_night': dayClasses_list_night,
+        "turm":turm,
+    }
+
+    return render (request, "aulasTurma.html", context)
 
 def subjectsTeacher(request, pk):
 
@@ -166,6 +179,7 @@ def subjectsTeacher(request, pk):
                 'Quinta-feira','Sexta-feira']
     
     teacher = Teacher.objects.get(pk=pk)
+    
     
     return render (request, "aulasProfessor.html", {"teacher":teacher, "dayss": dayss})
 
