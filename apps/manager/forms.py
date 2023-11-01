@@ -47,7 +47,7 @@ class formsClass(forms.ModelForm):
         fields = '__all__'
         widgets = {
         'course': forms.Select(attrs={'class': 'form-element-select'}),
-        'timeTable': forms.Select(attrs={'class': 'form-element-select'}),
+        'timeTable': forms.Select(attrs={'class': 'form-element-select horary'}),
         'period': forms.NumberInput(attrs={'class': 'form-element'}),
         'acronym' : forms.TextInput(attrs={'class': 'form-element'}),
         }

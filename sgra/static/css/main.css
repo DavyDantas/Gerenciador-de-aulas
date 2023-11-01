@@ -65,7 +65,7 @@ h4{
 }
 
 .lista-teachers{
-  margin-top: 30px;
+  margin-top: 50px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -216,17 +216,17 @@ h4{
 }
 
 .timeHour.morning > span{
-  background-color: #A8A890;
+  background-color: #c0c0a5;
   color: black;
 }
 
 .timeHour.afternoon > span{
-  background-color: #6D6D5E;
+  background-color: #5f5f51;
   color: white;
 }
 
 .timeHour.night > span{
-  background-color: #33332C;
+  background-color: #252520;
   color: white;
 }
 
@@ -336,19 +336,17 @@ h4{
 
 .box-subject.teacher{
   background-color: var(--color4);
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
+
 }
 
 .subject-teacher-name{
   margin-bottom: 5px;
   color: var(--color2);
   font-size: 13pt;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   font-weight: 600;
   width: fit-content;
-  justify-content: center;
   text-align: center;
 }
 

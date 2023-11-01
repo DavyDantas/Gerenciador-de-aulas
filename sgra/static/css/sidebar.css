@@ -15,7 +15,7 @@ aside{
   position: fixed;
   display: block;
   border-radius: 0px 0px 20px 0px;
-  background: rgba(0, 0, 0, 0.616);
+  /* background: rgba(0, 0, 0, 0.616); */
   border-bottom: 1px solid rgba(255, 255, 255, 0.178);
   border-right: 1px solid rgba(255, 255, 255, 0.178);
   top: 0;
@@ -26,7 +26,9 @@ aside{
 }
 
 .item-menu.dropdown.down .drop-ul{
-  display: block;
+  max-height: 200px;
+  margin: 15px 0 15px 40px;
+ 
 }
 
 aside.reduce .icon-item-menu{
@@ -125,14 +127,19 @@ aside.reduce *{
   width: fit-content;
   list-style: none;
   margin: 0 0 20px 15px;
+  transition: 0.3s;
 }
 
 .drop-ul{
-  transition: 0.3s;
-  display: none;
+  display: flex;
+  flex-direction: column;
   list-style: none;
   padding: 0;
-  margin: 15px 0 15px 40px;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+  margin-left: 40px;
+  margin-top: 0;
 }
 
 .item-drop>a{
@@ -154,6 +161,7 @@ aside.reduce *{
 .item-menu.dropdown.down path{
   transform-origin: center;
   transform: rotate(180deg);
+  
 }
 
 .nav-link:hover span, .nav-link:hover path {

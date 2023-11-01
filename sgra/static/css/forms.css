@@ -3,6 +3,7 @@
     --color2: #0F5A72;
     --color3: #3c8ba3;
     --color4: #D9D9D9;
+    --color5: #3ca345;
   }
 
 .div-form{
@@ -65,7 +66,8 @@
     padding: 8px;
     border: none;
     border-radius: 5px;
-    background-color: #3c8ba3;
+    margin-top: 15px;
+    background-color: var(--color5);
     color: white;
     font-size: 14pt;
     font-weight: 600;
@@ -143,32 +145,77 @@
     margin-bottom: 10px;
 }
 
-.sub-form form > .div-form.formClass{
+.div-form.formClass {
     justify-content: space-between;
     margin-bottom: 10px;
     margin-top: 5px;
     flex-direction: column;
+    transition: 0.3s;
 }
 
-.group-day-subjects{
+.group-day-subjects {
     margin-top: 15px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    transition: 0.3s;
+    overflow: auto;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
 }
 
-.timaTable-subjects{
+.div-form.formClass path {
+    transition: 0.3s;
+}
+
+.div-form.formClass.minimize > .group-day-subjects {
+    max-height: 650px;
+}
+
+.div-form.formClass.minimize path {
+    transform-origin: center;
+    transform: rotate(180deg);
+    transition: 0.3s; /* Adicione uma transição aqui */
+}
+
+.timeTable-subjects {
     border-radius: 10px;
     background-color: var(--color3);
     width: auto;
-    height: 35px;
+    height: fit-content;
     margin: 0 10px 0 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16pt;
+    font-size: 14pt;
     font-weight: 500;
     color: white;
+    padding: 7px 5px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.timeTableExp {
+    text-decoration: none;
+    display: flex;
+    flex-wrap: nowrap;
+    color: white;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.timeTableExp > span {
+    margin: 0 10px;
+}
+
+.drop-icon-menu.class{
+    margin: 0 5px 0 5px;
+    display: flex;
+    height: min-content;
+    align-items: center;
+    justify-content: center;
 }
 
 .form-absent{
@@ -240,7 +287,7 @@
 .div-absent{
     display: flex;
     flex-direction: column;
-    background-color: #00000033;
+    background-color: var(--color4);
     padding: 10px;
     border-radius: 10px;
     font-size: 12pt;
@@ -248,7 +295,14 @@
 
 .div-absent > .form-group{
     margin-bottom: 10px;
-    
+}
+
+.form-group > .absent{
+    color: black;
+}
+.form-element-select.absent{
+    color: black;
+    background-color: rgba(0, 0, 0, 0.075);
 }
 
 .element-absent{
@@ -257,12 +311,12 @@
     border-radius: 5px;
     font-size: 12pt;
     font-weight: 500;
-    color: rgb(255, 255, 255);
-    background-color: rgba(255, 255, 255, 0.219) ;
+    color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.219) ;
 }
 
 .element-absent-value{
-    color: white;
+    color: rgb(0, 0, 0);
     margin-right: 10px;
     font-size: 12pt;
     font-weight: 600;

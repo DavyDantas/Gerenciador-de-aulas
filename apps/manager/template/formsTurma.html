@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock css %}
 
 
@@ -12,11 +12,11 @@
 
 
 
-<div class="sub-form" >
+<div class="sub-form">
     <form action="{% url 'FormClass' %}" method="post">
         {% csrf_token %}
-    <div class="div-form">
-            
+        <div class="div-form">
+
             <div class="form-group">
                 <label for="">Curso:</label>
                 {{ formClass.course }}
@@ -33,100 +33,124 @@
                 <label for="">Abreviação:</label>
                 {{ formClass.acronym }}
             </div>
-    </div>
-
-    <h3>Aulas da Turma</h3>
-    <div class="div-form formClass">
-        <div class="timaTable-subjects">    
-            <span>Horários da Manhã</span>
         </div>
-                <div class="group-day-subjects">
-                    {% for form in class_morning %}
-                        <div class="dayClass">
-                        <h4>{{ form.day }}</h4>
 
-                        <div class="form-group">
-                            <label for="">07:00</label>
-                            {{ form.first }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">07:45</label>
-                            {{ form.second }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">08:50</label>
-                            {{ form.third }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">09:35</label>
-                            {{ form.fourth }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">10:30</label>
-                            {{ form.fifth }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">11:15</label>
-                            {{ form.sixth }}
-                        </div>
-                        
-                        </div>
-                    {% endfor %}
+        <h3>Aulas da Turma</h3>
+        <div class="div-form formClass Matutino">
+            <div class="timeTable-subjects">
+                <a href="#" class="timeTableExp">
+                <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                    <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+                  </svg></span>
+                <span>Horários da Manhã</span>
+                <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                    <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+                  </svg></span>
+                </a>
+            </div>
+            <div class="group-day-subjects">
+                {% for form in class_morning %}
+                <div class="dayClass">
+                    <h4>{{ form.day }}</h4>
+
+                    <div class="form-group">
+                        <label for="">07:00</label>
+                        {{ form.first }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">07:45</label>
+                        {{ form.second }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">08:50</label>
+                        {{ form.third }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">09:35</label>
+                        {{ form.fourth }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">10:30</label>
+                        {{ form.fifth }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">11:15</label>
+                        {{ form.sixth }}
+                    </div>
+
                 </div>
+                {% endfor %}
+            </div>
 
 
 
         </div>
 
-    <div class="div-form formClass">
-        <div class="timaTable-subjects">
-            <span>Horários da Tarde</span>
-        </div>
-                <div class="group-day-subjects">
-                    {% for form in class_afternoon %}
-                        <div class="dayClass">
-                        <h4>{{ form.day }}</h4>
+        <div class="div-form formClass Vespertino">
+            <div class="timeTable-subjects">
+                <a href="#" class="timeTableExp">
+                <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                    <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+                  </svg></span>
+                <span>Horários da Tarde</span>
+                <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                    <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+                  </svg></span>
+                </a>
+            </div>
+            <div class="group-day-subjects">
+                {% for form in class_afternoon %}
+                <div class="dayClass">
+                    <h4>{{ form.day }}</h4>
 
-                        <div class="form-group">
-                            <label for="">13:00</label>
-                            {{ form.first }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">13:45</label>
-                            {{ form.second }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">14:50</label>
-                            {{ form.third }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">15:35</label>
-                            {{ form.fourth }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">16:30</label>
-                            {{ form.fifth }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">17:15</label>
-                            {{ form.sixth }}
-                        </div>
-                        
-                        </div>
-                    {% endfor %}
+                    <div class="form-group">
+                        <label for="">13:00</label>
+                        {{ form.first }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">13:45</label>
+                        {{ form.second }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">14:50</label>
+                        {{ form.third }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">15:35</label>
+                        {{ form.fourth }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">16:30</label>
+                        {{ form.fifth }}
+                    </div>
+                    <div class="form-group">
+                        <label for="">17:15</label>
+                        {{ form.sixth }}
+                    </div>
+
                 </div>
+                {% endfor %}
+            </div>
 
 
 
         </div>
 
-    <div class="div-form formClass">
-        <div class="timaTable-subjects">   
-            <span>Horários da Noite</span>
-        </div>
+        <div class="div-form formClass Noturno">
+            <div class="timeTable-subjects">
+                <a href="#" class="timeTableExp">
+              <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+              </svg></span>
+                    <span>Horários da Noite</span>
+                    <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9" viewBox="0 0 17 9" fill="none">
+                        <path d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z" fill="white"/>
+                      </svg></span>
+                    </a>
+            </div>
 
             <div class="group-day-subjects">
-            {% for form in class_night %}
+                {% for form in class_night %}
                 <div class="dayClass">
                     <h4>{{ form.day }}</h4>
 
@@ -148,31 +172,32 @@
                     </div>
 
                 </div>
-            {% endfor %}
+                {% endfor %}
             </div>
 
 
 
         </div>
-                
-            <div class="submit-btn">
-                <button type="submit">Salvar Turma</button>
-            </div>
+
+        <div class="submit-btn">
+            <button type="submit">Salvar Turma</button>
+        </div>
     </form>
 </div>
 
-<div class="div-courses-classes">
+<div class="lista-teachers">
     <div class="box-classes">
-    {% for class in classes %}
+        {% for class in classes %}
         <div class="div-class">
             <a href="#" class="class-acronym">
-                <span >{{class.acronym}}</span>
+                <span>{{class.acronym}}</span>
             </a>
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 
 </div>
 
 
 {% endblock %}
+
