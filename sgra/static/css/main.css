@@ -14,9 +14,42 @@
     display: flex;
     background: linear-gradient(242deg, #444 0%, #252A2C 37.5%, #191F21 75%);
     background-attachment: fixed;
+
+  }
+
+  .wave{
+
+    z-index: 0;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    bottom: 0;
+    animation: wave 20s linear infinite;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .wave img{
+    width: 50%;
+    height: auto;
+    opacity: 2%;
+    filter: invert();
+    mix-blend-mode: lighten;
+  }
+
+  @keyframes wave{
+    0%{
+      transform: translateX(0);
+    }
+    100%{
+      transform: translateX(-50%);
+    }
   }
 
 .main-body{
+  z-index: 1;
     margin-top: 35px;
     margin-bottom: 35px;
     margin-right: 35px;

@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from django.db.models import Q
 
 class formsTeacher(forms.ModelForm):
     class Meta:
@@ -40,6 +41,26 @@ class formsDayClasses(forms.ModelForm):
         self.is_valid()
         if all(value is None for value in self.cleaned_data.values()):
             return True
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        for field in self.fields:
+            data = cleaned_data.get(field).teacher
+            day = cleaned_data.get('day')
+            timeTable = cleaned_data.get('timeTable')
+
+            if data is not None: 
+                if dayClasses.objects.filter(day=day, timeTable=timeTable, 
+                                        Q(first__teacher=teacher) |
+                                        Q(second__teacher=teacher) |
+                                        Q(third__teacher=teacher) |
+                                        Q(fourth__teacher=teacher) |
+                                        Q(fifth__teacher=teacher) |
+                                        Q(sixth__teacher=teacher)).exists():
+                    raise forms.ValidationError("Este professor já da aula neste horário")
+        
+        
 
 class formsClass(forms.ModelForm):
     class Meta:

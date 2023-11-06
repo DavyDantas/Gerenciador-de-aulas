@@ -9,6 +9,7 @@
 
 
 aside{
+  z-index: 1;
   clear: right;
   width: 260px;
   height: 700px;
