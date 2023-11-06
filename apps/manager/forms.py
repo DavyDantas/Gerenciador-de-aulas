@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
-from django.db.models import Q
+from django.core.exceptions import ValidationError as ValidationError
+
 
 class formsTeacher(forms.ModelForm):
     class Meta:
@@ -43,22 +44,25 @@ class formsDayClasses(forms.ModelForm):
             return True
 
     def clean(self):
+        print("cleannnnnnnnn")
         cleaned_data = super().clean()
+        timeTable = self.instance.timeTable
+        day = self.instance.day
 
         for field in self.fields:
-            data = cleaned_data.get(field).teacher
-            day = cleaned_data.get('day')
-            timeTable = cleaned_data.get('timeTable')
+            data = cleaned_data.get(field)
+            if data is not None:
+                teacher = data.teacher
+                print("FIELD")
+                print(day, timeTable)
+                horary = dayClasses.objects.filter(day=day , timeTable=timeTable)
+                
+                if dayClasses.objects.filter(day=day, timeTable=timeTable).exists():
+                    if horary.filter(**{f"{field}__teacher": teacher}).exists():
+                        print("EEERRRRORRRR")
+                        raise forms.ValidationError("Este professor já está dando aula neste horário")
 
-            if data is not None: 
-                if dayClasses.objects.filter(day=day, timeTable=timeTable, 
-                                        Q(first__teacher=teacher) |
-                                        Q(second__teacher=teacher) |
-                                        Q(third__teacher=teacher) |
-                                        Q(fourth__teacher=teacher) |
-                                        Q(fifth__teacher=teacher) |
-                                        Q(sixth__teacher=teacher)).exists():
-                    raise forms.ValidationError("Este professor já da aula neste horário")
+        
         
         
 

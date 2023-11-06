@@ -16,6 +16,14 @@
     <form action="{% url 'FormClass' %}" method="post">
         {% csrf_token %}
         <div class="div-form">
+            {{ class_morning.non_field_errors }}
+            
+            {{ class_night.non_field_errors }}
+
+            {% for form in class_afternoon %}
+                {{ form.non_field_errors }}
+                {{ form.first.errors }}
+            {% endfor %}
 
             <div class="form-group">
                 <label for="">Curso:</label>

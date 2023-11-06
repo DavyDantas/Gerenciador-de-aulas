@@ -14,39 +14,48 @@
     display: flex;
     background: linear-gradient(242deg, #444 0%, #252A2C 37.5%, #191F21 75%);
     background-attachment: fixed;
-
+    
   }
 
-  .wave{
+.conteiner-wave{
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  bottom: 0;
+  z-index: 0;
+  display: flex;
+  margin: 0;
+  position: fixed;
+}
 
+.wave{
     z-index: 0;
     position: absolute;
-    width: 100%;
-    height: auto;
-    bottom: 0;
-    animation: wave 20s linear infinite;
+    width: 200%;
+    height: 100%;
+    animation: wave 30s linear infinite;
     background-color: transparent;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-  }
+}
 
-  .wave img{
+.wave img{
     width: 50%;
-    height: auto;
     opacity: 2%;
     filter: invert();
     mix-blend-mode: lighten;
+    object-fit: cover;
   }
 
-  @keyframes wave{
-    0%{
-      transform: translateX(0);
-    }
-    100%{
-      transform: translateX(-50%);
-    }
+@keyframes wave{
+  0%{
+    transform: translateX(0);
   }
+  100%{
+    transform: translateX(-50%);
+  }
+}
 
 .main-body{
   z-index: 1;

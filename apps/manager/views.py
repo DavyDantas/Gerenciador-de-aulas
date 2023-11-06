@@ -97,8 +97,7 @@ def classForm(request):
 
 
     else:
-        days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
-                'Quinta-feira','Sexta-feira']
+        
         formClass = formsClass(request.POST)
         dayClasses_list_morning = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5)]
         dayClasses_list_afternoon = [formsDayClasses(request.POST,prefix=str(i)) for i in range(5,10)]
@@ -110,27 +109,33 @@ def classForm(request):
             if not all(form.verify_all_none() for form in dayClasses_list_morning) or not all(form.verify_all_none() for form in dayClasses_list_afternoon) or not all( form.verify_all_none() for form in dayClasses_list_night):
                 print("dddddddddddddddddd ALGUM FORM VALIDO")
                 formSaveClass = formClass.save()
+                days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+                'Quinta-feira','Sexta-feira']
 
                 if not all(form.verify_all_none() for form in dayClasses_list_morning):
                     for i, form in enumerate(dayClasses_list_morning):
                         form.instance.timeTable =  "Matutino"
                         form.instance.classObj = formSaveClass
+                        
                         form.instance.day = days[i] 
-                        form.save() 
+                        if form.is_valid():                        
+                            form.save() 
 
                 if not all(form.verify_all_none() for form in dayClasses_list_afternoon):
                     for i, form in enumerate(dayClasses_list_afternoon):
                         form.instance.timeTable =  "Vespertino"
                         form.instance.classObj = formSaveClass
                         form.instance.day = days[i] 
-                        form.save() 
+                        if form.is_valid():
+                            form.save()  
                         
                 if not all(form.verify_all_none() for form in dayClasses_list_night):
                     for i, form in enumerate(dayClasses_list_night):
                         form.instance.timeTable =  "Noturno"
                         form.instance.classObj = formSaveClass
                         form.instance.day = days[i] 
-                        form.save() 
+                        if form.is_valid():
+                            form.save()
                         
                 return redirect('FormClass')
             else:
@@ -160,8 +165,6 @@ def subjectsClass(request, pk):
  
     dayClasses_list_morning = turm.dayclasses_set.filter(timeTable="Matutino")
     dayClasses_list_afternoon = turm.dayclasses_set.filter(timeTable="Vespertino")
-    for day in dayClasses_list_afternoon:
-        print(day.first)
     dayClasses_list_night = turm.dayclasses_set.filter(timeTable="Noturno")
 
     context = {
