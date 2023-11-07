@@ -36,7 +36,7 @@ class formsDayClasses(forms.ModelForm):
 
     class Meta:
         model = dayClasses
-        fields = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
+        fields = ['day', 'timeTable', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth']
         widgets = {
             'first': forms.Select(attrs={'class': 'form-element-select'}),
             'second': forms.Select(attrs={'class': 'form-element-select'}),
@@ -44,6 +44,8 @@ class formsDayClasses(forms.ModelForm):
             'fourth': forms.Select(attrs={'class': 'form-element-select'}),
             'fifth': forms.Select(attrs={'class': 'form-element-select'}),
             'sixth': forms.Select(attrs={'class': 'form-element-select'}),
+            'day': forms.HiddenInput(),
+            'timeTable': forms.HiddenInput(),
         }
 
     # def __init__(self, *args, **kwargs):
@@ -59,8 +61,8 @@ class formsDayClasses(forms.ModelForm):
     def clean_first(self):
         print("cleannnnnnnnn")
         cleaned_data = super().clean()
-        timeTable = self.data.get("timeTable")
-        day = self.day
+        timeTable = cleaned_data.get('timeTable')
+        day = cleaned_data.get('day')
         
         data = cleaned_data.get('first')
         if data :
