@@ -1,7 +1,12 @@
+from collections.abc import Mapping
+from typing import Any
 from django import forms
+from django.core.files.base import File
+from django.db.models.base import Model
+from django.forms.utils import ErrorList
 from .models import *
-from django.core.exceptions import ValidationError as ValidationError
-
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 class formsTeacher(forms.ModelForm):
     class Meta:
@@ -26,6 +31,9 @@ class formsSubject(forms.ModelForm):
         }
 
 class formsDayClasses(forms.ModelForm):
+
+    day = ''
+
     class Meta:
         model = dayClasses
         fields = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
@@ -38,33 +46,32 @@ class formsDayClasses(forms.ModelForm):
             'sixth': forms.Select(attrs={'class': 'form-element-select'}),
         }
 
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.day = self.instance.day
+    #     self.timeTable = self.instance.timeTable
+
     def verify_all_none(self):
         self.is_valid()
         if all(value is None for value in self.cleaned_data.values()):
             return True
 
-    def clean(self):
+    def clean_first(self):
         print("cleannnnnnnnn")
         cleaned_data = super().clean()
-        timeTable = self.instance.timeTable
-        day = self.instance.day
+        timeTable = self.data.get("timeTable")
+        day = self.day
+        
+        data = cleaned_data.get('first')
+        if data :
+            teacher = data.teacher
+            print("FIELD")
+            print(day, timeTable, teacher)
 
-        for field in self.fields:
-            data = cleaned_data.get(field)
-            if data is not None:
-                teacher = data.teacher
-                print("FIELD")
-                print(day, timeTable)
-                horary = dayClasses.objects.filter(day=day , timeTable=timeTable)
-                
-                if dayClasses.objects.filter(day=day, timeTable=timeTable).exists():
-                    if horary.filter(**{f"{field}__teacher": teacher}).exists():
-                        print("EEERRRRORRRR")
-                        raise forms.ValidationError("Este professor já está dando aula neste horário")
-
-        
-        
-        
+            if dayClasses.objects.filter(day=day, timeTable=timeTable, first__teacher=teacher).exists():
+                raise ValidationError(_("Este professor já está dando aula neste horário"))
+     
+        return data
 
 class formsClass(forms.ModelForm):
     class Meta:

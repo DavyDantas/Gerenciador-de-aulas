@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tags_template %}
+
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/forms.css' %}">
@@ -59,11 +61,14 @@
             <div class="group-day-subjects">
                 {% for form in class_morning %}
                 <div class="dayClass">
-                    <h4>{{ form.day }}</h4>
+                    <h4>{{ days|get_item:forloop.counter0 }}</h4>
 
                     <div class="form-group">
                         <label for="">07:00</label>
                         {{ form.first }}
+                        {% for error in form.first.errors %}
+                        {{error}}
+                        {% endfor %}
                     </div>
                     <div class="form-group">
                         <label for="">07:45</label>
@@ -109,11 +114,14 @@
             <div class="group-day-subjects">
                 {% for form in class_afternoon %}
                 <div class="dayClass">
-                    <h4>{{ form.day }}</h4>
+                    <h4>{{ days|get_item:forloop.counter0 }}</h4>
 
                     <div class="form-group">
                         <label for="">13:00</label>
                         {{ form.first }}
+                        {% for error in form.first.errors %}
+                        {{error}}
+                        {% endfor %}
                     </div>
                     <div class="form-group">
                         <label for="">13:45</label>
@@ -160,7 +168,7 @@
             <div class="group-day-subjects">
                 {% for form in class_night %}
                 <div class="dayClass">
-                    <h4>{{ form.day }}</h4>
+                    <h4>{{ days|get_item:forloop.counter0 }}</h4>
 
                     <div class="form-group">
                         <label for="">19:00</label>
