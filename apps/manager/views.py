@@ -89,8 +89,8 @@ def classForm(request):
         formClass = formsClass()
 
         
-        dayClasses_list_morning = [formsDayClasses(prefix=str(i)) for i in range(0,5)]
-        dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]
+        dayClasses_list_morning = [formsDayClasses(initial={'day': days[i], 'timeTable': "Matutino"}, prefix=str(i)) for i in range(0,5)]
+        dayClasses_list_afternoon = [formsDayClasses(initial={'day': days[i-5], 'timeTable': "Vespertino"}, prefix=str(i)) for i in range(5,10)]
         dayClasses_list_night = [formsDayClasses(prefix=str(i)) for i in range(10, 15)]
         for i, dayClasse in enumerate(dayClasses_list_morning):
             dayClasse.day = days[i]
@@ -103,52 +103,74 @@ def classForm(request):
         
         formClass = formsClass(request.POST)
         dayClasses_list_morning = [formsDayClasses(request.POST ,initial={'day': days[i], 'timeTable': "Matutino"}, prefix=str(i)) for i in range(5)]
-        dayClasses_list_afternoon = [formsDayClasses(request.POST, initial={'day': days[i-5], 'timeTable': "Vespertino"}, prefix=str(i)) for i in range(5,10)]
+        dayClasses_list_afternoon = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5,10)]
         dayClasses_list_night = [formsDayClasses(request.POST,prefix=str(i)) for i in range(10, 15)]
         
 
         if formClass.is_valid():
             
-            if not all(form.verify_all_none() for form in dayClasses_list_morning) or not all(form.verify_all_none() for form in dayClasses_list_afternoon) or not all( form.verify_all_none() for form in dayClasses_list_night):
+            # if [not all(dayClasses_list_morning[index].is_valid()) or not all(dayClasses_list_afternoon[index].is_valid()) or not all( form.is_valid())for index, form in enumerate(dayClasses_list_night)]:
 
-                formSaveClass = formClass.save()
-                days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
-                'Quinta-feira','Sexta-feira']
+            #     days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+            #     'Quinta-feira','Sexta-feira']
 
-                if not all(form.verify_all_none() for form in dayClasses_list_morning):
-                    for i, form in enumerate(dayClasses_list_morning):
-                        form.instance.timeTable =  "Matutino"
-                        form.instance.day = days[i] 
-                        form.instance.classObj = formSaveClass
-                        if form.is_valid():                        
-                            form.save() 
+            #     if not all(form.verify_all_none() for form in dayClasses_list_morning):
+            #         for i, form in enumerate(dayClasses_list_morning):
+                        
+            #             form.instance.classObj = formSaveClass
+            #             if form.is_valid():                        
+            #                 form.save() 
 
-                if not all(form.verify_all_none() for form in dayClasses_list_afternoon) and all(form.is_valid() for form in dayClasses_list_afternoon):
-                    for i, form in enumerate(dayClasses_list_afternoon):
-                        form.cleaned_data['timeTable'] =  "Vespertino"
-                        form.instance.day = days[i] 
-                        print(form.instance.day)
-                        form.instance.classObj = formSaveClass
+            #     if not all(form.verify_all_none() for form in dayClasses_list_afternoon) and all(form.is_valid() for form in dayClasses_list_afternoon):
+            #         for i, form in enumerate(dayClasses_list_afternoon):
+                        
+            #             print(form.instance.day + "ddsdasdsa")
+            #             form.instance.classObj = formSaveClass
 
-                        if form.instance.first and dayCla.objects.filter(day=form.instance.day, timeTable=form.instance.timeTable, first__teacher=form.instance.first.teacher).exists():
-                            print("EEXXXISSTEEEE")
-                            messages.error(request, "ERROR")
-                        else:
-                            form.save()  
+            #             if form.instance.first and dayCla.objects.filter(day=form.instance.day, timeTable=form.instance.timeTable, first__teacher=form.instance.first.teacher).exists():
+            #                 print("EEXXXISSTEEEE")
+            #                 messages.error(request, "ERROR")
+            #             else:
+            #                 formClass.save()
+            #                 form.save()  
                             
                         
                                 
                         
-                if not all(form.verify_all_none() for form in dayClasses_list_night) and all(form.is_valid() for form in dayClasses_list_night):
-                    for i, form in enumerate(dayClasses_list_night):
-                        form.instance.timeTable =  "Noturno"
-                        form.instance.classObj = formSaveClass
-                        form.instance.day = days[i] 
-                        if form.is_valid():
-                            form.save()
-                        
-                return redirect('FormClass')
-            else:
+            #     if not all(form.verify_all_none() for form in dayClasses_list_night) and all(form.is_valid() for form in dayClasses_list_night):
+            #         for i, form in enumerate(dayClasses_list_night):
+            #             form.instance.timeTable =  "Noturno"
+            #             form.instance.classObj = formSaveClass
+            #             form.instance.day = days[i] 
+            #             if form.is_valid():
+            #                 form.save()
+
+            formSaveClass = formClass.save(commit=False)
+
+            for index in range(5):
+                
+                dayClasses_list_morning[index].instance.classObj = formSaveClass
+                dayClasses_list_afternoon[index].instance.classObj = formSaveClass
+                dayClasses_list_afternoon[index].instance.dayWeek = days[index]
+                dayClasses_list_night[index].instance.classObj = formSaveClass
+
+            if not all(form.verify_all_none() for form in dayClasses_list_afternoon):
+                print('testesssss')
+                for form in dayClasses_list_afternoon:
+                    if form.is_valid():
+                        print("SALVOU")
+                        # [form.save() for form in dayClasses_list_afternoon]
+                        # formClass.save()
+
+                        # return redirect('FormClass')
+                    else:
+                        print("form.instance.dayWeek, form.instance.first")
+
+                else:
+                    formClass = formsClass(request.POST)
+                    dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]
+
+        else:
 
                 dayClasses_list_morning = [formsDayClasses(prefix=str(i)) for i in range(0,5)]
                 dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]

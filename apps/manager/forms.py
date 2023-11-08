@@ -32,11 +32,9 @@ class formsSubject(forms.ModelForm):
 
 class formsDayClasses(forms.ModelForm):
 
-    day = ''
-
     class Meta:
         model = dayClasses
-        fields = ['day', 'timeTable', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth']
+        fields = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
         widgets = {
             'first': forms.Select(attrs={'class': 'form-element-select'}),
             'second': forms.Select(attrs={'class': 'form-element-select'}),
@@ -44,8 +42,7 @@ class formsDayClasses(forms.ModelForm):
             'fourth': forms.Select(attrs={'class': 'form-element-select'}),
             'fifth': forms.Select(attrs={'class': 'form-element-select'}),
             'sixth': forms.Select(attrs={'class': 'form-element-select'}),
-            'day': forms.HiddenInput(),
-            'timeTable': forms.HiddenInput(),
+            
         }
 
     # def __init__(self, *args, **kwargs):
@@ -56,21 +53,22 @@ class formsDayClasses(forms.ModelForm):
     def verify_all_none(self):
         self.is_valid()
         if all(value is None for value in self.cleaned_data.values()):
+            print("none")
             return True
 
     def clean_first(self):
-        print("cleannnnnnnnn")
-        cleaned_data = super().clean()
-        timeTable = cleaned_data.get('timeTable')
-        day = cleaned_data.get('day')
-        
-        data = cleaned_data.get('first')
+        timeTable = self.data['timeTable']
+        days = self.instance.dayWeek 
+        clas = self.instance.classObj
+        data = self.cleaned_data.get('first')
         if data :
+            
             teacher = data.teacher
-            print("FIELD")
-            print(day, timeTable, teacher)
-
-            if dayClasses.objects.filter(day=day, timeTable=timeTable, first__teacher=teacher).exists():
+            # print(self.cleaned_data)
+            
+            print(dayClasses.objects.filter(dayWeek=days, timeTable=timeTable))
+            if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, first__teacher=teacher).exists():
+                print(days, timeTable, teacher, clas)
                 raise ValidationError(_("Este professor já está dando aula neste horário"))
      
         return data

@@ -52,7 +52,7 @@ class Subject(models.Model):
 class dayClasses(models.Model):
     timeTable = models.CharField(max_length=15)
     classObj = models.ForeignKey(Class, on_delete=models.CASCADE) 
-    day = models.CharField(max_length=50)
+    dayWeek = models.CharField(max_length=50)
     first = models.ForeignKey(Subject, related_name="first", on_delete=models.SET_NULL, null=True, blank=True)
     second = models.ForeignKey(Subject, related_name="second", on_delete=models.SET_NULL, null=True, blank=True)
     third = models.ForeignKey(Subject, related_name="third", on_delete=models.SET_NULL, null=True, blank=True)
