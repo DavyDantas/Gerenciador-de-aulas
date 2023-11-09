@@ -4,7 +4,15 @@
     --color3: #3c8ba3;
     --color4: #D9D9D9;
     --color5: #3ca345;
+    --color6: #aa3432;
   }
+
+.errorlist{
+    list-style-type: none;
+    text-decoration: none;
+    font-weight: 500;
+    color: var(--color6);
+}
 
 .div-form{
     background-color: rgba(0, 0, 0, 0.199);

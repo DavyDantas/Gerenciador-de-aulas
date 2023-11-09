@@ -35,7 +35,7 @@ class Class(models.Model):
     course = models.ForeignKey(categoryCourse, on_delete=models.CASCADE)
     timeTable = models.CharField(max_length=15, choices=PERIOD_CHOICES)
     period = models.IntegerField()
-    acronym = models.CharField(max_length=10, unique=True)
+    acronym = models.CharField(max_length=10, unique=True, error_messages={'unique':"Já existe uma turma com está abreviação"})
 
     def __str__(self) :
         return self.acronym

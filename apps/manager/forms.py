@@ -45,33 +45,28 @@ class formsDayClasses(forms.ModelForm):
             
         }
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.day = self.instance.day
-    #     self.timeTable = self.instance.timeTable
-
     def verify_all_none(self):
         self.is_valid()
-        if all(value is None for value in self.cleaned_data.values()):
-            print("none")
+        if all(value == None for value in self.cleaned_data.values()):
             return True
 
-    def clean_first(self):
-        timeTable = self.data['timeTable']
+    def clean(self):
+        timeTable = self.instance.timeTable
         days = self.instance.dayWeek 
         clas = self.instance.classObj
-        data = self.cleaned_data.get('first')
-        if data :
+         
+        for field in self.fields:    
+            data = self.cleaned_data.get(field)
             
-            teacher = data.teacher
-            # print(self.cleaned_data)
-            
-            print(dayClasses.objects.filter(dayWeek=days, timeTable=timeTable))
-            if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, first__teacher=teacher).exists():
-                print(days, timeTable, teacher, clas)
-                raise ValidationError(_("Este professor já está dando aula neste horário"))
+            if data :    
+                teacher = data.teacher
+                print(teacher, days, timeTable) 
+                print(dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher} ))
+                if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher}).exists():
+                    print(days, timeTable, teacher, clas)
+                    raise ValidationError(_("Este professor já está dando aula neste horário"))
      
-        return data
+        return self.cleaned_data
 
 class formsClass(forms.ModelForm):
     class Meta:
