@@ -35,7 +35,7 @@ class Class(models.Model):
     course = models.ForeignKey(categoryCourse, on_delete=models.CASCADE)
     timeTable = models.CharField(max_length=15, choices=PERIOD_CHOICES)
     period = models.IntegerField()
-    acronym = models.CharField(max_length=10, unique=True)
+    acronym = models.CharField(max_length=10, unique=True, error_messages={'unique':"Já existe uma turma com está abreviação"})
 
     def __str__(self) :
         return self.acronym
@@ -52,7 +52,7 @@ class Subject(models.Model):
 class dayClasses(models.Model):
     timeTable = models.CharField(max_length=15)
     classObj = models.ForeignKey(Class, on_delete=models.CASCADE) 
-    day = models.CharField(max_length=50)
+    dayWeek = models.CharField(max_length=50)
     first = models.ForeignKey(Subject, related_name="first", on_delete=models.SET_NULL, null=True, blank=True)
     second = models.ForeignKey(Subject, related_name="second", on_delete=models.SET_NULL, null=True, blank=True)
     third = models.ForeignKey(Subject, related_name="third", on_delete=models.SET_NULL, null=True, blank=True)

@@ -15,7 +15,7 @@ class formsTeacher(forms.ModelForm):
         widgets = {
             'name' : forms.TextInput(attrs={'class': 'form-element'}),
             'matriculation' : forms.TextInput(attrs={'class': 'form-element'}),
-            'imgProfile': forms.FileInput(attrs={'class': 'form-element', 'accept': 'image/*'}),
+            'imgProfile': forms.FileInput(attrs={'class': 'form-element hidden'}),
             'telefone': forms.NumberInput(attrs={'class': 'form-element'}),
         }
 
@@ -27,16 +27,14 @@ class formsSubject(forms.ModelForm):
             'name' : forms.TextInput(attrs={'class': 'form-element'}),
             'acronym' : forms.TextInput(attrs={'class': 'form-element'}),
             'teacher': forms.Select(attrs={'class': 'form-element-select'}),
-
+            
         }
 
 class formsDayClasses(forms.ModelForm):
 
-    day = ''
-
     class Meta:
         model = dayClasses
-        fields = ['day', 'timeTable', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth']
+        fields = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
         widgets = {
             'first': forms.Select(attrs={'class': 'form-element-select'}),
             'second': forms.Select(attrs={'class': 'form-element-select'}),
@@ -44,36 +42,31 @@ class formsDayClasses(forms.ModelForm):
             'fourth': forms.Select(attrs={'class': 'form-element-select'}),
             'fifth': forms.Select(attrs={'class': 'form-element-select'}),
             'sixth': forms.Select(attrs={'class': 'form-element-select'}),
-            'day': forms.HiddenInput(),
-            'timeTable': forms.HiddenInput(),
+            
         }
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.day = self.instance.day
-    #     self.timeTable = self.instance.timeTable
 
     def verify_all_none(self):
         self.is_valid()
-        if all(value is None for value in self.cleaned_data.values()):
+        if all(value == None for value in self.cleaned_data.values()):
             return True
 
-    def clean_first(self):
-        print("cleannnnnnnnn")
-        cleaned_data = super().clean()
-        timeTable = cleaned_data.get('timeTable')
-        day = cleaned_data.get('day')
-        
-        data = cleaned_data.get('first')
-        if data :
-            teacher = data.teacher
-            print("FIELD")
-            print(day, timeTable, teacher)
-
-            if dayClasses.objects.filter(day=day, timeTable=timeTable, first__teacher=teacher).exists():
-                raise ValidationError(_("Este professor já está dando aula neste horário"))
+    def clean(self):
+        timeTable = self.instance.timeTable
+        days = self.instance.dayWeek 
+        clas = self.instance.classObj
+         
+        for field in self.fields:    
+            data = self.cleaned_data.get(field)
+            
+            if data :    
+                teacher = data.teacher
+                print(teacher, days, timeTable) 
+                print(dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher} ))
+                if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher}).exists():
+                    print(days, timeTable, teacher, clas)
+                    raise ValidationError(_("Este professor já está dando aula neste horário"))
      
-        return data
+        return self.cleaned_data
 
 class formsClass(forms.ModelForm):
     class Meta:

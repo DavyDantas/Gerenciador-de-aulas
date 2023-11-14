@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Class, dayClasses, Teacher, Subject, categoryCourse
 from .forms import *
 from django.contrib import messages
@@ -79,16 +79,15 @@ def courseForm(request):
 dayCla = dayClasses
 def classForm(request):
 
+    save_all = True
     classes = Class.objects.all()
+
     days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
             'Quinta-feira','Sexta-feira']
 
     if request.method == "GET":
-
-        
+    
         formClass = formsClass()
-
-        
         dayClasses_list_morning = [formsDayClasses(prefix=str(i)) for i in range(0,5)]
         dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]
         dayClasses_list_night = [formsDayClasses(prefix=str(i)) for i in range(10, 15)]
@@ -102,61 +101,69 @@ def classForm(request):
     else:
         
         formClass = formsClass(request.POST)
-        dayClasses_list_morning = [formsDayClasses(request.POST ,initial={'day': days[i], 'timeTable': "Matutino"}, prefix=str(i)) for i in range(5)]
-        dayClasses_list_afternoon = [formsDayClasses(request.POST, initial={'day': days[i-5], 'timeTable': "Vespertino"}, prefix=str(i)) for i in range(5,10)]
+        dayClasses_list_morning = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5)] 
+        dayClasses_list_afternoon = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5,10)]
         dayClasses_list_night = [formsDayClasses(request.POST,prefix=str(i)) for i in range(10, 15)]
         
-
         if formClass.is_valid():
+        
+            formSaveClass = formClass.save(commit=False)
+
+            for index in range(5):
+
+                    dayClasses_list_morning[index].instance.classObj = formSaveClass
+                    dayClasses_list_morning[index].instance.dayWeek = days[index]
+                    dayClasses_list_morning[index].instance.timeTable = "Matutino"
+
+                    dayClasses_list_afternoon[index].instance.classObj = formSaveClass
+                    dayClasses_list_afternoon[index].instance.dayWeek = days[index]
+                    dayClasses_list_afternoon[index].instance.timeTable = "Vespertino"
+
+                    dayClasses_list_night[index].instance.classObj = formSaveClass
+                    dayClasses_list_night[index].instance.dayWeek = days[index]
+                    dayClasses_list_night[index].instance.timeTable = "Noturno"
+
             
-            if not all(form.verify_all_none() for form in dayClasses_list_morning) or not all(form.verify_all_none() for form in dayClasses_list_afternoon) or not all( form.verify_all_none() for form in dayClasses_list_night):
+            if not all(form.verify_all_none() for form in dayClasses_list_morning):
+                print('testes manhã')
+                if not all(form.is_valid() for form in dayClasses_list_morning):
+                    
+                    save_all = False
+                    print("form.instance.dayWeek, form.instance.first")
+                    dayClasses_list_morning = [formsDayClasses(request.POST, prefix=str(i)) for i in range(0,5)]
 
-                formSaveClass = formClass.save()
-                days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
-                'Quinta-feira','Sexta-feira']
+            if not all(form.verify_all_none() for form in dayClasses_list_afternoon):
+                print('testes tarde')
+                if not all(form.is_valid() for form in dayClasses_list_afternoon):
+                    
+                    save_all = False
+                    print("form.instance.dayWeek, form.instance.first")
+                    dayClasses_list_afternoon = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5,10)]
 
-                if not all(form.verify_all_none() for form in dayClasses_list_morning):
-                    for i, form in enumerate(dayClasses_list_morning):
-                        form.instance.timeTable =  "Matutino"
-                        form.instance.day = days[i] 
-                        form.instance.classObj = formSaveClass
-                        if form.is_valid():                        
-                            form.save() 
+            if not all(form.verify_all_none() for form in dayClasses_list_night):
+                print('testes tarde')
+                if not all(form.is_valid() for form in dayClasses_list_night):
+                
+                    save_all = False
+                    print("form.instance.dayWeek, form.instance.first")
+                    dayClasses_list_night = [formsDayClasses(request.POST, prefix=str(i)) for i in range(10,15)]
 
-                if not all(form.verify_all_none() for form in dayClasses_list_afternoon) and all(form.is_valid() for form in dayClasses_list_afternoon):
-                    for i, form in enumerate(dayClasses_list_afternoon):
-                        form.cleaned_data['timeTable'] =  "Vespertino"
-                        form.instance.day = days[i] 
-                        print(form.instance.day)
-                        form.instance.classObj = formSaveClass
-
-                        if form.instance.first and dayCla.objects.filter(day=form.instance.day, timeTable=form.instance.timeTable, first__teacher=form.instance.first.teacher).exists():
-                            print("EEXXXISSTEEEE")
-                            messages.error(request, "ERROR")
-                        else:
-                            form.save()  
-                            
-                        
-                                
-                        
-                if not all(form.verify_all_none() for form in dayClasses_list_night) and all(form.is_valid() for form in dayClasses_list_night):
-                    for i, form in enumerate(dayClasses_list_night):
-                        form.instance.timeTable =  "Noturno"
-                        form.instance.classObj = formSaveClass
-                        form.instance.day = days[i] 
-                        if form.is_valid():
-                            form.save()
-                        
+            if save_all:
+                formClass.save()
+                [form.save() for form in dayClasses_list_morning]
+                [form.save() for form in dayClasses_list_afternoon]
+                [form.save() for form in dayClasses_list_night]
                 return redirect('FormClass')
-            else:
 
-                dayClasses_list_morning = [formsDayClasses(prefix=str(i)) for i in range(0,5)]
-                dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]
-                dayClasses_list_night = [formsDayClasses(prefix=str(i)) for i in range(10, 15)]
-                for i, dayClasses in enumerate(dayClasses_list_morning):
-                    dayClasses.day = days[i]
-                    dayClasses_list_afternoon[i].day = days[i]
-                    dayClasses_list_night[i].day = days[i]
+        else:
+
+            dayClasses_list_morning = [formsDayClasses(request.POST, prefix=str(i)) for i in range(0,5)]
+            dayClasses_list_afternoon = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5,10)]
+            dayClasses_list_night = [formsDayClasses(request.POST, prefix=str(i)) for i in range(10, 15)]
+            for i, dayClasses in enumerate(dayClasses_list_morning):
+                dayClasses.day = days[i]
+                dayClasses_list_afternoon[i].day = days[i]
+                dayClasses_list_night[i].day = days[i]
 
 
     context = {
@@ -201,5 +208,21 @@ def subjectsTeacher(request, pk):
 def absentsTeachers(request):
     
     return render (request, "professoresAusentes.html")
+
+def teacherEdit(request, pk):
+
+    teacher = get_object_or_404(Teacher, pk=pk)
+    
+    if request.method == "POST":
+
+        if form.is_valid():
+            form.save()
+            return redirect('FormTeacher')
+
+    else:
+        form = formsTeacher(instance=teacher, initial=teacher.clean_fields())
+
+    return render(request, "editProfessor.html", {"form":form})
+
 
         
