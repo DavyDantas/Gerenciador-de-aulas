@@ -15,7 +15,7 @@ class formsTeacher(forms.ModelForm):
         widgets = {
             'name' : forms.TextInput(attrs={'class': 'form-element'}),
             'matriculation' : forms.TextInput(attrs={'class': 'form-element'}),
-            'imgProfile': forms.FileInput(attrs={'class': 'form-element', 'accept': 'image/*'}),
+            'imgProfile': forms.FileInput(attrs={'class': 'form-element hidden'}),
             'telefone': forms.NumberInput(attrs={'class': 'form-element'}),
         }
 
@@ -27,7 +27,7 @@ class formsSubject(forms.ModelForm):
             'name' : forms.TextInput(attrs={'class': 'form-element'}),
             'acronym' : forms.TextInput(attrs={'class': 'form-element'}),
             'teacher': forms.Select(attrs={'class': 'form-element-select'}),
-
+            
         }
 
 class formsDayClasses(forms.ModelForm):

@@ -14,6 +14,13 @@
     color: var(--color6);
 }
 
+.label-input{
+    background-color: var(--color3);
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .div-form{
     background-color: rgba(0, 0, 0, 0.199);
     margin-top: 30px;
