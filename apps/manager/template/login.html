@@ -1,0 +1,68 @@
+{% load static i18n %}
+{% load static %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>
+      {% block title %}
+      SGRA
+    {% endblock title %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+        content="Behold My Awesome Project!" />
+  <meta name="author"
+        content="Davy Dantas & Luis Dantas" />
+  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Your stuff: Third-party CSS libraries go here -->
+  <!-- This file stores project-specific CSS -->
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/login.css' %}" rel="stylesheet" />
+
+</head>
+<body id="body-login">
+
+    <div class="main-body" id="main-login">
+
+        <div class="div-login">
+            <div class="intro-site">
+                <span>
+                    O seu <strong>S</strong>istema de <strong>G</strong>erenciamento de <strong>R</strong>eposição de <strong>A</strong>ulas 
+                </span>
+            </div>
+            <div class="login">
+
+                <div class="logo-login">
+                    <span>SGRA</span>
+                </div>
+
+                <div class="authen">
+                    <label for="">Matrícula:</label>
+                    <input type="text">
+
+                    <label for="">Senha:</label>
+                    <input type="text">
+                
+                    <button class="button-login"><a href="{% url 'listarTurmas' %}">Logar</a></button>
+
+                </div>
+
+                <button class="button-login Suap">Login sua SUAP</button>
+                
+
+            </div>
+        </div>
+
+    </div>
+
+</body>

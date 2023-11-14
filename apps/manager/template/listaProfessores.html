@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="title-main">Tabela | Professores</h1>
+
+<div class="lista-teachers">
+
+    {% for teacher in teachers %}
+
+        <div class="div-teacher">
+            <a href="{% url 'SubjectsTeacher' teacher.pk %}">
+                <img src="{{teacher.imgProfile.url}}" alt="{{teacher}}" class="img-teacher"></span>
+                <span class="name-teacher">{{teacher}}</span>
+            </a>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

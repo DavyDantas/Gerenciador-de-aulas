@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="title-main">Tabela | Turmas</h1>
+
+<div class="div-courses-classes">
+
+    {% for course in courses %}
+    <div class="div-courses">
+
+    <p class="course-name">{{course}}</p>
+        <div class="box-classes">
+            {% for class in course.class_set.all %}
+
+            <div class="div-class">
+                <a href="{% url 'SubjectsClass' class.pk %}" class="class-acronym">
+                    <span >{{class.acronym}}</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+        {% endfor %}
+
+
+</div>
+
+
+{% endblock %}
