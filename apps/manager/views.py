@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Class, dayClasses, Teacher, Subject, categoryCourse
 from .forms import *
 from django.contrib import messages
@@ -208,5 +208,21 @@ def subjectsTeacher(request, pk):
 def absentsTeachers(request):
     
     return render (request, "professoresAusentes.html")
+
+def teacherEdit(request, pk):
+
+    teacher = get_object_or_404(Teacher, pk=pk)
+    
+    if request.method == "POST":
+
+        if form.is_valid():
+            form.save()
+            return redirect('FormTeacher')
+
+    else:
+        form = formsTeacher(instance=teacher, initial=teacher.clean_fields())
+
+    return render(request, "editProfessor.html", {"form":form})
+
 
         
