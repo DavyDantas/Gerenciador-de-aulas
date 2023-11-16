@@ -21,6 +21,83 @@
     cursor: pointer;
 }
 
+.group-bottons{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.cancel-option{
+    margin-top: 15px;
+    width: fit-content;
+    background-color: #797979;
+    padding: 8px;
+    border-radius: 5px;
+    margin-right: 10px;
+    height: fit-content;
+}
+
+.delete-group > div{
+    margin-bottom: 5px;
+    width: auto;
+    
+}
+
+.delete-group{
+    max-width: 180px;
+    margin-right: 10px;
+}
+
+.delete-button{
+    margin-top: 15px;
+    width: fit-content;
+    background-color: #aa3432;
+    padding: 8px;
+    border-radius: 5px;
+    height: fit-content;
+    text-align: center;
+}
+
+.confirm-delete{
+    background-color: var(--color4);
+    border-radius: 5px;
+    font-weight: 500;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    padding: 0;
+    transition: max-height 0.2s ease-out;
+    transition: padding 0.2s ease-out;
+}
+
+.confirm-delete.expand{
+    max-height: 48px;
+    padding: 10px;
+}
+
+.confirm-delete a{
+    text-decoration: none;
+    font-size: 12pt;
+    padding: 5px 6px;
+    width: max-content;
+    height: max-content;
+    background-color: var(--color6);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.cancel-option a, .delete-button a{
+    font-size: 14pt;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+}
+
 .div-form{
     background-color: rgba(0, 0, 0, 0.199);
     margin-top: 30px;
@@ -31,6 +108,10 @@
     width: fit-content;
     padding: 10px;
     border-radius: 10px;
+}
+
+.div-form.edit{
+    background-color: #3fc2ea31;
 }
 
 .div-form > form{
@@ -82,6 +163,7 @@
     border: none;
     border-radius: 5px;
     margin-top: 15px;
+    margin-right: 10px;
     background-color: var(--color5);
     color: white;
     font-size: 14pt;
@@ -190,7 +272,7 @@
 .div-form.formClass.minimize path {
     transform-origin: center;
     transform: rotate(180deg);
-    transition: 0.3s; /* Adicione uma transição aqui */
+    transition: 0.3s; 
 }
 
 .timeTable-subjects {
@@ -335,5 +417,4 @@
     margin-right: 10px;
     font-size: 12pt;
     font-weight: 600;
-
 }

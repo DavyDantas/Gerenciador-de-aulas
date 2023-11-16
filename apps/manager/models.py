@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.files.storage import default_storage
 
 # Create your models here.
 
@@ -6,13 +7,20 @@ class Teacher(models.Model):
 
     name = models.CharField(max_length=200)
     matriculation = models.IntegerField(unique=True)
-    imgProfile = models.ImageField(default="user-profile-icon.jpg", upload_to="UsersProfile/")
+    imgProfileVariable = models.ImageField(default="user-profile-icon.jpg", upload_to="UsersProfile/")
     telefone = models.IntegerField()
     numberAbsents = models.IntegerField(null=True, blank=True, default=0)
 
-
     def __str__(self) :
         return self.name
+    
+    @property
+    def imgProfile(self):
+        if default_storage.exists(self.imgProfileVariable.name):
+            return self.imgProfileVariable.url
+        else:
+            print(r"media\user-profile-icon.jpg")
+            return r"\media\user-profile-icon.jpg" 
     
 class categoryCourse(models.Model):
 
@@ -35,7 +43,7 @@ class Class(models.Model):
     course = models.ForeignKey(categoryCourse, on_delete=models.CASCADE)
     timeTable = models.CharField(max_length=15, choices=PERIOD_CHOICES)
     period = models.IntegerField()
-    acronym = models.CharField(max_length=10, unique=True, error_messages={'unique':"Já existe uma turma com está abreviação"})
+    acronym = models.CharField(max_length=10, unique=True, error_messages={'unique': "Já existe uma turma com está abreviação"})
 
     def __str__(self) :
         return self.acronym
@@ -43,8 +51,8 @@ class Class(models.Model):
 class Subject(models.Model):
 
     name = models.CharField(max_length=150)
-    acronym = models.CharField(max_length=10, unique=True)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    acronym = models.CharField(max_length=10, unique=True, error_messages={'unique': "Já existe uma disciplina com está abreviação"})
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True) 
 
     def __str__(self) :
         return self.name

@@ -95,7 +95,7 @@
           </ul>
 
         </li>
-        <li class="item-menu dropdown {% if '/form-' in request.path%}ativo{% endif %}">
+        <li class="item-menu dropdown {% if '/form-' in request.path or '/editar' in request.path %}ativo{% endif %}">
           <a class="nav-link nav-drop">
             <span class="icon-item-menu"><i class="bi bi-pen"></i></span>
             <span class="text-item-menu">Adicionar/Editar</span>
@@ -146,12 +146,12 @@
 
 
 
-  <div class="conteiner-wave">
+  <!-- <div class="conteiner-wave">
     <div class="wave">
       <img src="{% static 'images/wave.jpg' %}" alt="">
       <img src="{% static 'images/wave.jpg' %}" alt="">
     </div>
-  </div>
+  </div> -->
 
 </body>
 

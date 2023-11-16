@@ -16,7 +16,7 @@ aside{
   position: fixed;
   display: block;
   border-radius: 0px 0px 20px 0px;
-  /* background: rgba(0, 0, 0, 0.616); */
+  /* background: #2f353a; */
   border-bottom: 1px solid rgba(255, 255, 255, 0.178);
   border-right: 1px solid rgba(255, 255, 255, 0.178);
   top: 0;

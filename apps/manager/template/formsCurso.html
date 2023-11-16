@@ -43,7 +43,7 @@
 
     {% for course in courses %}
     <div class="div-class">
-        <a href="#" class="class-acronym">
+        <a href="{% url 'CourseEdit' course.pk %}" class="class-acronym">
             <span >{{course}}</span>
         </a>
     </div>

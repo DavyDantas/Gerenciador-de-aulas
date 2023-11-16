@@ -15,7 +15,7 @@ class formsTeacher(forms.ModelForm):
         widgets = {
             'name' : forms.TextInput(attrs={'class': 'form-element'}),
             'matriculation' : forms.TextInput(attrs={'class': 'form-element'}),
-            'imgProfile': forms.FileInput(attrs={'class': 'form-element hidden'}),
+            'imgProfileVariable': forms.FileInput(attrs={'class': 'form-element hidden'}),
             'telefone': forms.NumberInput(attrs={'class': 'form-element'}),
         }
 

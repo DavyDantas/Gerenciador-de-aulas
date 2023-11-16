@@ -129,15 +129,13 @@ def classForm(request):
                 if not all(form.is_valid() for form in dayClasses_list_morning):
                     
                     save_all = False
-                    print("form.instance.dayWeek, form.instance.first")
                     dayClasses_list_morning = [formsDayClasses(request.POST, prefix=str(i)) for i in range(0,5)]
-
+                
             if not all(form.verify_all_none() for form in dayClasses_list_afternoon):
                 print('testes tarde')
                 if not all(form.is_valid() for form in dayClasses_list_afternoon):
                     
                     save_all = False
-                    print("form.instance.dayWeek, form.instance.first")
                     dayClasses_list_afternoon = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5,10)]
 
             if not all(form.verify_all_none() for form in dayClasses_list_night):
@@ -145,14 +143,13 @@ def classForm(request):
                 if not all(form.is_valid() for form in dayClasses_list_night):
                 
                     save_all = False
-                    print("form.instance.dayWeek, form.instance.first")
                     dayClasses_list_night = [formsDayClasses(request.POST, prefix=str(i)) for i in range(10,15)]
 
             if save_all:
                 formClass.save()
-                [form.save() for form in dayClasses_list_morning]
-                [form.save() for form in dayClasses_list_afternoon]
-                [form.save() for form in dayClasses_list_night]
+                if not all(form.verify_all_none() for form in dayClasses_list_morning):[form.save() for form in dayClasses_list_morning]
+                if not all(form.verify_all_none() for form in dayClasses_list_afternoon):[form.save() for form in dayClasses_list_afternoon]
+                if not all(form.verify_all_none() for form in dayClasses_list_night):[form.save() for form in dayClasses_list_night]
                 return redirect('FormClass')
 
         else:
@@ -214,15 +211,46 @@ def teacherEdit(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     
     if request.method == "POST":
+        form = formsTeacher(request.POST,request.FILES, instance=teacher)
 
         if form.is_valid():
             form.save()
             return redirect('FormTeacher')
 
     else:
-        form = formsTeacher(instance=teacher, initial=teacher.clean_fields())
+        form = formsTeacher(instance=teacher, initial=teacher.clean())
 
-    return render(request, "editProfessor.html", {"form":form})
+    return render(request, "editProfessor.html", {"form":form, "teacher":teacher})
 
+def teacherDelete(request, pk):
+    
+    teacher = get_object_or_404(Teacher, pk=pk)
+   
+    if request.method == "GET":
+        teacher.delete()
+    
+    return redirect("FormTeacher")
 
+def courseEdit(request, pk):
+
+    course = get_object_or_404(categoryCourse,pk=pk)
+
+    if request.method == "POST":
+        form = formsCourse(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+
+            return redirect("FormCourse")
         
+    else:
+        form = formsCourse(instance=course, initial=course.clean())
+
+    return render(request, "editCursos.html", {"form":form, "course":course})
+
+def courseDelete(request, pk):
+
+    if request.method == "GET":
+        course = get_object_or_404(categoryCourse, pk=pk)
+        course.delete()
+
+    return redirect("FormCourse")

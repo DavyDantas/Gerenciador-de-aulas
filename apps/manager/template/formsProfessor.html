@@ -27,8 +27,8 @@
         {{ form.telefone }}
     </div>
     <div class="form-group">
-        <label class="label-input" for="{{ form.imgProfile.id_for_label }}">Imagem de Perfil</label>
-        {{form.imgProfile}}
+        <label class="label-input" for="{{ form.imgProfileVariable.id_for_label }}">Imagem de Perfil</label>
+        {{form.imgProfileVariable}}
     </div>
     <div class="submit-btn">
     <button type="submit" class="">Salvar</button>
@@ -45,7 +45,7 @@
 
         <div class="div-teacher">
             <a href="{% url 'EditTeacher' pk=teacher.pk %}"> 
-                <img src="{{teacher.imgProfile.url}}" alt="{{teacher}}" class="img-teacher"></span>
+                <img src="{{teacher.imgProfile}}" alt="{{teacher}}" class="img-teacher"></span>
                 <span class="name-teacher">{{teacher}}</span>
             </a>
         </div>

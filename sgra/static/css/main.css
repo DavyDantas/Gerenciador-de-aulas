@@ -16,7 +16,8 @@
   body{
     margin: 0;
     display: flex;
-    background: linear-gradient(242deg, #444 0%, #252A2C 37.5%, #191F21 75%);
+    background-color: #23282a;
+    /* background: linear-gradient(242deg, #444 0%, #252A2C 37.5%, #191F21 75%); */
     background-attachment: fixed;
     
   }
