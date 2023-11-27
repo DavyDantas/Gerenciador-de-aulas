@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock css %}
+
+
+{% block main %}
+
+<h1 class="title-main">Editar | Disciplina: {{subject}}</h1>
+
+<form action="{% url 'SubjectEdit' subject.pk %}" method="post">
+    {% csrf_token %}
+    <div class="div-form edit">
+
+    <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Nome:</label>
+        {{ form.name }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.acronym.id_for_label }}">Abreviação:</label>
+        {{ form.acronym }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.teacher.id_for_label }}">Professor:</label>
+        {{ form.teacher}}
+    </div>
+</div>
+
+<div class="group-bottons">
+
+    <div class="submit-btn">
+    <button type="submit" class="">Salvar Edição</button>
+    </div>
+    <div class="delete-group">
+        <div class="delete-button">
+            <a href=# class="delete-button-option"> Deletar Disciplina </a>
+        </div>
+        <div class="confirm-delete">
+                <span>Tem certeza ?</span>
+                <a href="{% url 'SubjectDelete' subject.pk %}">Sim</a>
+        </div>
+    </div>
+
+    <div class="cancel-option">
+        <a href="{% url 'FormSubject' %}">
+            <span class="">Cancelar</span>
+        </a>
+    </div>
+</div>
+
+</form>
+
+
+
+{% endblock %}

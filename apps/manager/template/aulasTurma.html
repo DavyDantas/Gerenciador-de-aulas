@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock css %}
+
+
+{% block main %}
+
+<h1 class="title-main">Tabelas | Turmas : <span class="title-name-class">{{turm.course}} {{turm.period}}ºPeríodo
+        {{turm.timeTable}}</span></h1>
+
+
+<div class="view-class">
+    <div class="sub-form">
+
+        <div class="table-class">
+
+            <span class="title-class">{{turm.acronym}}</span>
+
+            <div class="group-all-horary">
+
+                <div class="days-week">
+                    <span class="vacu"></span>
+                    <span class="day-name">Segunda-Feira</span>
+                    <span class="day-name">Terça-Feira</span>
+                    <span class="day-name">Quarta-Feira</span>
+                    <span class="day-name">Quinta-Feira</span>
+                    <span class="day-name">Sexta-Feira</span>
+                </div>
+
+                {% if class_morning %}
+
+                <div class="box-subjects-class">
+
+                    <div class="timeHour morning">
+
+                        <span>
+                            07:00
+                        </span>
+                        <span>
+                            07:45
+                        </span>
+                        <span>
+                            08:50
+                        </span>
+                        <span>
+                            09:35
+                        </span>
+                        <span>
+                            10:30
+                        </span>
+                        <span>
+                            11:15
+                        </span>
+                    </div>
+
+                    {% for days in class_morning %}
+
+                    <div class="days-subjects">
+
+
+                        <div class="box-subject">
+                            {% if days.first %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.first.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.first.teacher}}</span>
+                            </div>
+                            <span>{{days.first.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.second %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.second.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.second.teacher}}</span>
+                            </div>
+                            <span>{{days.second.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.third %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.third.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.third.teacher}}</span>
+                            </div>
+                            <span>{{days.third.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.fourth %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.fourth.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.fourth.teacher}}</span>
+                            </div>
+                            <span>{{days.fourth.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.fifth %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.fifth.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.fifth.teacher}}</span>
+                            </div>
+                            <span>{{days.fifth.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.sixth %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.sixth.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.sixth.teacher}}</span>
+                            </div>
+                            <span>{{days.sixth.acronym}}</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if class_afternoon %}
+
+                <div class="box-subjects-class">
+
+                    <div class="timeHour afternoon">
+
+                        <span>
+                            13:00
+                        </span>
+                        <span>
+                            13:45
+                        </span>
+                        <span>
+                            14:50
+                        </span>
+                        <span>
+                            15:35
+                        </span>
+                        <span>
+                            16:30
+                        </span>
+                        <span>
+                            17:15
+                        </span>
+                    </div>
+
+                    {% for days in class_afternoon %}
+
+                    <div class="days-subjects">
+
+
+                        <div class="box-subject">
+                            {% if days.first %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.first.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.first.teacher}}</span>
+                            </div>
+                            <span>{{days.first.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.second %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.second.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.second.teacher}}</span>
+                            </div>
+                            <span>{{days.second.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.third %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.third.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.third.teacher}}</span>
+                            </div>
+                            <span>{{days.third.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.fourth %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.fourth.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.fourth.teacher}}</span>
+                            </div>
+                            <span>{{days.fourth.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.fifth %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.fifth.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.fifth.teacher}}</span>
+                            </div>
+                            <span>{{days.fifth.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.sixth %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.sixth.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.sixth.teacher}}</span>
+                            </div>
+                            <span>{{days.sixth.acronym}}</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if class_night %}
+
+                <div class="box-subjects-class">
+
+                    <div class="timeHour night">
+
+                        <span>
+                            19:00
+                        </span>
+                        <span>
+                            19:45
+                        </span>
+                        <span>
+                            20:40
+                        </span>
+                        <span>
+                            21:25
+                        </span>
+
+                    </div>
+
+                    {% for days in class_night %}
+
+                    <div class="days-subjects">
+
+
+                        <div class="box-subject">
+                            {% if days.first %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.first.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.first.teacher}}</span>
+                            </div>
+                            <span>{{days.first.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.second %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.second.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.second.teacher}}</span>
+                            </div>
+                            <span>{{days.second.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.third %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.third.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.third.teacher}}</span>
+                            </div>
+                            <span>{{days.third.acronym}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box-subject">
+                            {% if days.fourth %}
+                            <div class="teacher-subject">
+                                <img class="img-teacher" src="{{days.fourth.teacher.imgProfile.url}}" alt="">
+                                <span class="teacher-name">{{days.fourth.teacher}}</span>
+                            </div>
+                            <span>{{days.fourth.acronym}}</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-absent">
+
+        <div class="div-form">
+            <h2>Cadastrar Ausência</h2>
+            <form action="">
+
+                <div class="form-group">
+                    <label for="">Professor Ausente:</label>
+                    <select class="form-element-select" name="" id="">
+                        <option value="Selecione..."></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Professor Substituto:</label>
+                    <select class="form-element-select" name="" id="">
+                        <option value="Selecione..."></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Dia da semana:</label>
+                    <select class="form-element-select" name="" id="">
+                        <option value="Selecione..."></option>
+                    </select>
+                </div>
+
+                <div class="all-checkbox">
+                    <div class="form-group checkbox">
+                        <span class="name-box">Horários da Manhã</span>
+                        <div class="checkbox-group">
+                            <div class="checkbox">
+                                <input type="checkbox" id="item1" name="items" value="Item 1">
+                                <label for="item1">07:00</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item2" name="items" value="Item 2">
+                                <label for="item2">07:45</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">08:50</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">09:35</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">10:30</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">11:15</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group checkbox">
+                        <span class="name-box">Horários da Tarde</span>
+                        <div class="checkbox-group">
+                            <div class="checkbox">
+                                <input type="checkbox" id="item1" name="items" value="Item 1">
+                                <label for="item1">13:00</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item2" name="items" value="Item 2">
+                                <label for="item2">13:45</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">14:50</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">15:35</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">16:30</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">17:15</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group checkbox">
+                        <span class="name-box">Horários da Noite</span>
+                        <div class="checkbox-group">
+                            <div class="checkbox">
+                                <input type="checkbox" id="item1" name="items" value="Item 1">
+                                <label for="item1">19:00</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item2" name="items" value="Item 2">
+                                <label for="item2">19:45</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">20:40</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="item3" name="items" value="Item 3">
+                                <label for="item3">21:25</label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-btn">
+                    <button type="submit">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock main %}

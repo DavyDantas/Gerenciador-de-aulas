@@ -2,27 +2,34 @@
 :root{
   --color1: #3FC2EA;
   --color2: #287086;
+    --color3: #3c8ba3;
+  --color4: #D9D9D9;
 }
 
 
 
 aside{
+  z-index: 1;
   clear: right;
   width: 260px;
   height: 700px;
   position: fixed;
   display: block;
   border-radius: 0px 0px 20px 0px;
-  background: #efefef00;
+  /* background: #2f353a; */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.178);
+  border-right: 1px solid rgba(255, 255, 255, 0.178);
   top: 0;
   left: 0;
-  box-shadow: 7px 0px 20px 1px rgba(5, 5, 5, 0.40);
+  box-shadow: 7px 0px 10px 1px rgba(5, 5, 5, 0.40);
   overflow: hidden;
   transition: 0.3s;
 }
 
 .item-menu.dropdown.down .drop-ul{
-  display: block;
+  max-height: 200px;
+  margin: 15px 0 15px 40px;
+ 
 }
 
 aside.reduce .icon-item-menu{
@@ -121,14 +128,19 @@ aside.reduce *{
   width: fit-content;
   list-style: none;
   margin: 0 0 20px 15px;
+  transition: 0.3s;
 }
 
 .drop-ul{
-  transition: 0.3s;
-  display: none;
+  display: flex;
+  flex-direction: column;
   list-style: none;
   padding: 0;
-  margin: 15px 0 15px 40px;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+  margin-left: 40px;
+  margin-top: 0;
 }
 
 .item-drop>a{
@@ -150,6 +162,7 @@ aside.reduce *{
 .item-menu.dropdown.down path{
   transform-origin: center;
   transform: rotate(180deg);
+  
 }
 
 .nav-link:hover span, .nav-link:hover path {

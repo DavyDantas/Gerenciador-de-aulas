@@ -8,25 +8,48 @@
 
 {% block main %}
 
+<h1 class="title-main">Adicionar/Editar | Cursos</h1>
+
 
 <div class="sub-form">
-    <h2>Formulário de Curso</h2>
+
+<form action="{% url 'FormCourse' %}" method="post">
+    {% csrf_token %}
     <div class="div-form">
 
-        <form action="{% url 'FormClass' %}" method="post">
-            {% csrf_token %}
-
             <div class="form-group">
-                <label for="{{ courseForm.id_name }}">Nome:</label>
-                {{ courseForm.name }}
+                <label for="">Nome:</label>
+                {{ form.name }}
             </div>
-            <div class="submit-btn">
-                <button type="submit">Salvar Curso</button>
+            <div class="form-group">
+                <label for="">Coordenador:</label>
+                {{ form.coordinator }}
+            </div>
+            <div class="form-group">
+                <label for="">Quantidade de Períodos:</label>
+                {{ form.periods }}
             </div>
             
-        </form>
-
     </div>
+    <div class="submit-btn">
+        <button type="submit">Salvar</button>
+    </div>
+    
+</form>
+
+</div>
+
+<div class="lista-teachers">
+
+    {% for course in courses %}
+    <div class="div-class">
+        <a href="{% url 'CourseEdit' course.pk %}" class="class-acronym">
+            <span >{{course}}</span>
+        </a>
+    </div>
+        {% endfor %}
+
+
 </div>
 
 {% endblock main %}

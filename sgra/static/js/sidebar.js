@@ -29,11 +29,18 @@ function selectLinkDrop(_event) {
 dropItem.forEach((item) =>
     item.addEventListener('click', selectLinkDrop)
 )
-
+//Responsavel por mover o body ao reduzir a sidebar por reduzir a sidebar ao clicar no botão de reduzir
 btnExp.addEventListener('click', function() {
-    sidebar.classList.toggle('reduce');
-    mainBody.classList.toggle('margin-left');
-
+    if (sidebar.classList.contains('reduce')){
+        sidebar.classList.remove('reduce');
+        mainBody.classList.remove('margin-left');
+        localStorage.setItem('sidebarState', ' ');
+    }
+    else{
+    sidebar.classList.add('reduce');
+    mainBody.classList.add('margin-left');
+    localStorage.setItem('sidebarState', 'reduce');
+    }
     dropdown.forEach(function(item) {
         if (item.classList.contains('down')) {
             item.classList.remove('down');
@@ -41,12 +48,13 @@ btnExp.addEventListener('click', function() {
     });
 });
 
+
+
 navDrop.forEach(function(navDrop) {
     navDrop.addEventListener('click', function(event) {
         
         // Obtém o elemento 'li' pai do elemento 'a' clicado
         var drop = this.closest('li.dropdown');
-        // Adiciona a classe 'down' ao 'dropdown' associado
         drop.classList.toggle('down');
 
         if(sidebar.classList.contains('reduce')){
@@ -56,3 +64,35 @@ navDrop.forEach(function(navDrop) {
 
     });
 });
+
+
+
+
+  // Função para expandir a barra lateral
+  function expandSidebar() {
+    // Adicione a classe 'expandida' ao elemento da barra lateral
+    sidebar.classList.remove('reduce');
+    // Armazene o estado no localStorage
+    localStorage.setItem('sidebarState', ' ');
+    mainBody.classList.remove('margin-left');
+  }
+
+  // Função para reduzir a barra lateral
+  function reduceSidebar() {
+    // Remova a classe 'expandida' do elemento da barra lateral
+    sidebar.classList.add('reduce');
+    // Armazene o estado no localStorage
+    localStorage.setItem('sidebarState', 'reduce');
+    mainBody.classList.add('margin-left');
+  }
+
+  // Verifique o estado armazenado no localStorage ao carregar a página
+  window.addEventListener('load', function() {
+    const sidebarState = localStorage.getItem('sidebarState');
+    if (sidebarState === ' ') {
+      expandSidebar();
+
+    } else if (sidebarState === 'reduce') {
+      reduceSidebar();
+    }
+  });

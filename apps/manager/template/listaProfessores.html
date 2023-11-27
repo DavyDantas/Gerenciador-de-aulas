@@ -8,8 +8,8 @@
     {% for teacher in teachers %}
 
         <div class="div-teacher">
-            <a href="#">
-                <img src="{{teacher.imgProfile.url}}" alt="{{teacher}}" class="img-teacher"></span>
+            <a href="{% url 'SubjectsTeacher' teacher.pk %}">
+                <img src="{{teacher.imgProfile}}" alt="{{teacher}}" class="img-teacher"></span>
                 <span class="name-teacher">{{teacher}}</span>
             </a>
         </div>

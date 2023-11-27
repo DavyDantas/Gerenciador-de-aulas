@@ -10,10 +10,10 @@
 
 <h1 class="title-main">Adicionar/Editar | Disciplinas</h1>
 
-<div class="div-form">
-
 <form action="{% url 'FormSubject' %}" method="post">
     {% csrf_token %}
+    <div class="div-form">
+
     <div class="form-group">
         <label for="{{ form.name.id_for_label }}">Nome:</label>
         {{ form.name }}
@@ -27,13 +27,14 @@
         {{ form.teacher}}
     </div>
     
-    <div class="submit-btn">
-    <button type="submit" class="">Salvar</button>
     </div>
 
+    <div class="submit-btn">
+        <button type="submit" class="">Salvar</button>
+        </div>
+    
 </form>
 
-</div>
 
 
 
@@ -42,7 +43,7 @@
     {% for subject in subjects %}
 
         <div class="div-class">
-            <a href="#" class="class-acronym">
+            <a href="{% url 'SubjectEdit' subject.pk %}" class="class-acronym">
                 <span >{{subject}}</span>
             </a>
         </div>

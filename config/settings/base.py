@@ -194,6 +194,9 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "sgra.users.context_processors.allauth_settings",
             ],
+            'libraries':{
+                'tags_template': 'apps.manager.templatetags.tags_template',
+            }
         },
     }
 ]

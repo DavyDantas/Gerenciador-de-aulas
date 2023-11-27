@@ -10,9 +10,10 @@
 
 <h1 class="title-main">Adicionar/Editar | Professores</h1>
 
-<div class="div-form">
-
 <form action="{% url 'FormTeacher' %}" method="post" enctype="multipart/form-data">
+
+    <div class="div-form">
+
     {% csrf_token %}
     <div class="form-group">
         <label for="{{ form.name.id_for_label }}">Nome:</label>
@@ -23,16 +24,20 @@
         {{ form.matriculation }}
     </div>
     <div class="form-group">
-        <label for="{{ form.imgProfile.id_for_label }}">Imagem de Perfil:</label>
-        {{ form.imgProfile }}
+        <label for="{{ form.telefone.id_for_label }}">Número de Celular:</label>
+        {{ form.telefone }}
+    </div>
+    <div class="form-group">
+        <label class="label-input" for="{{ form.imgProfileVariable.id_for_label }}">Imagem de Perfil</label>
+        {{form.imgProfileVariable}}
+    </div> 
     </div>
 
     <div class="submit-btn">
-    <button type="submit" class="">Salvar</button>
-    </div>
-</form>
+        <button type="submit" class="">Salvar</button>
+    </div>  
 
-</div>
+</form>
 
 
 
@@ -41,8 +46,8 @@
     {% for teacher in teachers %}
 
         <div class="div-teacher">
-            <a href="#">
-                <img src="{{teacher.imgProfile.url}}" alt="{{teacher}}" class="img-teacher"></span>
+            <a href="{% url 'EditTeacher' pk=teacher.pk %}"> 
+                <img src="{{teacher.imgProfile}}" alt="{{teacher}}" class="img-teacher"></span>
                 <span class="name-teacher">{{teacher}}</span>
             </a>
         </div>
