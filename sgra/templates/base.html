@@ -1,0 +1,161 @@
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>
+    {% block title %}
+    SGRA
+    {% endblock title %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Behold My Awesome Project!" />
+  <meta name="author" content="Davy Dantas & Luis Dantas" />
+  <link rel="icon" href="{% static 'images/logo.png' %}" />
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Your stuff: Third-party CSS libraries go here -->
+  <!-- This file stores project-specific CSS -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <link href="{% static 'css/sidebar.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+
+  {% block css %}
+
+  {% endblock css %}
+  <!-- Le javascript
+    ================================================== -->
+  {# Placed at the top of the document so pages load faster with defer #}
+  {% block javascript %}
+
+
+  <!-- Bootstrap JS -->
+
+  <!-- Your stuff: Third-party javascript libraries go here -->
+
+
+  <!-- place project specific Javascript in this file -->
+
+
+
+  {% endblock javascript %}
+</head>
+
+<body>
+
+  <aside id="aside" class="expanded">
+    <nav class="sidebar">
+
+      <div id="head-menu">
+
+        <div class="btn-expandir">
+          <i class="bi bi-list" id="btn-exp"></i>
+        </div>
+
+        <div class="logo">
+          <a href="{% url 'listarTurmas' %}">SGRA</a>
+        </div>
+
+      </div>
+
+      <div class="nav-user">
+        <a href="#" id="nav-user-link">
+          <span class="user-image-menu"> <img class="user-image"
+              src="{% static 'images/favicons/user-profile-icon.jpg' %}" alt=""></span>
+          <span id="user-name-menu">Nome Usuário</span>
+        </a>
+      </div>
+
+      <hr class="line-menu">
+
+      <ul class="ul-menu">
+        <li class="item-menu dropdown {% if '/lista-' in request.path or '/aulas-' in request.path %}ativo{% endif %} ">
+          <a class="nav-link nav-drop">
+            <span class="icon-item-menu"><i class="bi bi-bar-chart"></i></span>
+            <span class="text-item-menu">Tabelas</span>
+            <span class="drop-icon-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9"
+                viewBox="0 0 17 9" fill="none">
+                <path
+                  d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z"
+                  fill="white" />
+              </svg></span>
+          </a>
+
+          <ul class="drop-ul">
+            <li class="item-drop"><a href="{% url 'listarTurmas' %}" class="drop-link">Turmas</a></li>
+            <li class="item-drop"><a href="{% url 'listarProfessores' %}" class="drop-link">Professores</a></li>
+          </ul>
+
+        </li>
+        <li class="item-menu dropdown {% if '/form-' in request.path or '/editar' in request.path %}ativo{% endif %}">
+          <a class="nav-link nav-drop">
+            <span class="icon-item-menu"><i class="bi bi-pen"></i></span>
+            <span class="text-item-menu">Adicionar/Editar</span>
+            <span class="drop-icon-menu"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9"
+                viewBox="0 0 17 9" fill="none">
+                <path
+                  d="M15.6864 0H8.12172H1.30987C0.144216 0 -0.438613 1.36604 0.387061 2.16684L6.67679 8.26693C7.6846 9.24436 9.3238 9.24436 10.3316 8.26693L12.7236 5.94701L16.6213 2.16684C17.4348 1.36604 16.852 0 15.6864 0Z"
+                  fill="white" />
+              </svg></span>
+          </a>
+
+          <ul class="drop-ul">
+            <li class="item-drop"><a href="{% url 'FormTeacher' %}" class="drop-link">Professores</a></li>
+            <li class="item-drop"><a href="{% url 'FormSubject' %}" class="drop-link">Disciplinas</a></li>
+            <li class="item-drop"><a href="{% url 'FormCourse' %}" class="drop-link">Cursos</a></li>
+            <li class="item-drop"><a href="{% url 'FormClass' %}" class="drop-link">Turmas</a></li>
+          </ul>
+
+        </li>
+        <li class="item-menu {% if '/Professores-Ausentes' in request.path%}ativo{% endif %}">
+          <a href="{% url 'AbsentsTeachers' %}" class="nav-link">
+            <span class="icon-item-menu"><i class="bi bi-journal-bookmark-fill"></i></span>
+            <span class="text-item-menu">Professores Ausentes</span>
+          </a>
+        </li>
+      </ul>
+
+
+      <div id="end-menu">
+        <a href="{% url 'login' %}" class="nav-link">
+          <span class="icon-item-menu"><i class="bi bi-door-open"></i></span>
+          <span class="text-item-menu">Sair</span>
+        </a>
+      </div>
+
+    </nav>
+  </aside>
+
+  <div class="main-body">
+
+    {% block main %}
+
+    {% endblock %}
+
+  </div>
+  </div>
+  </section>
+
+
+
+  <!-- <div class="conteiner-wave">
+    <div class="wave">
+      <img src="{% static 'images/wave.jpg' %}" alt="">
+      <img src="{% static 'images/wave.jpg' %}" alt="">
+    </div>
+  </div> -->
+
+</body>
+
+<script src="{% static 'js/form.js' %}"></script>
+<script src="{% static 'js/sidebar.js' %}"></script>
+
+</html>

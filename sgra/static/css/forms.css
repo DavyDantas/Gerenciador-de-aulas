@@ -1,0 +1,420 @@
+:root{
+    --color1: #3FC2EA;
+    --color2: #0F5A72;
+    --color3: #3c8ba3;
+    --color4: #D9D9D9;
+    --color5: #3ca345;
+    --color6: #aa3432;
+  }
+
+.errorlist{
+    list-style-type: none;
+    text-decoration: none;
+    font-weight: 500;
+    color: var(--color6);
+}
+
+.label-input{
+    background-color: var(--color3);
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.group-bottons{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.cancel-option{
+    margin-top: 15px;
+    width: fit-content;
+    background-color: #797979;
+    padding: 8px;
+    border-radius: 5px;
+    margin-right: 10px;
+    height: fit-content;
+}
+
+.delete-group > div{
+    margin-bottom: 5px;
+    width: auto;
+    
+}
+
+.delete-group{
+    max-width: 180px;
+    margin-right: 10px;
+}
+
+.delete-button{
+    margin-top: 15px;
+    width: fit-content;
+    background-color: #aa3432;
+    padding: 8px;
+    border-radius: 5px;
+    height: fit-content;
+    text-align: center;
+}
+
+.confirm-delete{
+    background-color: var(--color4);
+    border-radius: 5px;
+    font-weight: 500;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    padding: 0;
+    transition: max-height 0.2s ease-out;
+    transition: padding 0.2s ease-out;
+}
+
+.confirm-delete.expand{
+    max-height: 48px;
+    padding: 10px;
+}
+
+.confirm-delete a{
+    text-decoration: none;
+    font-size: 12pt;
+    padding: 5px 6px;
+    width: max-content;
+    height: max-content;
+    background-color: var(--color6);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.cancel-option a, .delete-button a{
+    font-size: 14pt;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+}
+
+.div-form{
+    background-color: rgba(0, 0, 0, 0.199);
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex: 1;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.div-form.edit{
+    background-color: #3fc2ea31;
+}
+
+.div-form > form{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items:baseline;
+}
+
+.form-group{
+    margin: 0 30px 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    
+}
+
+.form-group > label{
+    margin-right: 5px;
+    font-size: 14pt;
+    font-weight: 400;
+    color: white;
+}
+
+.form-element{
+    caret-color: var(--color1);
+    outline: none;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: none;
+    font-size: 12pt;
+    font-weight: 500;
+    color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.219) ;
+}
+
+.form-element:disabled{
+    background-color: rgba(255, 255, 255, 0.219);
+}
+
+.submit-btn > button{
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+    outline: none;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-right: 10px;
+    background-color: var(--color5);
+    color: white;
+    font-size: 14pt;
+    font-weight: 600;
+}
+
+.form-element-select {
+    min-width: 150px;
+    max-width: 200px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.219);
+    color: white;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+/* Estilos para as opções do select */
+.form-element-select option {
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.sub-form{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 30px;
+    width: fit-content;
+}
+
+.sub-form > .div-form, .sub-form form > .div-form{
+    margin-top: 20px;
+}
+
+.dayClass> .form-group > .form-element-select{
+    max-width: 200px;
+}
+
+.dayClass > .form-group > label{
+    font-size: 12pt;
+    font-weight: 400;
+    width: 47px;
+    padding-right: 0;
+    color: white;
+}
+
+.dayClass{
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+    margin: 0 10px 10px 10px;
+    padding: 10px;
+    background-color: #00000033;
+    border-radius: 5px;
+}
+
+.dayClass > h4{
+    margin-bottom: 5px;
+    font-size: 14pt;
+    font-weight: 600;
+    color: var(--color4);
+}
+
+.sub-form > form h3{
+    margin-top: 20px;
+}
+
+.dayClass > .form-group{
+    margin-right: 0;
+    margin-bottom: 10px;
+}
+
+.div-form.formClass {
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    flex-direction: column;
+    transition: 0.3s;
+}
+
+.group-day-subjects {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    transition: 0.3s;
+    overflow: auto;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.div-form.formClass path {
+    transition: 0.3s;
+}
+
+.div-form.formClass.minimize > .group-day-subjects {
+    max-height: 650px;
+}
+
+.div-form.formClass.minimize path {
+    transform-origin: center;
+    transform: rotate(180deg);
+    transition: 0.3s; 
+}
+
+.timeTable-subjects {
+    border-radius: 10px;
+    background-color: var(--color3);
+    width: auto;
+    height: fit-content;
+    margin: 0 10px 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14pt;
+    font-weight: 500;
+    color: white;
+    padding: 7px 5px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.timeTableExp {
+    text-decoration: none;
+    display: flex;
+    flex-wrap: nowrap;
+    color: white;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.timeTableExp > span {
+    margin: 0 10px;
+}
+
+.drop-icon-menu.class{
+    margin: 0 5px 0 5px;
+    display: flex;
+    height: min-content;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-absent{
+    max-width: 500px;
+    height: fit-content;
+    display: flex;
+}
+
+.form-absent{
+    max-width: 500px;
+    height: fit-content;
+    display: flex;
+}
+.form-absent .div-form form .form-group > select{
+    max-width: 200px;
+}
+.form-absent .div-form form .form-group > *{
+    font-size: 12pt;
+}
+
+.form-absent .div-form form, .form-absent .div-form{
+    flex-direction: column;
+}
+.checkbox-group{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.checkbox, .form-group.checkbox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    width: fit-content;
+}
+
+.form-group.checkbox{
+    align-items: self-start;
+    margin-bottom: 20px;
+}
+
+.checkbox{
+    font-size: 10pt;
+    margin: 0 4px 0 4px;
+}
+
+.checkbox input[type="checkbox"]{
+    border-radius: 5px;
+    border: 2px solid white ;
+}
+
+.name-box{
+    color: var(--color3);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.all-checkbox{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-group.absent input{
+    width: 30px;
+}
+
+.div-absent{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color4);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 12pt;
+}
+
+.div-absent > .form-group{
+    margin-bottom: 10px;
+}
+
+.form-group > .absent{
+    color: black;
+}
+.form-element-select.absent{
+    color: black;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.element-absent{
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12pt;
+    font-weight: 500;
+    color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.219) ;
+}
+
+.element-absent-value{
+    color: rgb(0, 0, 0);
+    margin-right: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+}

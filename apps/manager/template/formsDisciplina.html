@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock css %}
+
+
+{% block main %}
+
+<h1 class="title-main">Adicionar/Editar | Disciplinas</h1>
+
+<form action="{% url 'FormSubject' %}" method="post">
+    {% csrf_token %}
+    <div class="div-form">
+
+    <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Nome:</label>
+        {{ form.name }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.acronym.id_for_label }}">Abreviação:</label>
+        {{ form.acronym }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.teacher.id_for_label }}">Professor:</label>
+        {{ form.teacher}}
+    </div>
+    
+    </div>
+
+    <div class="submit-btn">
+        <button type="submit" class="">Salvar</button>
+        </div>
+    
+</form>
+
+
+
+
+<div class="lista-teachers">
+
+    {% for subject in subjects %}
+
+        <div class="div-class">
+            <a href="{% url 'SubjectEdit' subject.pk %}" class="class-acronym">
+                <span >{{subject}}</span>
+            </a>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

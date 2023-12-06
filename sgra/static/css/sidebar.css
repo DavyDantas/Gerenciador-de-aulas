@@ -1,0 +1,252 @@
+/* These styles are generated from project.scss. */
+:root{
+  --color1: #3FC2EA;
+  --color2: #287086;
+    --color3: #3c8ba3;
+  --color4: #D9D9D9;
+}
+
+
+
+aside{
+  z-index: 1;
+  clear: right;
+  width: 260px;
+  height: 700px;
+  position: fixed;
+  display: block;
+  border-radius: 0px 0px 20px 0px;
+  /* background: #2f353a; */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.178);
+  border-right: 1px solid rgba(255, 255, 255, 0.178);
+  top: 0;
+  left: 0;
+  box-shadow: 7px 0px 10px 1px rgba(5, 5, 5, 0.40);
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.item-menu.dropdown.down .drop-ul{
+  max-height: 200px;
+  margin: 15px 0 15px 40px;
+ 
+}
+
+aside.reduce .icon-item-menu{
+  font-size: 30px;
+}
+
+aside.reduce .drop-ul, aside.reduce .text-item-menu, aside.reduce .drop-icon-menu, aside.reduce #user-name-menu, aside.reduce .logo{
+  display: none;
+}
+
+aside.reduce {
+  width: 74px;
+}
+
+aside.reduce *{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#head-menu{
+  margin: 10px 15px 20px 15px;
+  display: flex;
+}
+
+.logo{
+  display: flex;
+  align-items: first baseline;
+}
+
+.logo > a{
+  text-decoration: none;
+  height: auto;
+  color: var(--color1);
+  font-size: 20pt; 
+  font-weight: bold; 
+}
+
+.sidebar{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-user{
+  align-items: center;
+  margin: 0 0 0 15px;
+}
+
+#nav-user-link{
+  width: fit-content;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+#nav-user-link:hover span{
+  color: var(--color1);
+}
+
+.ul-menu>li.ativo .nav-link, .ul-menu>li.ativo .nav-link path, .ul-menu>li.ativo .nav-link .icon-item-menu, .drop-ul>li.ativo .drop-link{
+  color: var(--color1);
+  fill: var(--color1);
+}
+
+.user-image-menu{
+  width: auto;
+  height: auto;
+}
+
+.user-image{
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin-right: 10px;
+  border: 2px solid var(--color2);
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.356);
+}
+
+#user-name-menu{
+  font-size: 12pt;
+  font-weight: 400;
+  color: rgb(163, 163, 163);
+}
+
+.line-menu{
+  margin: 15px auto 20px auto;
+  width: 90%;
+  color: #191F21;
+  filter: opacity(30%);
+}
+
+.item-menu{
+  width: fit-content;
+  list-style: none;
+  margin: 0 0 20px 15px;
+  transition: 0.3s;
+}
+
+.drop-ul{
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+  margin-left: 40px;
+  margin-top: 0;
+}
+
+.item-drop>a{
+  text-decoration: none;
+  color: white;
+  font-size: 13pt;
+  font-weight: 400;
+  pointer-events: all;
+}
+
+.item-drop{
+  pointer-events: none;
+  width: fit-content;
+  list-style: none;
+  cursor: auto;
+  margin: 0 0 20px 15px;
+}
+
+.item-menu.dropdown.down path{
+  transform-origin: center;
+  transform: rotate(180deg);
+  
+}
+
+.nav-link:hover span, .nav-link:hover path {
+  color: var(--color1);
+  fill: var(--color1);
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #ffffff21;
+}
+
+
+.item-menu span path{
+  transition: 0.3s;
+}
+
+.nav-link{
+  width: fit-content;
+  cursor: pointer;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14pt;
+  font-style: normal;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link > span{
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.drop-icon-menu{
+  margin-left: 10px;
+}
+
+.sidebar>ul{
+  margin: 0;
+  padding: 0;
+
+}
+
+.btn-expandir{
+  margin-right: auto;
+  display: flex;
+  align-items: end;
+}
+
+.btn-expandir > i{
+  margin: 0;
+  color: var(--color1);
+}
+
+.bi-list{
+  cursor: pointer;
+  font-size: 30px;
+  color: white;
+}
+
+.icon-item-menu{
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  margin: 0 10px 0 0;
+  color: rgb(126, 126, 126);
+}
+
+#end-menu{
+  margin: auto 15px 30px 15px;
+}
+
+#end-menu a > span{
+  font-weight: 600;
+  color: #aa3432;
+}
+
+.alert-debug {
+  color: black;
+  background-color: white;
+  border-color: #d6e9c6;
+}
+
+.alert-error {
+  color: #b94a48;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}
