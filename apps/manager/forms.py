@@ -45,10 +45,6 @@ class formsDayClasses(forms.ModelForm):
             
         }
 
-    def __init__(self, *args, **kwargs):
-        super(formsDayClasses, self).__init__(*args, **kwargs)
-        self.fields['first'].queryset = Subject.objects.filter(dayClasses_set__timeTable=self.instance.timeTable, dayClasses_set__dayWeek = self.instance.dayWeek, dayClasses_set__fields__first =teacher)
-    
     def verify_all_none(self):
         self.is_valid()
         if all(value == None for value in self.cleaned_data.values()):

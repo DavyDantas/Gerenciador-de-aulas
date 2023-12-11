@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Class, dayClasses, Teacher, Subject, categoryCourse
+from .models import Class, Teacher, Subject, categoryCourse
+from .models import dayClasses as dayC
 from .forms import *
 from django.contrib import messages
 
@@ -76,25 +77,25 @@ def courseForm(request):
         }
     return render(request, "formsCurso.html", context)
 
-dayCla = dayClasses
 def classForm(request):
-
+    
     save_all = True
-    classes = Class.objects.all()
 
     days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
             'Quinta-feira','Sexta-feira']
 
     if request.method == "GET":
-    
+        
         formClass = formsClass()
         dayClasses_list_morning = [formsDayClasses(prefix=str(i)) for i in range(0,5)]
         dayClasses_list_afternoon = [formsDayClasses(prefix=str(i)) for i in range(5,10)]
         dayClasses_list_night = [formsDayClasses(prefix=str(i)) for i in range(10, 15)]
+
         for i, dayClasse in enumerate(dayClasses_list_morning):
-            dayClasse.day = days[i]
-            dayClasses_list_afternoon[i].day = days[i]
-            dayClasses_list_night[i].day = days[i]
+            for field in ['first','second','third','fourth','fifth','sixth']:
+                dayClasse.fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field)))
+                dayClasses_list_afternoon[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field)))
+                dayClasses_list_night[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))) 
                 
 
 
@@ -157,10 +158,13 @@ def classForm(request):
             dayClasses_list_morning = [formsDayClasses(request.POST, prefix=str(i)) for i in range(0,5)]
             dayClasses_list_afternoon = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5,10)]
             dayClasses_list_night = [formsDayClasses(request.POST, prefix=str(i)) for i in range(10, 15)]
-            for i, dayClasses in enumerate(dayClasses_list_morning):
-                dayClasses.day = days[i]
-                dayClasses_list_afternoon[i].day = days[i]
-                dayClasses_list_night[i].day = days[i]
+            
+            for i, dayClasse in enumerate(dayClasses_list_morning):
+                for field in ['first','second','third','fourth','fifth','sixth']:
+                    dayClasse.fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field)))
+                    dayClasses_list_afternoon[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field)))
+                    dayClasses_list_night[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))) 
+
 
 
     context = {
@@ -168,7 +172,7 @@ def classForm(request):
         'class_morning': dayClasses_list_morning,
         'class_afternoon': dayClasses_list_afternoon,
         'class_night': dayClasses_list_night,
-        'classes':  classes,
+        'classes':  Class.objects.all(),
         'days':days,
     }
 
