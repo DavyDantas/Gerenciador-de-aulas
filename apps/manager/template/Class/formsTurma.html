@@ -11,8 +11,6 @@
 
 <h1 class="title-main">Adicionar/Editar | Turmas</h1>
 
-
-
 <div class="sub-form">
     <form action="{% url 'FormClass' %}" method="post">
         {% csrf_token %}
@@ -211,7 +209,7 @@
     <div class="box-classes">
         {% for class in classes %}
         <div class="div-class">
-            <a href="#" class="class-acronym">
+            <a href="{% url 'ClassEdit'  class.pk %}" class="class-acronym">
                 <span>{{class.acronym}}</span>
             </a>
         </div>

@@ -11,14 +11,14 @@ def Login(request):
 
 def listarProfessores(request):
     teachers = Teacher.objects.all()
-    return render(request,'listaProfessores.html', {'teachers':teachers})
+    return render(request,'Teacher/listaProfessores.html', {'teachers':teachers})
 
 def listarTurmas(request):
     
     courses = categoryCourse.objects.all()
     context = {'courses':courses}
 
-    return render(request, "listaTurmas.html", context)
+    return render(request, "Class/listaTurmas.html", context)
 
 def teacherForm(request):
     teachers = Teacher.objects.all()
@@ -37,7 +37,7 @@ def teacherForm(request):
         'form': form,
         'teachers': teachers,
         }
-    return render(request, "formsProfessor.html", context)
+    return render(request, "Teacher/formsProfessor.html", context)
 
 def subjectForm(request):
 
@@ -56,7 +56,7 @@ def subjectForm(request):
         'form': form,
         'subjects': subjects,
         }
-    return render(request, "formsDisciplina.html", context)
+    return render(request, "Subject/formsDisciplina.html", context)
 
 def courseForm(request):
 
@@ -69,13 +69,13 @@ def courseForm(request):
         form = formsCourse(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('FormCourse')
+            return redirect('Course/FormCourse')
 
     context={
         'form': form,
         'courses': courses,
         }
-    return render(request, "formsCurso.html", context)
+    return render(request, "Course/formsCurso.html", context)
 
 def classForm(request):
     
@@ -97,8 +97,6 @@ def classForm(request):
                 dayClasses_list_afternoon[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field)))
                 dayClasses_list_night[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))) 
                 
-
-
     else:
         
         formClass = formsClass(request.POST)
@@ -173,7 +171,7 @@ def classForm(request):
         'error_dayClasses_none':error_dayClasses_none,
     }
 
-    return render(request, 'formsTurma.html', context)
+    return render(request, 'Class/formsTurma.html', context)
 
 def subjectsClass(request, pk):
     
@@ -191,7 +189,7 @@ def subjectsClass(request, pk):
         
     }
 
-    return render (request, "aulasTurma.html", context)
+    return render (request, "Class/aulasTurma.html", context)
 
 def subjectsTeacher(request, pk):
 
@@ -201,11 +199,11 @@ def subjectsTeacher(request, pk):
     teacher = Teacher.objects.get(pk=pk)
     
     
-    return render (request, "aulasProfessor.html", {"teacher":teacher, "dayss": dayss})
+    return render (request, "Teacher/aulasProfessor.html", {"teacher":teacher, "dayss": dayss})
 
 def absentsTeachers(request):
     
-    return render (request, "professoresAusentes.html")
+    return render (request, "Teacher/professoresAusentes.html")
 
 def teacherEdit(request, pk):
 
@@ -221,7 +219,7 @@ def teacherEdit(request, pk):
     else:
         form = formsTeacher(instance=teacher, initial=teacher.clean())
 
-    return render(request, "editProfessor.html", {"form":form, "teacher":teacher})
+    return render(request, "Teacher/editProfessor.html", {"form":form, "teacher":teacher})
 
 def teacherDelete(request, pk):
     
@@ -246,7 +244,7 @@ def courseEdit(request, pk):
     else:
         form = formsCourse(instance=course, initial=course.clean())
 
-    return render(request, "editCursos.html", {"form":form, "course":course})
+    return render(request, "Course/editCursos.html", {"form":form, "course":course})
 
 def courseDelete(request, pk):
 
@@ -270,7 +268,7 @@ def subjectEdit(request, pk):
     else:
         form = formsSubject(instance=subject, initial=subject.clean())
 
-    return render(request, "editDisciplina.html", {"form":form, "subject":subject})
+    return render(request, "Subject/editDisciplina.html", {"form":form, "subject":subject})
 
 def subjectDelete(request, pk):
 
@@ -279,3 +277,100 @@ def subjectDelete(request, pk):
         subject.delete()
 
     return redirect("FormSubject")
+
+def classEdit(request, pk):
+    
+    clas = get_object_or_404(Class,pk=pk)
+    dayClass_morning = dayClasses.objects.filter(classObj = clas, timeTable = "Matutino")
+    dayClass_afternoon = dayClasses.objects.filter(classObj = clas, timeTable = "Vespertino")
+    dayClass_night = dayClasses.objects.filter(classObj = clas, timeTable = "Noturno")
+    days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+            'Quinta-feira','Sexta-feira']
+    error_dayClasses_none = None
+    save_all=True
+
+    if request.method == "POST":
+        form = formsClass(request.POST, instance=clas,initial=clas.clean())
+        dayClass_morning_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_morning]
+        dayClass_afternoon_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_afternoon]
+        dayClass_night_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_night]
+
+        for i, dayClasse in enumerate(dayClass_morning_form):
+            for field in ['first','second','third','fourth','fifth','sixth']:
+                dayClasse.fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field)))
+                dayClass_afternoon_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field)))
+                dayClass_night_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))) 
+
+
+        if form.is_valid():
+
+            if not all(form.verify_all_none() for form in dayClass_morning) or  not all(form.verify_all_none() for form in dayClass_afternoon) or not all(form.verify_all_none() for form in dayClass_night):
+
+                if not all(form.verify_all_none() for form in dayClass_morning_form):
+                    print('testes manhã')
+                    if not all(form.is_valid() for form in dayClass_morning_form):
+
+                        save_all = False
+                        dayClass_morning_form = [formsDayClasses(request.POST, prefix=str(i)) for i in range(0,5)]
+
+                if not all(form.verify_all_none() for form in dayClass_afternoon_form):
+                    print('testes tarde')
+                    if not all(form.is_valid() for form in dayClass_afternoon_form):
+
+                        save_all = False
+                        dayClass_afternoon_form = [formsDayClasses(request.POST, prefix=str(i)) for i in range(5,10)]
+
+                if not all(form.verify_all_none() for form in dayClass_night_form):
+                    print('testes noite')
+                    if not all(form.is_valid() for form in dayClass_night_form):
+                    
+                        save_all = False
+                        dayClass_night_form = [formsDayClasses(request.POST, prefix=str(i)) for i in range(10,15)]
+
+                if save_all:
+                    form.save()
+                    if not all(form.verify_all_none() for form in dayClass_morning_form):[form.save() for form in dayClass_morning_form]
+                    if not all(form.verify_all_none() for form in dayClass_afternoon_form):[form.save() for form in dayClass_afternoon_form]
+                    if not all(form.verify_all_none() for form in dayClass_night_form):[form.save() for form in dayClass_night_form]
+                    return redirect('FormClass')
+            
+            else:
+                error_dayClasses_none = "Nenhum horario adicionado a turma"
+        
+    else:
+        form = formsClass(request.POST, instance=clas, initial=clas.clean())
+        dayClass_morning_form = [formsDayClasses(request.POST, instance=item, initial=item.clean()) for item in dayClass_morning]
+        dayClass_afternoon_form = [formsDayClasses(request.POST, instance=item, initial=item.clean()) for item in dayClass_afternoon]
+        dayClass_night_form = [formsDayClasses(request.POST, instance=item, initial=item.clean()) for item in dayClass_night]
+        
+        for i, dayClasse in enumerate(dayClass_morning_form):
+            for field in ['first','second','third','fourth','fifth','sixth']:
+                dayClasse.fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field)))
+                dayClass_afternoon_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field)))
+                dayClass_night_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))) 
+
+    context = {
+        'formClass': form,
+        'class_morning': dayClass_morning_form,
+        'class_afternoon': dayClass_afternoon_form,
+        'class_night': dayClass_night_form,    
+        'class': clas,
+        'error_dayClasses_none': error_dayClasses_none,
+        'days':days,
+    }
+
+    return render(request, "Class/formsTurma.html", context)
+
+def classDelete(request, pk):
+
+    if request.method == "GET":
+        clas = get_object_or_404(Class,pk=pk)
+        dayClass_morning = dayClasses.objects.filter(classObj = clas, timeTable = "Matutino")
+        dayClass_afternoon = dayClasses.objects.filter(classObj = clas, timeTable = "Vespertino")
+        dayClass_night = dayClasses.objects.filter(classObj = clas, timeTable = "Noturno")
+
+        clas.delete()
+        for index in range(5):
+            dayClass_morning[index].delete()
+            dayClass_afternoon[index].delete()
+            dayClass_night[index].delete()
