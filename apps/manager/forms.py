@@ -60,10 +60,9 @@ class formsDayClasses(forms.ModelForm):
             
             if data :    
                 teacher = data.teacher
-                print(teacher, days, timeTable) 
-                print(dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher} ))
+                exits = dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher})
                 if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher}).exists():
-                    print(days, timeTable, teacher, clas)
+                    print(dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher} ))
                     self.add_error(field, _("Professor está em aula neste horário"))
                     raise ValidationError(_("Este professor já está dando aula neste horário"))
      

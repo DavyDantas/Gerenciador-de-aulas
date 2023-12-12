@@ -2,7 +2,6 @@
 {% load static %}
 {% load tags_template %}
 
-
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock css %}
@@ -18,15 +17,6 @@
     <form action="{% url 'FormClass' %}" method="post">
         {% csrf_token %}
         <div class="div-form">
-            {{ class_morning.non_field_errors }}
-
-            {{ class_afternoon.non_field_errors }}
-
-            {% for form in class_afternoon %}
-            {{ form.non_field_errors }}
-            {{ form.first.errors }}
-            {% endfor %}
-
             <div class="form-group">
                 <label for="">Curso:</label>
                 {{ formClass.course }}
@@ -46,7 +36,7 @@
             </div>
         </div>
 
-        <h3>Aulas da Turma</h3>
+        <span> <h3>Aulas da Turma</h3> {% if error_dayClasses_none %} <span class="errorlist">{{ error_dayClasses_none }}</span> {% endif %}</span>
         <div class="div-form formClass Matutino">
             <div class="timeTable-subjects">
                 <a href="#" class="timeTableExp">
@@ -67,13 +57,6 @@
             </div>
             <div class="group-day-subjects">
                 {% for form in class_morning %}
-                {% if form.non_field_errors %}
-                <ul class="errorlist">
-                    {% for error in form.non_field_errors %}
-                    <li><span class="error-input">{{ error }}</span></li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
                 <div class="dayClass">
                     <h4>{{ days|get_item:forloop.counter0 }}</h4>
 
@@ -81,7 +64,6 @@
                         <label for="">07:00</label>
                         {{ form.first }}
                     </div>
-                    {{ form.first.errors }}
                     <div class="form-group">
                         <label for="">07:45</label>
                         {{ form.second }}

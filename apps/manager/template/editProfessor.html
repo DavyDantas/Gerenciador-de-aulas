@@ -22,6 +22,7 @@
     <div class="form-group">
         <label for="{{ form.matriculation.id_for_label }}">Matrícula:</label>
         {{ form.matriculation }}
+        <span class="error-input">{{ form.matriculation.errors }}</span>
     </div>
     <div class="form-group">
         <label for="{{ form.telefone.id_for_label }}">Número de Celular:</label>

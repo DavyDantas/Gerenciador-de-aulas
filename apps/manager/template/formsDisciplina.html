@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock css %}
 
-
 {% block main %}
 
 <h1 class="title-main">Adicionar/Editar | Disciplinas</h1>
@@ -21,6 +20,7 @@
     <div class="form-group">
         <label for="{{ form.acronym.id_for_label }}">Abreviação:</label>
         {{ form.acronym }}
+        <span class="error-input">{{ form.acronym.errors }}</span>
     </div>
     <div class="form-group">
         <label for="{{ form.teacher.id_for_label }}">Professor:</label>

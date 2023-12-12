@@ -6,7 +6,7 @@ from django.core.files.storage import default_storage
 class Teacher(models.Model):
 
     name = models.CharField(max_length=200)
-    matriculation = models.IntegerField(unique=True)
+    matriculation = models.IntegerField(unique=True, error_messages={'unique': "Matrícula já cadastrada"})
     imgProfileVariable = models.ImageField(default="user-profile-icon.jpg", upload_to="UsersProfile/")
     telefone = models.IntegerField()
     numberAbsents = models.IntegerField(null=True, blank=True, default=0)
@@ -25,7 +25,7 @@ class categoryCourse(models.Model):
 
     name = models.CharField(max_length=150, blank=False)
     periods = models.IntegerField()
-    coordinator = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True)
+    coordinator = models.OneToOneField(Teacher, on_delete=models.SET_NULL,null=True, unique=True, error_messages={'unique': "Este professor já é coordenador de um curso"})
 
     def __str__(self) :
         return self.name

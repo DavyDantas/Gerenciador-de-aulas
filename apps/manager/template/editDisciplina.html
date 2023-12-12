@@ -21,6 +21,7 @@
     <div class="form-group">
         <label for="{{ form.acronym.id_for_label }}">Abreviação:</label>
         {{ form.acronym }}
+        <span class="error-input">{{ form.acronym.errors }}</span>
     </div>
     <div class="form-group">
         <label for="{{ form.teacher.id_for_label }}">Professor:</label>
