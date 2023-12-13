@@ -53,16 +53,13 @@ class formsDayClasses(forms.ModelForm):
     def clean(self):
         timeTable = self.instance.timeTable
         days = self.instance.dayWeek 
-        clas = self.instance.classObj
-         
+
         for field in self.fields:    
             data = self.cleaned_data.get(field)
             
             if data :    
                 teacher = data.teacher
-                exits = dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher})
                 if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher}).exists():
-                    print(dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher} ))
                     self.add_error(field, _("Professor está em aula neste horário"))
                     raise ValidationError(_("Este professor já está dando aula neste horário"))
      
