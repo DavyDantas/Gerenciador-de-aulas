@@ -274,6 +274,7 @@ def classEdit(request, pk):
     clas = get_object_or_404(Class,pk=pk)
     dayClass_morning = dayClasses.objects.filter(classObj = clas, timeTable = "Matutino")
     dayClass_afternoon = dayClasses.objects.filter(classObj = clas, timeTable = "Vespertino")
+    print(dayClass_afternoon[0])
     dayClass_night = dayClasses.objects.filter(classObj = clas, timeTable = "Noturno")
     days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 
             'Quinta-feira','Sexta-feira']
@@ -282,7 +283,7 @@ def classEdit(request, pk):
     if request.method == "POST":
         formClass = formsClass(request.POST, instance=clas)
         dayClass_morning_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_morning]
-        dayClass_afternoon_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_afternoon]
+        dayClass_afternoon_form = [formsDayClasses(request.POST, instance=dayClass_afternoon[i-5] ,prefix=str(i)) for i in range(5,10)]
         dayClass_night_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_night]
 
         if formClass.is_valid():
@@ -318,10 +319,8 @@ def classEdit(request, pk):
     else: 
         dayClass_morning_form = [formsDayClasses() for i in range(0,5)]
     
-    if dayClass_afternoon:
-        print("tarde")
-        dayClass_afternoon_form = [formsDayClasses(instance=item) for item in dayClass_afternoon]
-        print(dayClass_afternoon_form[0].fields["first"])
+    if dayClass_afternoon: 
+        dayClass_afternoon_form = [formsDayClasses(request.POST,instance=dayClass_afternoon[i-5] ,prefix=str(i)) for i in range(5,10)]
     else:
         dayClass_afternoon_form = [formsDayClasses() for i in range(5,10)]
     
