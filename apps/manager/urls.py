@@ -6,6 +6,7 @@ urlpatterns = [
     path('lista-Turmas', listarTurmas, name="listarTurmas"),
     path('form-Turmas', classForm, name="FormClass"),
     path('editar-turma/<int:pk>', classEdit, name="ClassEdit"),
+    path('excluir-turma/<int:pk>', classDelete, name="ClassDelete"),
     path('aulas-Turma/<int:pk>', subjectsClass, name="SubjectsClass"),
     path('lista-Professores', listarProfessores, name="listarProfessores"),
     path('form-Professores', teacherForm, name="FormTeacher"),

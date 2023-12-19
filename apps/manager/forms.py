@@ -50,20 +50,20 @@ class formsDayClasses(forms.ModelForm):
         if all(value == None for value in self.cleaned_data.values()):
             return True
 
-    def clean(self):
-        timeTable = self.instance.timeTable
-        days = self.instance.dayWeek 
+    # def clean(self):
+    #     timeTable = self.instance.timeTable
+    #     days = self.instance.dayWeek 
 
-        for field in self.fields:    
-            data = self.cleaned_data.get(field)
+    #     for field in self.fields:    
+    #         data = self.cleaned_data.get(field)
             
-            if data :    
-                teacher = data.teacher
-                if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher}).exists():
-                    self.add_error(field, _("Professor está em aula neste horário"))
-                    raise ValidationError(_("Este professor já está dando aula neste horário"))
+    #         if data :    
+    #             teacher = data.teacher
+    #             if dayClasses.objects.filter(dayWeek=days, timeTable=timeTable, **{f'{field}__teacher':teacher}).exists():
+    #                 self.add_error(field, _("Professor está em aula neste horário"))
+    #                 raise ValidationError(_("Este professor já está dando aula neste horário"))
      
-        return self.cleaned_data
+    #     return self.cleaned_data
 
 class formsClass(forms.ModelForm):
     class Meta:

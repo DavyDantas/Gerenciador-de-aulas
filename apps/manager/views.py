@@ -272,6 +272,7 @@ def subjectDelete(request, pk):
 def classEdit(request, pk):
     
     clas = get_object_or_404(Class,pk=pk)
+    dayClasses_list = []
     dayClass_morning = dayClasses.objects.filter(classObj = clas, timeTable = "Matutino")
     dayClass_afternoon = dayClasses.objects.filter(classObj = clas, timeTable = "Vespertino")
     dayClass_night = dayClasses.objects.filter(classObj = clas, timeTable = "Noturno")
@@ -280,75 +281,62 @@ def classEdit(request, pk):
     error_dayClasses_none = None
 
     if request.method == "POST":
+
         formClass = formsClass(request.POST, instance=clas)
         dayClass_morning_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_morning]
+        if dayClass_morning: dayClasses_list.append(dayClass_morning_form)
+
         dayClass_afternoon_form = [formsDayClasses(request.POST, instance= item) for item in dayClass_afternoon]
+        if dayClass_afternoon: dayClasses_list.append(dayClass_afternoon_form)
+        print("tarde form",dayClass_afternoon_form)
         dayClass_night_form = [formsDayClasses(request.POST, instance=item) for item in dayClass_night]
+        if dayClass_night: dayClasses_list.append(dayClass_night_form)
 
         if formClass.is_valid():
             print("passou1")
-            if not all(form.verify_all_none() for form in dayClass_morning_form) or not all(form.verify_all_none() for form in dayClass_afternoon_form) or not all(form.verify_all_none() for form in dayClass_night_form):
-                print("passou2")
-                if not all(form.verify_all_none() for form in dayClass_morning_form):
-                    for form in dayClass_morning_form:
-                        if form.is_valid():
-                            form.save()
-
-                if not all(form.verify_all_none() for form in dayClass_afternoon_form):
-                    for form in dayClass_afternoon_form:
-                        if form.is_valid():
-                            form.save()
-
-                if not all(form.verify_all_none() for form in dayClass_night_form):
-                    for form in dayClass_night_form:
-                        if form.is_valid():
-                            form.save()          
-                        
-                formClass.save()
-                return redirect('FormClass')
+            if dayClasses_list:
+                for item_dayClass in dayClasses_list:
+                    if all(form.is_valid() for form in item_dayClass):
+                        print("passou2")
+                        formClass.save()
+                        (form.save() for form in item_dayClass) 
+                        return redirect('FormClass')
+                    
+                    else:
+                        error_dayClasses_none="Horários Inválidos"
             
             else:
                 error_dayClasses_none = "Nenhum horario adicionado a turma"
+        
+    formClass = formsClass(instance=clas)
+    if dayClass_morning:
+        print("manhã")
+        dayClass_morning_form = [formsDayClasses(instance=item) for item in dayClass_morning]
+    else: 
+        dayClass_morning_form = [formsDayClasses() for i in range(0,5)]
+    if dayClass_afternoon:
+        dayClass_afternoon_form = [formsDayClasses(instance=item) for item in dayClass_afternoon]
     else:
-        formClass = formsClass(instance=clas)
-
-        if dayClass_morning:
-            print("manhã")
-            dayClass_morning_form = [formsDayClasses(instance=item) for item in dayClass_morning]
-        else: 
-            dayClass_morning_form = [formsDayClasses() for i in range(0,5)]
-
-        if dayClass_afternoon:
-            print("tarde")
-            dayClass_afternoon_form = []
-            for i in range(5):
-                dayClass_afternoon_form.append(formsDayClasses(instance=dayClass_afternoon[i]))
-            print(dayClass_afternoon[0].classObj)
-        else:
-            dayClass_afternoon_form = [formsDayClasses() for i in range(5,10)]
-
-        if dayClass_night:
-            dayClass_night_form = [formsDayClasses(instance=item) for item in dayClass_night]
-        else:
-            dayClass_night_form = [formsDayClasses() for i in range(10, 15)]
-
-        for i in range(len(dayClass_morning_form)):
-            for field in ['first','second','third','fourth','fifth','sixth']:
-                
-                if dayClass_morning and getattr(dayClass_morning[i], field):
-                    dayClass_morning_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field))).union(Subject.objects.filter(teacher = getattr(dayClass_morning[i], field).teacher))
-                else:
-                    dayClass_morning_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field)))
-
-                if dayClass_afternoon and getattr(dayClass_afternoon[i], field):
-                    dayClass_afternoon_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field))).union(Subject.objects.filter(teacher = getattr(dayClass_afternoon[i], field).teacher))
-                else:
-                    dayClass_afternoon_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field)))
-
-                if dayClass_night and getattr(dayClass_night[i], field):
-                    dayClass_night_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))).union(Subject.objects.filter(teacher = getattr(dayClass_night[i], field).teacher))
-                else:
-                    dayClass_night_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))) 
+        dayClass_afternoon_form = [formsDayClasses() for i in range(5,10)]
+    if dayClass_night:
+        dayClass_night_form = [formsDayClasses(instance=item) for item in dayClass_night]
+    else:
+        dayClass_night_form = [formsDayClasses() for i in range(10, 15)]
+    for i in range(len(dayClass_morning_form)):
+        for field in ['first','second','third','fourth','fifth','sixth']:
+            
+            if dayClass_morning and getattr(dayClass_morning[i], field):
+                dayClass_morning_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field))).union(Subject.objects.filter(teacher = getattr(dayClass_morning[i], field).teacher))
+            else:
+                dayClass_morning_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Matutino').values(field)))
+            if dayClass_afternoon and getattr(dayClass_afternoon[i], field):
+                dayClass_afternoon_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field))).union(Subject.objects.filter(teacher = getattr(dayClass_afternoon[i], field).teacher))
+            else:
+                dayClass_afternoon_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Vespertino').values(field)))
+            if dayClass_night and getattr(dayClass_night[i], field):
+                dayClass_night_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))).union(Subject.objects.filter(teacher = getattr(dayClass_night[i], field).teacher))
+            else:
+                dayClass_night_form[i].fields[field].queryset = Subject.objects.exclude(teacher__in = Teacher.objects.filter(subject__in = dayC.objects.filter(dayWeek = days[i], timeTable = 'Noturno').values(field))) 
 
     context = {
         'formClass': formClass,
@@ -372,6 +360,11 @@ def classDelete(request, pk):
 
         clas.delete()
         for index in range(5):
-            dayClass_morning[index].delete()
-            dayClass_afternoon[index].delete()
-            dayClass_night[index].delete()
+            if dayClass_morning:
+                dayClass_morning[index].delete()
+            if dayClass_afternoon:
+                dayClass_afternoon[index].delete()
+            if dayClass_night:
+                dayClass_night[index].delete()
+        
+        redirect("FormClass")
