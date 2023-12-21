@@ -21,79 +21,208 @@
             <span>{{teacher}}</span>
         </div>
 
-        <div class="box-subjects-class">
-
-            <div class="timeHour afternoon">
-                <span class="vacu" style="height: 25px;" ></span>
-                <span>
-                    13:00
-                </span>
-                <span>
-                    13:45
-                </span>
-                <span>
-                    14:50
-                </span>
-                <span>
-                    15:35
-                </span>
-                <span>
-                    16:30
-                </span>
-                <span>
-                    17:15
-                </span>
-            </div>
-
-
-            {% for days in dayss %}
-
-                <div class="days-subjects">
-                    
-                    <span class="day-name" style="flex: none;">{{days}}</span>
-
-                    <div class="box-subject teacher">
-
-                        <span class="subject-teacher-name" >Desenvolvimento Web</span>
-                        <span class="class-teacher">ADS6V</span>
+                <div class="group-all-horary">
+    
+                    <div class="days-week">
+                        <span class="vacu"></span>
+                        <span class="day-name">Segunda-Feira</span>
+                        <span class="day-name">Terça-Feira</span>
+                        <span class="day-name">Quarta-Feira</span>
+                        <span class="day-name">Quinta-Feira</span>
+                        <span class="day-name">Sexta-Feira</span>
                     </div>
-                    <div class="box-subject teacher">
-                        
-
-                        <span class="subject-teacher-name">Desenvolvimento Web</span>
-                        <span class="class-teacher">ADS6V</span>
+    
+                    {% if class_morning %}
+    
+                    <div class="box-subjects-class">
+    
+                        <div class="timeHour morning">
+    
+                            <span>
+                                07:00
+                            </span>
+                            <span>
+                                07:45
+                            </span>
+                            <span>
+                                08:50
+                            </span>
+                            <span>
+                                09:35
+                            </span>
+                            <span>
+                                10:30
+                            </span>
+                            <span>
+                                11:15
+                            </span>
+                        </div>
+    
+                        {% for days in class_morning %}
+    
+                        <div class="days-subjects">
+    
+    
+                            <div class="box-subject">
+                                {% if days.first %}
+                                <span>{{days.first.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.second %}
+                                <span>{{days.second.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.third %}
+                                <span>{{days.third.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.fourth %}
+                                <span>{{days.fourth.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.fifth %}
+                                <span>{{days.fifth.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.sixth %}
+                                <span>{{days.sixth.name}}</span>
+                                {% endif %}
+                            </div>
+    
+                        </div>
+    
+                        {% endfor %}
                     </div>
-                    <div class="box-subject teacher">
-                        
-
-                        <span>{{days.third.acronym}}</span>
-                        
+                    {% endif %}
+    
+                    {% if class_afternoon %}
+    
+                    <div class="box-subjects-class">
+    
+                        <div class="timeHour afternoon">
+    
+                            <span>
+                                13:00
+                            </span>
+                            <span>
+                                13:45
+                            </span>
+                            <span>
+                                14:50
+                            </span>
+                            <span>
+                                15:35
+                            </span>
+                            <span>
+                                16:30
+                            </span>
+                            <span>
+                                17:15
+                            </span>
+                        </div>
+    
+                        {% for days in class_afternoon %}
+    
+                        <div class="days-subjects">
+    
+    
+                            <div class="box-subject">
+                                {% if days.first %}
+                                <span>{{days.first.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.second %}
+                                <span>{{days.second.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.third %}
+                                <span>{{days.third.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.fourth %}
+                                <span>{{days.fourth.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.fifth %}
+                                <span>{{days.fifth.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.sixth %}
+                                <span>{{days.sixth.name}}</span>
+                                {% endif %}
+                            </div>
+    
+                        </div>
+    
+                        {% endfor %}
                     </div>
-                    <div class="box-subject teacher">
-                        
-
-                        <span>{{days.fourth.acronym}}</span>
-                        
+                    {% endif %}
+    
+                    {% if class_night %}
+    
+                    <div class="box-subjects-class">
+    
+                        <div class="timeHour night">
+    
+                            <span>
+                                19:00
+                            </span>
+                            <span>
+                                19:45
+                            </span>
+                            <span>
+                                20:40
+                            </span>
+                            <span>
+                                21:25
+                            </span>
+    
+                        </div>
+    
+                        {% for days in class_night %}
+    
+                        <div class="days-subjects">
+    
+    
+                            <div class="box-subject">
+                                {% if days.first %}
+                                <span>{{days.first.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.second %}
+                                <span>{{days.second.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.third %}
+                                <span>{{days.third.name}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="box-subject">
+                                {% if days.fourth %}
+                                <span>{{days.fourth.name}}</span>
+                                {% endif %}
+                            </div>
+    
+                        </div>
+    
+                        {% endfor %}
                     </div>
-                    <div class="box-subject teacher">
-                        
-
-                        <span class="subject-teacher-name">Informática</span>
-                        <span class="class-teacher">ADS4V</span>
-                        
-                    </div>
-                    <div class="box-subject teacher">
-                        
-
-                        <span class="subject-teacher-name">Informática</span>
-                        <span class="class-teacher">ADS4V</span>
-                    </div>
+                    {% endif %}
     
                 </div>
 
-            {% endfor %}
-        </div>
-        
     </div>
 
 </div>

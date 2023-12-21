@@ -50,6 +50,7 @@ class formsDayClasses(forms.ModelForm):
         if all(value == None for value in self.cleaned_data.values()):
             return True
 
+
     # def clean(self):
     #     timeTable = self.instance.timeTable
     #     days = self.instance.dayWeek 
