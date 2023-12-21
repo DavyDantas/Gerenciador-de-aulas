@@ -190,39 +190,45 @@ def subjectsTeacher(request, pk):
 
     teacher = Teacher.objects.get(pk=pk)
     dayClass_morning_list = []
+    dayClass_afternoon_list = []
+    dayClass_night_list = []
 
     for day in days:
         dayClass_morning = dayClasses()
+        dayClass_afternoon = dayClasses()
+        dayClass_night = dayClasses()
+
         for field in fields:
 
             query = dayClasses.objects.filter(**{f"{field}__teacher": teacher}, timeTable = "Matutino", dayWeek = day)
-            subject_instance = get_object_or_404(Subject, pk=query.values("first").first().get("first"))
+            if query: 
+                subject_instance = get_object_or_404(Subject, pk=getattr(query[0], field).pk)
+            else:
+                subject_instance = None
             setattr(dayClass_morning, field, subject_instance)
 
+            query = dayClasses.objects.filter(**{f"{field}__teacher": teacher}, timeTable = "Vespertino", dayWeek = day)
+            if query: 
+                subject_instance = get_object_or_404(Subject, pk=getattr(query[0], field).pk)
+            else:
+                subject_instance = None
+            setattr(dayClass_afternoon, field, subject_instance)
+
+            query = dayClasses.objects.filter(**{f"{field}__teacher": teacher}, timeTable = "Noturno", dayWeek = day)
+            if query: 
+                subject_instance = get_object_or_404(Subject, pk=getattr(query[0], field).pk)
+            else:
+                subject_instance = None
+            setattr(dayClass_night, field, subject_instance)
+
         dayClass_morning_list.append(dayClass_morning)
+        dayClass_afternoon_list.append(dayClass_afternoon)
+        dayClass_night_list.append(dayClass_night)
     
-    dayClass_afternoon = dayClasses.objects.filter(Q(first__teacher=teacher) |
-    Q(second__teacher=teacher) |
-    Q(third__teacher=teacher) |
-    Q(fourth__teacher=teacher) |
-    Q(fifth__teacher=teacher) |
-    Q(sixth__teacher=teacher), timeTable = "Vespertino")
-
-    dayClass_night = dayClasses.objects.filter(Q(first__teacher=teacher) |
-    Q(second__teacher=teacher) |
-    Q(third__teacher=teacher) |
-    Q(fourth__teacher=teacher) |
-    Q(fifth__teacher=teacher) |
-    Q(sixth__teacher=teacher), timeTable = "Noturno")
-
-    print("TARDE:",dayClass_afternoon,"\n")
-    print("MANHÃ:",dayClass_morning_list,"\n")
-    print("NOITE:",dayClass_night,"\n")
-
     context = {
         'class_morning': dayClass_morning_list,
-        'class_afternoon': dayClass_afternoon,
-        'class_night': dayClass_night,
+        'class_afternoon': dayClass_afternoon_list,
+        'class_night': dayClass_night_list,
         "teacher":teacher, 
         "dayss": days
         
