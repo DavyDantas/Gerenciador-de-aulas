@@ -13,7 +13,7 @@ aside{
   clear: right;
   width: 260px;
   height: 700px;
-  position: fixed;
+  position: absolute;
   display: block;
   border-radius: 0px 0px 20px 0px;
   /* background: #2f353a; */

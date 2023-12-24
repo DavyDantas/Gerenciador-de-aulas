@@ -7,17 +7,18 @@ from django.forms.utils import ErrorList
 from .models import *
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 
-class formsTeacher(forms.ModelForm):
-    class Meta:
-        model = Teacher
-        fields = '__all__'
-        widgets = {
-            'name' : forms.TextInput(attrs={'class': 'form-element'}),
-            'matriculation' : forms.TextInput(attrs={'class': 'form-element'}),
-            'imgProfileVariable': forms.FileInput(attrs={'class': 'form-element hidden'}),
-            'telefone': forms.NumberInput(attrs={'class': 'form-element'}),
-        }
+# class formsTeacher(forms.ModelForm):
+#     class Meta:
+#         model = Teacher
+#         fields = '__all__'
+#         widgets = {
+#             'name' : forms.TextInput(attrs={'class': 'form-element'}),
+#             'matriculation' : forms.TextInput(attrs={'class': 'form-element'}),
+#             'imgProfileVariable': forms.FileInput(attrs={'class': 'form-element hidden'}),
+#             'telephone': forms.NumberInput(attrs={'class': 'form-element '}),
+#         }
 
 class formsSubject(forms.ModelForm):
     class Meta:
@@ -87,4 +88,33 @@ class formsCourse(forms.ModelForm):
         'periods': forms.NumberInput(attrs={'class': 'form-element'}),
         }
 
+class formsAbsent(forms.ModelForm):
+    class Meta:
+        model = Absent
+        fields = "__all__"
+        widgets = {
+        'absentTeacher' : forms.Select(attrs={'class': 'form-element-select'}),
+        'substituteTeacher' : forms.Select(attrs={'class': 'form-element-select'}),
+        'timeTable': forms.Select(attrs={'class': 'form-element-select horary'}),
+        'classObj' : forms.Select(attrs={'class': 'form-element-select'}),
+        'absentClass' : forms.CheckboxSelectMultiple(attrs={'class': 'form-element'}, choices=Absent.CLASS_CHOICES), 
+        'absentDate': forms.DateInput(attrs={'class': 'form-element flatpickr-input', 'placeholder': 'Selecione a data'}),
+        }
+    
+    def clean(self):
+        clean_data = super().clean()
+        value = " ".join(clean_data['absentClass'])
+        clean_data['absentClass'] = value
+        print("32423",clean_data)
+        return clean_data
+             
 
+    # def clean_absentClass(self):
+    #     value = self.cleaned_data.get('absentClass')
+    #     return ",".join(value) if value else ""
+
+    # def clean(self):
+        
+    #     data = self.cleaned_data.get('absentClass']
+    #     print(data)
+    #     return [int(value) for value in data.split(',')]

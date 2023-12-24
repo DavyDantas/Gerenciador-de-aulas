@@ -1,25 +1,17 @@
 from django.db import models
 from django.core.files.storage import default_storage
-
+from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import AbstractUser
+from sgra.users.models import User
 # Create your models here.
 
 class Teacher(models.Model):
 
-    name = models.CharField(max_length=200)
-    matriculation = models.IntegerField(unique=True, error_messages={'unique': "Matrícula já cadastrada"})
-    imgProfileVariable = models.ImageField(default="user-profile-icon.jpg", upload_to="UsersProfile/")
-    telefone = models.IntegerField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     numberAbsents = models.IntegerField(null=True, blank=True, default=0)
 
-    def __str__(self) :
-        return self.name
-    
-    @property
-    def imgProfile(self):
-        if default_storage.exists(self.imgProfileVariable.name):
-            return self.imgProfileVariable.url
-        else:
-            return r"\static\images\favicons\user-profile-icon.jpg" 
+    def __str__(self):
+        return self.user.name
     
 class categoryCourse(models.Model):
 
@@ -57,6 +49,7 @@ class Subject(models.Model):
         return self.name
     
 class dayClasses(models.Model):
+
     timeTable = models.CharField(max_length=15)
     classObj = models.ForeignKey(Class, on_delete=models.CASCADE) 
     dayWeek = models.CharField(max_length=50)
@@ -66,4 +59,34 @@ class dayClasses(models.Model):
     fourth = models.ForeignKey(Subject, related_name="fourth", on_delete=models.SET_NULL, null=True, blank=True)
     fifth = models.ForeignKey(Subject, related_name="fifth", on_delete=models.SET_NULL, null=True, blank=True)
     sixth = models.ForeignKey(Subject, related_name="sixth", on_delete=models.SET_NULL, null=True, blank=True)
-  
+
+class Absent(models.Model):
+
+    PERIOD_CHOICES = (
+        ('Matutino', 'Matutino'),
+        ('Vespertino', 'Vespertino'),
+        ('Noturno', 'Noturno'),
+    )
+
+    CLASS_CHOICES = [
+        ('1','1º'),
+        ('2','2º'),
+        ('3','3º'),
+        ('4','4º'),
+        ('5','5º'),
+        ('6','6º'),
+    ]
+
+    absentTeacher = models.ForeignKey(Teacher, related_name="absentTeacher", on_delete=models.CASCADE)
+    substituteTeacher = models.ForeignKey(Teacher, related_name="substituteTeacher", on_delete=models.SET_NULL, null=True, blank=True)
+    classObj = models.ForeignKey(Class, on_delete=models.CASCADE)
+    timeTable = models.CharField(max_length=15, choices=PERIOD_CHOICES)
+    absentClass = models.CharField(max_length=15, choices=CLASS_CHOICES, blank=False)
+    absentDate = models.DateField() 
+
+    def clean(self):
+        clean_data = super().clean()
+        value = " ".join(clean_data['absentClass'])
+        clean_data['absentClass'] = value
+        print("32423",clean_data)
+        return clean_data

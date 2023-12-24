@@ -22,11 +22,11 @@
     <div class="form-group">
         <label for="{{ form.matriculation.id_for_label }}">Matrícula:</label>
         {{ form.matriculation }}
-        <span class="error-input">{{ form.matriculation.errors }}</span>
+        <span class="errorlist">{{ form.matriculation.errors.0 }}</span>
     </div>
     <div class="form-group">
-        <label for="{{ form.telefone.id_for_label }}">Número de Celular:</label>
-        {{ form.telefone }}
+        <label for="{{ form.telephone.id_for_label }}">Número de Celular:</label>
+        {{ form.telephone }}
     </div>
     <div class="form-group">
         <label class="label-input" for="{{ form.imgProfileVariable.id_for_label }}">Imagem de Perfil</label>
@@ -47,9 +47,9 @@
     {% for teacher in teachers %}
 
         <div class="div-teacher">
-            <a href="{% url 'EditTeacher' pk=teacher.pk %}"> 
-                <img src="{{teacher.imgProfile}}" alt="{{teacher}}" class="img-teacher"></span>
-                <span class="name-teacher">{{teacher}}</span>
+            <a href="{% url 'EditTeacher' pk=teacher.user.pk %}"> 
+                <img src="{{teacher.user.imgProfile}}" alt="{{teacher}}" class="img-teacher"></span>
+                <span class="name-teacher">{{teacher.user.name}}</span>
             </a>
         </div>
 
