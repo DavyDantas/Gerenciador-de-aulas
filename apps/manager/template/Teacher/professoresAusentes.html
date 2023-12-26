@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tags_template %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
@@ -10,31 +11,39 @@
 
 <div class="lista-teachers">
 
-    <div class="div-absent">
-        
+    {% for form in form_list %}
+    <form action="" method="post">
+        <div class="div-absent">
+        {% csrf_token %}
+        <input type="hidden" name="form-prefix" value="{{ form.prefix }}">
         <div class="form-group">
-        <span class="element-absent">Professor ausente: </span> <span class="element-absent-value">Davy Eduardo Costa Dantas</span>
+        <span class="element-absent">Professor ausente: </span><span class="element-absent-value">{{teachers_list|get_item:forloop.counter0}}</span>
         </div>
         <div class="form-group">
-            <span class="element-absent">Turma: </span><span class="element-absent-value">ADS4V</span>
-            <span class="element-absent">Turno: </span> <span class="element-absent-value">Vespertino</span>
+            <span class="element-absent">Turma: </span><span class="element-absent-value">{{turms_list|get_item:forloop.counter0}}</span>
+            <span class="element-absent">Turno: </span><span class="element-absent-value">{{timeTable_list|get_item:forloop.counter0}}</span>
         </div>
         <div class="form-group">
             <span class="element-absent">Horários: </span>
-            <span class="element-absent-value">13:00</span>
-            <span class="element-absent-value">13:45</span>
+            <span class="element-absent-value">{{schedule_list|get_item:forloop.counter0|re_absent}}</span>
         </div>
         <div class="form-group">
-            <label class="absent" for="">Professor Substituto:</label>
-            <select class="form-element-select absent" name="" id="">
-                <option value="Selecione..."></option>
-            </select>
+            <label class="element-absent" for="">Professor Substituto:</label>
+            {% if form.substituteTeacher.value != None %}
+            <span class="element-absent-value">{{ substitutes_list|get_item:forloop.counter0 }}</span>
+            {% else %}
+                {{form.substituteTeacher}}
+            {% endif %}
         </div>
-        <div class="submit-btn">
-            <button type="submit">Salvar</button>
-        </div>
-       
+        {% if form.substituteTeacher.value == None %}
+            <div class="submit-btn">
+                <button type="submit">Salvar</button>
+            </div>
+        {% endif %}
+
     </div>
+    </form>
+    {% endfor %}
 </div>
 
 

@@ -100,8 +100,10 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "sgra",
     "sgra.users",
     "apps.manager",
+    "apps.manager.templatetags",
     "phonenumber_field",
     'bootstrap_datepicker_plus',
     # Your stuff: custom apps go here
@@ -124,9 +126,9 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
+LOGIN_REDIRECT_URL = "login"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "account_login"
+LOGIN_URL = "login"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------

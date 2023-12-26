@@ -1,10 +1,20 @@
 from collections.abc import Iterable
-from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField
+from typing import Any
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.core.files.storage import default_storage
+
+class CustomUserManager(BaseUserManager):
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(email, password, **extra_fields)
 
 class User(AbstractUser):
     """
@@ -13,24 +23,23 @@ class User(AbstractUser):
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
 
-    # First and last name do not cover name patterns around the globe
     name = models.CharField(_("Name of User"), blank=False, max_length=255)
     first_name = None  # type: ignore
     last_name = None  # type: ignore
-    matriculation = models.IntegerField(unique=True, error_messages={'unique': "Matrícula já cadastrada"})
+    #username será usando como matricula no sistema
+    username = models.CharField(unique=True, error_messages={'unique': "Matrícula já cadastrada"})
     imgProfileVariable = models.ImageField(blank=True, default="user-profile-icon.jpg", upload_to="UsersProfile/")
     telephone = models.CharField(blank=True, null=True, default = None)
 
-    USERNAME_FIELD = "matriculation"  # ele usa por padrão o username
+    # USERNAME_FIELD = "matriculation"  # ele usa por padrão o username
     REQUIRED_FIELDS = ['name'] 
-
 
     def __str__(self) :
         return self.name
-    
-    def save(self, *args, **kwargs) -> None:
-        self.username = str(self.matriculation)
-        super().save(*args, **kwargs)
+
+    # def save(self, *args, **kwargs) -> None:
+    #     self.username = str(self.matriculation)
+    #     super().save(*args, **kwargs)
 
     @property
     def imgProfile(self):

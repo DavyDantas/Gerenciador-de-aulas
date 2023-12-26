@@ -31,6 +31,14 @@
   margin: auto;
 }
 
+.error-login{
+  background-color: white;
+  margin-bottom: 15px;
+  width: max-content;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 #main-login{
   transform: translate(-50%, -50%);
   position: absolute;
@@ -45,13 +53,14 @@
 
 .login{
   margin: 20px;
-  width: 410px;
+  max-width: 410px;
   background-color: var(--color2);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 15px;
   flex-direction: column;
+  padding: 20px;
 }
 
 .logo-login{
@@ -94,7 +103,8 @@
 
 .button-login{
   width: 314px;
-  height: fit-content;
+  height: max-content;
+  cursor: pointer;
   border: none;
   border-radius: 5px;
   font-size: 14pt;

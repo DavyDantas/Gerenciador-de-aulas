@@ -7,18 +7,15 @@ from django.forms.utils import ErrorList
 from .models import *
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from bootstrap_datepicker_plus.widgets import DatePickerInput
+from django.contrib.admin.widgets import AdminDateWidget
 
-# class formsTeacher(forms.ModelForm):
-#     class Meta:
-#         model = Teacher
-#         fields = '__all__'
-#         widgets = {
-#             'name' : forms.TextInput(attrs={'class': 'form-element'}),
-#             'matriculation' : forms.TextInput(attrs={'class': 'form-element'}),
-#             'imgProfileVariable': forms.FileInput(attrs={'class': 'form-element hidden'}),
-#             'telephone': forms.NumberInput(attrs={'class': 'form-element '}),
-#         }
+class formsTeacher(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ["numberAbsents"]
+        widgets = {
+            'numberAbsents': forms.NumberInput(attrs={'class': 'form-element '}),
+        }
 
 class formsSubject(forms.ModelForm):
     class Meta:
@@ -89,6 +86,9 @@ class formsCourse(forms.ModelForm):
         }
 
 class formsAbsent(forms.ModelForm):
+
+    absentClass = forms.MultipleChoiceField(choices=Absent.CLASS_CHOICES, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-element'}), required=True)
+ 
     class Meta:
         model = Absent
         fields = "__all__"
@@ -97,16 +97,24 @@ class formsAbsent(forms.ModelForm):
         'substituteTeacher' : forms.Select(attrs={'class': 'form-element-select'}),
         'timeTable': forms.Select(attrs={'class': 'form-element-select horary'}),
         'classObj' : forms.Select(attrs={'class': 'form-element-select'}),
-        'absentClass' : forms.CheckboxSelectMultiple(attrs={'class': 'form-element'}, choices=Absent.CLASS_CHOICES), 
-        'absentDate': forms.DateInput(attrs={'class': 'form-element flatpickr-input', 'placeholder': 'Selecione a data'}),
-        }
+        'absentDate': forms.DateInput(attrs={'type': 'date', 'class': 'form-element', 'placeholder': 'Selecione a data'}),
+        } 
+
+class EditAbsent(forms.ModelForm):
+    class Meta:
+        model = Absent
+        fields = ["substituteTeacher"]
+        widgets = {
+        'substituteTeacher' : forms.Select(attrs={'class': 'form-element-select'}),
+        } 
     
-    def clean(self):
-        clean_data = super().clean()
-        value = " ".join(clean_data['absentClass'])
-        clean_data['absentClass'] = value
-        print("32423",clean_data)
-        return clean_data
+    
+    # def clean(self):
+    #     clean_data = super().clean()
+    #     value = " ".join(clean_data['absentClass'])
+    #     clean_data['absentClass'] = value
+    #     print("32423",clean_data)
+    #     return clean_data
              
 
     # def clean_absentClass(self):

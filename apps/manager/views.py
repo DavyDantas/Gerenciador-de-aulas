@@ -3,18 +3,47 @@ from .models import Class, Teacher, Subject, categoryCourse
 from .models import dayClasses as dayC
 from .forms import *
 from django.contrib import messages
-from django.db.models import Q
+from django.http import HttpResponse
 from sgra.users.forms import *
-
+from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login
+from .decorators import group_required
+from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
-def Login(request):
 
-    return render(request, "login.html")
+def login_view(request):
+    message = ""
+
+    if request.method == "GET":
+        form = AuthenticationForm()
+    
+    else:
+        form = AuthenticationForm(request, request.POST)
+        
+        if form.is_valid():
+            print("valid")
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("index")
+            else:
+                print("usuario invalido")
+                message = "Matrícula ou senha inválida"
+        else:
+            message = "Matrícula ou senha inválida"
+
+    return render(request, "login.html", {'form': form, 'message':message})
+
+def logout_view(request):
+    logout(request)
+    return redirect("login")
 
 def listarProfessores(request):
     teachers = Teacher.objects.all()
     return render(request,'Teacher/listaProfessores.html', {'teachers':teachers})
-
+ 
 def listarTurmas(request):
     
     courses = categoryCourse.objects.all()
@@ -22,6 +51,7 @@ def listarTurmas(request):
 
     return render(request, "Class/listaTurmas.html", context)
 
+@group_required(["GERENTE"])
 def teacherForm(request):
     teachers = Teacher.objects.all()
     
@@ -31,18 +61,9 @@ def teacherForm(request):
     else:
         form = UserSignupForm(request.POST, request.FILES)
         if form.is_valid():
-            matriculation = form.cleaned_data['matriculation']
-            existing_user = User.objects.filter(matriculation=matriculation)
-
-            if existing_user:
-                # Se o usuário já existe, você pode tratar isso da maneira que desejar
-                # Por exemplo, pode mostrar uma mensagem de erro ou redirecionar para uma página diferente.
-                print("Usuário com matrícula já existe.")
-            else:
-                # Se o usuário não existe, cria o usuário e associa ao professor
-                user = form.save()
-                Teacher.objects.create(user=user)
-                return redirect('FormTeacher')
+            user = form.save()
+            Teacher.objects.create(user=user)
+            return redirect('FormTeacher')
             
            
 
@@ -52,6 +73,7 @@ def teacherForm(request):
         }
     return render(request, "Teacher/formsProfessor.html", context)
 
+@group_required(["GERENTE"])
 def subjectForm(request):
 
     subjects = Subject.objects.all()
@@ -71,6 +93,7 @@ def subjectForm(request):
         }
     return render(request, "Subject/formsDisciplina.html", context)
 
+@group_required(["GERENTE"])
 def courseForm(request):
 
     courses = categoryCourse.objects.all()
@@ -90,6 +113,7 @@ def courseForm(request):
         }
     return render(request, "Course/formsCurso.html", context)
 
+@group_required(["GERENTE"])
 def classForm(request):
     
     save_all = True
@@ -178,9 +202,10 @@ def classForm(request):
 
     return render(request, 'Class/formsTurma.html', context)
 
+
 def subjectsClass(request, pk):
     
-    turm = Class.objects.get(pk=pk)
+    turm = get_object_or_404(Class, pk=pk)
 
     dayClasses_list_morning = turm.dayclasses_set.filter(timeTable="Matutino")
     dayClasses_list_afternoon = turm.dayclasses_set.filter(timeTable="Vespertino")
@@ -190,17 +215,17 @@ def subjectsClass(request, pk):
         formAbsent = formsAbsent()
 
     else:
-        formAbsent = formsAbsent(request.POST)
+        data = request.POST.copy()
+        data["classObj"] = turm 
+
+        formAbsent = formsAbsent(data)
         formAbsent.instance.classObj = turm
-        print(request.POST)
-        choices = request.POST.getlist("absentClass")
-        choices = " ".join(choices)
-        print(choices)
-        formAbsent.__setattr__("absentClass", choices.split(" "))
+        print(formAbsent.errors)
+        
         if formAbsent.is_valid():
             print("VALIDO")
             formAbsent.save()
-            return redirect("subjectsClass")
+            formAbsent = formsAbsent()
         
     context = {
         'class_morning': dayClasses_list_morning,
@@ -212,12 +237,14 @@ def subjectsClass(request, pk):
 
     return render (request, "Class/aulasTurma.html", context)
 
+
 def subjectsTeacher(request, pk):
 
     days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira','Sexta-feira']
     fields = ['first','second','third','fourth','fifth','sixth']
 
     teacher = Teacher.objects.get(pk=pk)
+    form = formsTeacher()
     dayClass_morning_list = []
     dayClass_afternoon_list = []
     dayClass_night_list = []
@@ -254,37 +281,84 @@ def subjectsTeacher(request, pk):
         dayClass_afternoon_list.append(dayClass_afternoon)
         dayClass_night_list.append(dayClass_night)
     
+    if all(value.first == None and value.second == None and value.third == None and value.fourth == None and value.fifth == None and value.sixth == None for value in dayClass_morning_list):
+        dayClass_morning_list = []
+    if all(value.first == None and value.second == None and value.third == None and value.fourth == None and value.fifth == None and value.sixth == None for value in dayClass_afternoon_list):
+        dayClass_afternoon_list = []
+    if all(value.first == None and value.second == None and value.third == None and value.fourth == None and value.fifth == None and value.sixth == None for value in dayClass_night_list):
+        dayClass_night_list = []
+
+    if request.method == "POST":
+        form = formsTeacher(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+
     context = {
         'class_morning': dayClass_morning_list,
         'class_afternoon': dayClass_afternoon_list,
         'class_night': dayClass_night_list,
         "teacher":teacher, 
-        "dayss": days
-        
+        "dayss": days,
+        'form': form
     }
 
     return render (request, "Teacher/aulasProfessor.html", context)
 
 def absentsTeachers(request):
     
-    return render (request, "Teacher/professoresAusentes.html")
+    absents = Absent.objects.all()
+    teachers_list = [value.absentTeacher for value in absents]
+    turms_list = [value.classObj for value in absents]
+    substitutes_list = [value.substituteTeacher for value in absents]
+    schedule_list = [value.absentClass for value in absents] 
+    timeTable_list = [value.timeTable for value in absents]
 
+    if request.user.groups.filter(name="PROFESSOR").exists():
+        teacher = get_object_or_404(Teacher, pk=request.user.teacher.pk)
+    else:
+        teacher = None
+    form_list = [EditAbsent(instance=absent, prefix=i) for i, absent in enumerate(absents)]
+    
+    if request.method == "POST":
+        print("post")
+        prefix = request.POST.get('form-prefix', 'default_prefix')
+        form = EditAbsent(request.POST, instance=absents[int(prefix)], prefix=prefix)
+        if form.is_valid():
+            form.save()
+            return redirect("AbsentsTeachers")
+
+
+    context ={
+        'teacher': teacher,
+        'form_list' : form_list,
+        'teachers_list': teachers_list,
+        'turms_list': turms_list,
+        'timeTable_list': timeTable_list,
+        'substitutes_list': substitutes_list,
+        'absents': absents,
+        'schedule_list': schedule_list
+    }
+
+    return render (request, "Teacher/professoresAusentes.html", context=context)
+
+@group_required(["GERENTE"])
 def teacherEdit(request, pk):
 
     teacher = get_object_or_404(User, pk=pk)
     
     if request.method == "POST":
-        form = UserSignupForm(request.POST,request.FILES, instance = teacher)
+        form = EditUser(request.POST,request.FILES, instance = teacher)
 
         if form.is_valid():
             form.save()
             return redirect('FormTeacher')
 
     else:
-        form = UserSignupForm(instance=teacher, initial=teacher.clean())
+        form = EditUser(instance=teacher, initial=teacher.clean())
 
     return render(request, "Teacher/editProfessor.html", {"form":form, "teacher":teacher})
 
+@group_required(["GERENTE"])
 def teacherDelete(request, pk):
     
     teacher = get_object_or_404(User, pk=pk)
@@ -294,6 +368,7 @@ def teacherDelete(request, pk):
     
     return redirect("FormTeacher")
 
+@group_required(["GERENTE"])
 def courseEdit(request, pk):
 
     course = get_object_or_404(categoryCourse,pk=pk)
@@ -310,6 +385,7 @@ def courseEdit(request, pk):
 
     return render(request, "Course/editCursos.html", {"form":form, "course":course})
 
+@group_required(["GERENTE"])
 def courseDelete(request, pk):
 
     if request.method == "GET":
@@ -318,6 +394,7 @@ def courseDelete(request, pk):
 
     return redirect("FormCourse")
 
+@group_required(["GERENTE"])
 def subjectEdit(request, pk):
     
     subject = get_object_or_404(Subject,pk=pk)
@@ -333,6 +410,7 @@ def subjectEdit(request, pk):
 
     return render(request, "Subject/editDisciplina.html", {"form":form, "subject":subject})
 
+@group_required(["GERENTE"])
 def subjectDelete(request, pk):
 
     if request.method == "GET":
@@ -341,6 +419,7 @@ def subjectDelete(request, pk):
 
     return redirect("FormSubject")
 
+@group_required(["GERENTE"])
 def classEdit(request, pk):
     
     clas = get_object_or_404(Class,pk=pk)
@@ -450,6 +529,7 @@ def classEdit(request, pk):
 
     return render(request, "Class/editClass.html", context)
 
+@group_required(["GERENTE"])
 def classDelete(request, pk):
 
     if request.method == "GET":

@@ -230,10 +230,12 @@
     <div class="form-absent">
         <div class="div-form">
             <h2>Ausências</h4>
-                <form action="">
+                <form action="", method="post">
+                    {% csrf_token %}
+                    <span class="absents-teacher">Número de Ausências: {{teacher.numberAbsents}}</span>
                     <div class="form-group absent">
-                        <label for="">Número de Ausências:</label>
-                        <input class="form-element" type="" value="0">
+                        <label for="{{form.numberAbsents.id_for_label}}">Novo valor:</label>
+                        {{form.numberAbsents}}
                     </div>
                     <div class="submit-btn">
                         <button type="submit">Salvar</button>

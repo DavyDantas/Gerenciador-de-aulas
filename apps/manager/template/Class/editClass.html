@@ -16,7 +16,7 @@
 <div class="sub-form">
     <form action="{% url 'ClassEdit' class.pk %}" method="post">
         {% csrf_token %}
-        <div class="div-form">
+        <div class="div-form edit">
             <div class="form-group">
                 <label for="">Curso:</label>
                 {{ formClass.course }}
@@ -37,7 +37,7 @@
         </div>
 
         <span> <h3>Aulas da Turma</h3> {% if error_dayClasses_none %} <span class="errorlist">{{ error_dayClasses_none }}</span> {% endif %}</span>
-        <div class="div-form formClass Matutino">
+        <div class="div-form formClass Matutino edit">
             <div class="timeTable-subjects">
                 <a href="#" class="timeTableExp">
                     <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9"
@@ -94,7 +94,7 @@
 
         </div>
 
-        <div class="div-form formClass Vespertino">
+        <div class="div-form formClass Vespertino edit">
             <div class="timeTable-subjects">
                 <a href="#" class="timeTableExp">
                     <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9"
@@ -150,7 +150,7 @@
 
         </div>
 
-        <div class="div-form formClass Noturno">
+        <div class="div-form formClass Noturno edit">
             <div class="timeTable-subjects">
                 <a href="#" class="timeTableExp">
                     <span class="drop-icon-menu class"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="9"

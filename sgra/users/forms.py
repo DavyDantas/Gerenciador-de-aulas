@@ -35,34 +35,44 @@ class UserSignupForm(UserCreationForm):
     Check UserSocialSignupForm for accounts created from social.
     """
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
-    matriculation = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
     imgProfileVariable = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-element hidden'}), required=False)
-    telephone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
+    telephone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-element'}))
     password1 = forms.CharField(widget=forms.HiddenInput(), required=False)
     password2 = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def clean(self):
         cleaned_data = super().clean()
-        matriculation = cleaned_data.get('matriculation')
+        username = str(cleaned_data.get('username'))
         name = cleaned_data["name"]
         name = name.split(" ")
-        print(name)
         # Verificar se a matrícula está presente antes de definir as senhas
-        if matriculation:
-            cleaned_data['password1'] = name[0] + name[1] + matriculation
-            cleaned_data['password2'] = name[0] + name[1] + matriculation
-        print(name[0] + name[1] + matriculation)
+        if username:
+            cleaned_data['password1'] = name[0] + name[1] + username
+            cleaned_data['password2'] = name[0] + name[1] + username
 
-        cleaned_data['username'] = matriculation
         print(cleaned_data)
 
         return cleaned_data
 
     class Meta:
         model = User
-        fields = ['name', 'matriculation', 'imgProfileVariable', 'telephone']
+        fields = ['name', 'username', 'imgProfileVariable', 'telephone']
 
+class EditUser(forms.ModelForm):
+    """
+    Form that will be rendered on a user sign up section/screen.
+    Default fields will be added automatically.
+    Check UserSocialSignupForm for accounts created from social.
+    """
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
+    imgProfileVariable = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-element hidden'}), required=False)
+    telephone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-element'}))
 
+    class Meta:
+        model = User
+        fields = ['name', 'username', 'imgProfileVariable', 'telephone']
 class UserSocialSignupForm(SocialSignupForm):
     """
     Renders the form when user has signed up using social accounts.

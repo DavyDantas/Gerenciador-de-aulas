@@ -226,6 +226,13 @@
     border-radius: 5px;
 }
 
+.absents-teacher{
+    margin-bottom: 10px;
+    font-size: 14pt;
+    font-weight: 400;
+    color: white
+}
+
 .dayClass > h4{
     margin-bottom: 5px;
     font-size: 14pt;
@@ -381,7 +388,7 @@
 }
 
 .form-group.absent input{
-    width: 30px;
+    width: 50px;
 }
 
 .div-absent{
@@ -391,32 +398,41 @@
     padding: 10px;
     border-radius: 10px;
     font-size: 12pt;
+    margin: 0 20px 20px 0;
 }
 
 .div-absent > .form-group{
-    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.438);
+    max-width: max-content;
+    padding: 0 5px;
+    border-radius: 8px;
+}
+
+.div-absent > .form-group > *{
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .form-group > .absent{
     color: black;
 }
-.form-element-select.absent{
+.div-absent > .form-group > select{
     color: black;
     background-color: rgba(0, 0, 0, 0.075);
 }
 
-.element-absent{
+.form-group > .element-absent{
     margin-right: 10px;
     padding: 5px;
     border-radius: 5px;
     font-size: 12pt;
     font-weight: 500;
     color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.219) ;
+    background-color: rgba(0, 0, 0, 0.123) ;
 }
 
 .element-absent-value{
-    color: rgb(0, 0, 0);
+    color: var(--color2);
     margin-right: 10px;
     font-size: 12pt;
     font-weight: 600;
