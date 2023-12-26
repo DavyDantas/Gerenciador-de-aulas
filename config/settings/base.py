@@ -104,8 +104,8 @@ LOCAL_APPS = [
     "sgra.users",
     "apps.manager",
     "apps.manager.templatetags",
-    "phonenumber_field",
-    'bootstrap_datepicker_plus',
+    # "phonenumber_field",
+    # 'bootstrap_datepicker_plus',
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

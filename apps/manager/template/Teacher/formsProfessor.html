@@ -13,8 +13,9 @@
 <form action="{% url 'FormTeacher' %}" method="post" enctype="multipart/form-data">
 
     <div class="div-form">
-
     {% csrf_token %}
+
+
     <div class="form-group">
         <label for="{{ form.name.id_for_label }}">Nome:</label>
         {{ form.name }}

@@ -87,7 +87,7 @@ class formsCourse(forms.ModelForm):
 
 class formsAbsent(forms.ModelForm):
 
-    absentClass = forms.MultipleChoiceField(choices=Absent.CLASS_CHOICES, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-element'}), required=True)
+    absentClass = forms.MultipleChoiceField(choices=Absent.CLASS_CHOICES, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-element checkbox'}), required=True)
  
     class Meta:
         model = Absent
@@ -97,8 +97,8 @@ class formsAbsent(forms.ModelForm):
         'substituteTeacher' : forms.Select(attrs={'class': 'form-element-select'}),
         'timeTable': forms.Select(attrs={'class': 'form-element-select horary'}),
         'classObj' : forms.Select(attrs={'class': 'form-element-select'}),
-        'absentDate': forms.DateInput(attrs={'type': 'date', 'class': 'form-element', 'placeholder': 'Selecione a data'}),
-        } 
+        'absentDate': forms.TextInput(attrs={'type': 'date', 'class': 'form-element', 'placeholder': 'Selecione a data'}),
+        }  
 
 class EditAbsent(forms.ModelForm):
     class Meta:

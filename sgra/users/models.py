@@ -27,9 +27,9 @@ class User(AbstractUser):
     first_name = None  # type: ignore
     last_name = None  # type: ignore
     #username será usando como matricula no sistema
-    username = models.CharField(unique=True, error_messages={'unique': "Matrícula já cadastrada"})
+    username = models.CharField(max_length=150, unique=True, error_messages={'unique': "Matrícula já cadastrada"})
     imgProfileVariable = models.ImageField(blank=True, default="user-profile-icon.jpg", upload_to="UsersProfile/")
-    telephone = models.CharField(blank=True, null=True, default = None)
+    telephone = models.CharField(max_length=15, blank=True, null=True, default = None)
 
     # USERNAME_FIELD = "matriculation"  # ele usa por padrão o username
     REQUIRED_FIELDS = ['name'] 

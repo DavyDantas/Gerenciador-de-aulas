@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock css %}
+
+
+{% block main %}
+
+<h1 class="title-main">Editar Perfil</h1>
+
+<form action="{% url 'UserEdit' %}" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <div class="div-form edit">
+
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Matrícula: {{ request.user.username }}</label>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Nome:</label>
+            {{ form_user.name }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.telephone.id_for_label }}">Número de Celular:</label>
+            {{ form_user.telephone }}
+        </div>
+        <div class="form-group">
+            <label class="label-input" for="{{ form_user.imgProfileVariable.id_for_label }}">Imagem de Perfil</label>
+            {{form_user.imgProfileVariable}}
+        </div>
+
+    </div>
+
+<div class="group-bottons">
+
+    <div class="submit-btn">
+        <button type="submit" class="">Salvar</button>
+    </div>
+
+    <div class="edit-option">
+        <a href="{% url 'PasswordEdit' %}">
+            <span class="">Alterar Senha</span>
+        </a>
+    </div>
+
+</div>
+
+</form>
+
+{% endblock %}

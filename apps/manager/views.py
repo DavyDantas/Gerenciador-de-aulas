@@ -3,12 +3,14 @@ from .models import Class, Teacher, Subject, categoryCourse
 from .models import dayClasses as dayC
 from .forms import *
 from django.contrib import messages
-from django.http import HttpResponse
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from sgra.users.forms import *
+import re
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from .decorators import group_required
 from django.contrib.auth.forms import AuthenticationForm
+import datetime
 # Create your views here.
 
 def login_view(request):
@@ -60,18 +62,54 @@ def teacherForm(request):
         
     else:
         form = UserSignupForm(request.POST, request.FILES)
+
         if form.is_valid():
             user = form.save()
             Teacher.objects.create(user=user)
             return redirect('FormTeacher')
-            
-           
 
     context={
         'form': form,
         'teachers': teachers,
         }
     return render(request, "Teacher/formsProfessor.html", context)
+
+def userEdit(request):
+    
+    if request.method == "GET":
+        form_user = EditUser(instance=request.user)
+       
+    else:
+        value = request.POST.copy()
+        value["username"] = request.user.username
+        form_user = EditUser(value, request.FILES, instance=request.user)
+
+        print(form_user)
+        if form_user.is_valid():
+            form_user.save()
+
+            return redirect('index')
+
+    context={
+        'form_user': form_user,
+        }
+    return render(request, "editUser.html", context)
+
+def changePassword(request):
+
+    if request.method == "GET":
+        form_password = PasswordChangeForm(request.user)
+    else:
+        form_password = PasswordChangeForm(request.user, request.POST)
+        
+        if form_password.is_valid():
+            form_password.save()
+            return redirect('index')
+
+    context={
+        'form_password': form_password,
+        }
+    return render(request, "editPassword.html", context)
 
 @group_required(["GERENTE"])
 def subjectForm(request):
@@ -206,33 +244,43 @@ def classForm(request):
 def subjectsClass(request, pk):
     
     turm = get_object_or_404(Class, pk=pk)
+    absents = turm.absent_set.all()
+    teacher = None
+
+    if request.user.groups.filter(name="PROFESSOR").exists():
+        teacher = get_object_or_404(Teacher, pk=request.user.teacher.pk)
 
     dayClasses_list_morning = turm.dayclasses_set.filter(timeTable="Matutino")
     dayClasses_list_afternoon = turm.dayclasses_set.filter(timeTable="Vespertino")
     dayClasses_list_night = turm.dayclasses_set.filter(timeTable="Noturno")
 
-    if request.method == "GET":
-        formAbsent = formsAbsent()
+    formAbsent = formsAbsent()
 
-    else:
+    if request.method == "POST":
         data = request.POST.copy()
         data["classObj"] = turm 
 
+        if teacher:
+            data["absentTeacher"] = teacher
+
         formAbsent = formsAbsent(data)
-        formAbsent.instance.classObj = turm
-        print(formAbsent.errors)
-        
         if formAbsent.is_valid():
-            print("VALIDO")
-            formAbsent.save()
-            formAbsent = formsAbsent()
-        
+            form_model = formAbsent.save()
+            absentTeacher = get_object_or_404(Teacher, pk=form_model.absentTeacher.pk)
+            print(form_model.absentClass) 
+            #  absentTeacher.numberAbsents += len(re.findall(r'\d+', form_model.absentClass))
+            # absentTeacher.save()
+
+            return redirect("SubjectsClass", pk=pk)
+
     context = {
         'class_morning': dayClasses_list_morning,
         'class_afternoon': dayClasses_list_afternoon,
         'class_night': dayClasses_list_night,
         "turm":turm,
-        'form': formAbsent
+        'form': formAbsent,
+        'absents' : absents,
+        'teacher': teacher,
     }
 
     return render (request, "Class/aulasTurma.html", context)
@@ -250,48 +298,52 @@ def subjectsTeacher(request, pk):
     dayClass_night_list = []
 
     for day in days:
-        dayClass_morning = dayClasses()
-        dayClass_afternoon = dayClasses()
-        dayClass_night = dayClasses()
+        dayClass_morning = []
+        dayClass_afternoon = []
+        dayClass_night = []
 
         for field in fields:
 
             query = dayClasses.objects.filter(**{f"{field}__teacher": teacher}, timeTable = "Matutino", dayWeek = day)
             if query: 
-                subject_instance = get_object_or_404(Subject, pk=getattr(query[0], field).pk)
+                subject_instance = get_object_or_404(dayClasses, pk=query.first().pk)
+                dayClass_morning.append(subject_instance)
             else:
-                subject_instance = None
-            setattr(dayClass_morning, field, subject_instance)
+                dayClass_morning.append([])
 
             query = dayClasses.objects.filter(**{f"{field}__teacher": teacher}, timeTable = "Vespertino", dayWeek = day)
             if query: 
-                subject_instance = get_object_or_404(Subject, pk=getattr(query[0], field).pk)
+                subject_instance = get_object_or_404(dayClasses, pk=query.first().pk)
+                dayClass_afternoon.append(subject_instance)
             else:
-                subject_instance = None
-            setattr(dayClass_afternoon, field, subject_instance)
+                dayClass_afternoon.append([]) 
 
             query = dayClasses.objects.filter(**{f"{field}__teacher": teacher}, timeTable = "Noturno", dayWeek = day)
             if query: 
-                subject_instance = get_object_or_404(Subject, pk=getattr(query[0], field).pk)
+                subject_instance = get_object_or_404(dayClasses, pk=query.first().pk)
+                dayClass_night.append(subject_instance)
             else:
-                subject_instance = None
-            setattr(dayClass_night, field, subject_instance)
+                dayClass_night.append([])
 
         dayClass_morning_list.append(dayClass_morning)
         dayClass_afternoon_list.append(dayClass_afternoon)
         dayClass_night_list.append(dayClass_night)
-    
-    if all(value.first == None and value.second == None and value.third == None and value.fourth == None and value.fifth == None and value.sixth == None for value in dayClass_morning_list):
+        
+    if all(data==[] for vetor in dayClass_morning_list for data in vetor):
         dayClass_morning_list = []
-    if all(value.first == None and value.second == None and value.third == None and value.fourth == None and value.fifth == None and value.sixth == None for value in dayClass_afternoon_list):
+    if all(data==[] for vetor in dayClass_afternoon_list for data in vetor):
         dayClass_afternoon_list = []
-    if all(value.first == None and value.second == None and value.third == None and value.fourth == None and value.fifth == None and value.sixth == None for value in dayClass_night_list):
+    if all(data==[] for vetor in dayClass_night_list for data in vetor):
         dayClass_night_list = []
+
+    print(dayClass_morning_list)
+    print(dayClass_afternoon_list)
 
     if request.method == "POST":
         form = formsTeacher(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
+            return redirect("SubjectsTeacher", pk=pk)
 
     context = {
         'class_morning': dayClass_morning_list,
@@ -312,19 +364,38 @@ def absentsTeachers(request):
     substitutes_list = [value.substituteTeacher for value in absents]
     schedule_list = [value.absentClass for value in absents] 
     timeTable_list = [value.timeTable for value in absents]
-
     if request.user.groups.filter(name="PROFESSOR").exists():
         teacher = get_object_or_404(Teacher, pk=request.user.teacher.pk)
     else:
         teacher = None
-    form_list = [EditAbsent(instance=absent, prefix=i) for i, absent in enumerate(absents)]
-    
+    form_list = [formsAbsent(instance=absent, prefix=i, initial=absent.clean()) for i, absent in enumerate(absents)]
+    absents_list = [get_object_or_404(Absent, pk=value.pk) for value in absents]
+    print([value.instance.absentClass for value in form_list])
     if request.method == "POST":
-        print("post")
         prefix = request.POST.get('form-prefix', 'default_prefix')
-        form = EditAbsent(request.POST, instance=absents[int(prefix)], prefix=prefix)
+
+        data_post = request.POST.copy()
+        if int(prefix) != 0: 
+            date = str(data_post[prefix+"-absentDate"]).split("-")
+            value_date = datetime.date(int(date[0]), int(date[1]), int(date[2])) 
+            data_post[prefix+"-absentDate"] = value_date
+            data_post[prefix+"-absentTeacher"] = absents_list[int(prefix)].absentTeacher 
+        else:
+            date = str(data_post["absentDate"]).split("-")
+            value_date = datetime.date(int(date[0]), int(date[1]), int(date[2])) 
+            data_post["absentDate"] = value_date
+            data_post["absentTeacher"] = absents_list[int(prefix)].absentTeacher 
+
+        form = formsAbsent(data_post, instance=absents[int(prefix)], prefix=prefix)
+        print(form) 
         if form.is_valid():
-            form.save()
+            print("valido")
+            form_value = form.save()
+            if form.cleaned_data["substituteTeacher"] and teacher != form.cleaned_data["absentTeacher"]:
+                absentTeacher = get_object_or_404(Teacher, pk=form_value.substituteTeacher.pk)
+                absentTeacher.numberAbsents -= len(re.findall(r"\d+", form_value.absentClass))
+                absentTeacher.save()
+ 
             return redirect("AbsentsTeachers")
 
 
@@ -335,11 +406,21 @@ def absentsTeachers(request):
         'turms_list': turms_list,
         'timeTable_list': timeTable_list,
         'substitutes_list': substitutes_list,
-        'absents': absents,
+        'absents': absents_list,
         'schedule_list': schedule_list
     }
 
     return render (request, "Teacher/professoresAusentes.html", context=context)
+
+def absentDelete(request, pk):
+
+    absent = get_object_or_404(Absent, pk=pk)
+    teacher = get_object_or_404(Teacher, pk=absent.absentTeacher.pk)
+    teacher.numberAbsents -= len(re.findall(r'\d+', absent.absentClass))
+    teacher.save()
+    absent.delete()
+
+    return redirect("AbsentsTeachers")
 
 @group_required(["GERENTE"])
 def teacherEdit(request, pk):
@@ -423,6 +504,9 @@ def subjectDelete(request, pk):
 def classEdit(request, pk):
     
     clas = get_object_or_404(Class,pk=pk)
+    dayClasses_morning_list = []
+    dayClasses_afternoon_list = []
+    dayClasses_night_list = []
     dayClasses_list = []
     dayClass_morning = dayClasses.objects.filter(classObj = clas, timeTable = "Matutino")
     dayClass_afternoon = dayClasses.objects.filter(classObj = clas, timeTable = "Vespertino")
@@ -439,16 +523,15 @@ def classEdit(request, pk):
 
             if dayClass_morning: 
                 dayClass_morning_form = [formsDayClasses(request.POST, instance=item, prefix=str(i)) for i, item in enumerate(dayClass_morning)]
-                print("tem manhã")
             else: 
-                print(" não tem manhã")
                 dayClass_morning_form = [formsDayClasses(request.POST, prefix=str(i)) for i in range(0,5)]
                 for index in range(5):
                     dayClass_morning_form[index].instance.dayWeek = days[index]
                     dayClass_morning_form[index].instance.timeTable = "Matutino"
                     dayClass_morning_form[index].instance.classObj = class_save
+            dayClasses_morning_list.extend(dayClass_morning_form) 
             dayClasses_list.extend(dayClass_morning_form) 
-            print( dayClasses_list,"\n")
+
             if dayClass_afternoon: 
                 dayClass_afternoon_form = [formsDayClasses(request.POST, instance= item, prefix=str(i+5)) for i, item in enumerate(dayClass_afternoon)]
             else: 
@@ -457,8 +540,8 @@ def classEdit(request, pk):
                     dayClass_afternoon_form[index].instance.dayWeek = days[index]
                     dayClass_afternoon_form[index].instance.timeTable = "Vespertino"
                     dayClass_afternoon_form[index].instance.classObj = class_save    
-            dayClasses_list.extend(dayClass_afternoon_form)
-            print( dayClasses_list,"\n")
+            dayClasses_afternoon_list.extend(dayClass_afternoon_form)
+            dayClasses_list.extend(dayClass_afternoon_form) 
             
             if dayClass_night: 
                 dayClass_night_form = [formsDayClasses(request.POST, instance=item, prefix=str(i+10)) for i, item in enumerate(dayClass_night)]
@@ -468,16 +551,16 @@ def classEdit(request, pk):
                     dayClass_night_form[index].instance.dayWeek = days[index]
                     dayClass_night_form[index].instance.timeTable = "Noturno"
                     dayClass_night_form[index].instance.classObj = class_save
+            dayClasses_night_list.extend(dayClass_night_form) 
             dayClasses_list.extend(dayClass_night_form) 
-            print( dayClasses_list,"\n")
+
             if not all(form.verify_all_none() for form in dayClasses_list):
-                print("passou2")
+
                 if all(form.is_valid() for form in dayClasses_list):
-                    print("passo3")
                     formClass.save()
-                    for form in dayClasses_list:
-                        
-                        form.save()
+                    if not all(form.verify_all_none() for form in dayClasses_morning_list):[form.save() for form in dayClasses_morning_list]
+                    if not all(form.verify_all_none() for form in dayClasses_afternoon_list):[form.save() for form in dayClasses_afternoon_list]
+                    if not all(form.verify_all_none() for form in dayClasses_night_list):[form.save() for form in dayClasses_night_list]
                     return redirect('FormClass')
                 
                 else:

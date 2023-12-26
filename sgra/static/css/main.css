@@ -85,6 +85,11 @@
   }
 }
 
+.group-absents{
+  display: flex;
+  flex-wrap: wrap;
+  
+}
 .main-body{
   z-index: 1;
     margin-top: 35px;
@@ -210,7 +215,7 @@ h4{
 }
 
 .div-courses > p{
-  color: var(--color3);
+  color: var(--color1);
   font-size: 16pt;
   flex: 1;
   margin: 0;
@@ -370,6 +375,18 @@ h4{
   flex-direction: column;
   max-width: max-content;
 }
+
+.group-all-horary.teacher > .box-subjects-class > .days-subjects > .box-subject{
+  background-color: #00000056;
+  color: white;
+}
+
+.class-name{
+  color: var(--color3);
+  font-weight: 600;
+  font-size: 11pt;
+}
+
 .box-subject{
   font-weight: 500;
   background-color: var(--color4);
@@ -384,7 +401,7 @@ h4{
   max-width: 190px;
   width: auto;
   flex: 1;
-  font-size: 11pt;
+  font-size: 10pt;
 }
 
 
