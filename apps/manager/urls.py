@@ -2,10 +2,14 @@ from django.urls import path, re_path
 from .views import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('login', login_view, name="login"),
     path('logout', login_required(logout_view), name="logout"),
+    path('editar-usuario', login_required(userEdit), name="UserEdit"),
+    path('editar-senha', login_required(changePassword), name="PasswordEdit"),
     re_path(r'^$', lambda x: redirect('index'), name='index'),
     path('lista-turmas', login_required(listarTurmas), name="index"),
     path('form-turmas', login_required(classForm), name="FormClass"),
@@ -25,3 +29,6 @@ urlpatterns = [
     path('excluir-Curso/<int:pk>', login_required(courseDelete), name="CourseDelete"),
     path('Professores-Ausentes', login_required(absentsTeachers), name="AbsentsTeachers"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
