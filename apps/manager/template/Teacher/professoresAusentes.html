@@ -3,7 +3,7 @@
 {% load tags_template %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock css %}
 
 {% block main %}
@@ -12,37 +12,89 @@
 <div class="lista-teachers">
 
     {% for form in form_list %}
+    {% with absent_obj=absents|get_item:forloop.counter0 %}
     <form action="" method="post">
         <div class="div-absent">
-        {% csrf_token %}
-        <input type="hidden" name="form-prefix" value="{{ form.prefix }}">
-        <div class="form-group">
-        <span class="element-absent">Professor ausente: </span><span class="element-absent-value">{{teachers_list|get_item:forloop.counter0}}</span>
-        </div>
-        <div class="form-group">
-            <span class="element-absent">Turma: </span><span class="element-absent-value">{{turms_list|get_item:forloop.counter0}}</span>
-            <span class="element-absent">Turno: </span><span class="element-absent-value">{{timeTable_list|get_item:forloop.counter0}}</span>
-        </div>
-        <div class="form-group">
-            <span class="element-absent">Horários: </span>
-            <span class="element-absent-value">{{schedule_list|get_item:forloop.counter0|re_absent}}</span>
-        </div>
-        <div class="form-group">
-            <label class="element-absent" for="">Professor Substituto:</label>
-            {% if form.substituteTeacher.value != None %}
-            <span class="element-absent-value">{{ substitutes_list|get_item:forloop.counter0 }}</span>
-            {% else %}
-                {{form.substituteTeacher}}
-            {% endif %}
-        </div>
-        {% if form.substituteTeacher.value == None %}
-            <div class="submit-btn">
-                <button type="submit">Salvar</button>
+            {% csrf_token %}
+            <input type="hidden" name="form-prefix" value="{{ form.prefix }}">
+            <div class="form-group">
+                <span class="element-absent">Professor ausente: </span><span
+                    class="element-absent-value">{{teachers_list|get_item:forloop.counter0}}</span>
             </div>
-        {% endif %}
 
-    </div>
+            {% if teacher == teachers_list|get_item:forloop.counter0 or request.user|has_group:"GERENTE" %}
+            <div class="form-group">
+                <span class="element-absent">Turma: </span><span class="element-absent-value">{{ form.classObj }}</span>
+                <span class="element-absent">Turno: </span><span class="element-absent-value">{{ form.timeTable}}</span>
+            </div>
+            <div class="form-group">
+                <span class="element-absent">Horários: </span>
+                <div class="element-absent-value">
+                    {{form.absentClass}}
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="element-absent" for="">Data:</span>
+                <span class="element-absent-value">{{form.absentDate}}</span>
+            </div>
+            {% else %}
+            <div class="form-group">
+                <span class="element-absent">Turma: </span><span
+                    class="element-absent-value">{{turms_list|get_item:forloop.counter0}}</span>
+                <span class="element-absent">Turno: </span><span
+                    class="element-absent-value">{{timeTable_list|get_item:forloop.counter0}}</span>
+            </div>
+            <div class="form-group">
+                <span class="element-absent">Horários: </span>
+                <span class="element-absent-value">{{schedule_list|get_item:forloop.counter0|re_absent}}</span>
+            </div>
+            <div class="form-group">
+                <span class="element-absent" for="">Data:</span>
+                <span class="element-absent-value">{{ form.absentDate.value }}</span>
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label class="element-absent" for="">Professor Substituto:</label>
+                {% if form.substituteTeacher.value != None or teacher == teachers_list|get_item:forloop.counter0 %}
+                <span class="element-absent-value">
+                    {% if substitutes_list|get_item:forloop.counter0 == None %}
+                    Nenhum no momento
+                    {% else %}
+                    {{ substitutes_list|get_item:forloop.counter0 }}
+                    {% endif %}
+                </span>
+                {% else %}
+                {{ form.substituteTeacher }}
+                {% endif %}
+            </div>
+
+            <div class="group-bottons">
+                {% if form.substituteTeacher.value == None or teacher == teachers_list|get_item:forloop.counter0 %}
+                <div class="submit-btn">
+                    <button type="submit" class="">Salvar</button>
+                </div>
+                {% endif %}
+
+                {% if teacher == teachers_list|get_item:forloop.counter0 or request.user|has_group:"GERENTE" %}
+                <div class="delete-group">
+                    <div class="delete-button">
+                        <a href=# class="delete-button-option"> Deletar Ausência </a>
+                    </div>
+                    <div class="confirm-delete">
+                        <span>Tem certeza ?</span>
+
+                        <a href="{% url 'absentDelete' absent_obj.pk %}">Sim</a>
+
+
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+
+        </div>
     </form>
+    {% endwith %}
     {% endfor %}
 </div>
 

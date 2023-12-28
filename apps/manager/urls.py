@@ -28,6 +28,7 @@ urlpatterns = [
     path('editar-Curso/<int:pk>', login_required(courseEdit), name="CourseEdit"),
     path('excluir-Curso/<int:pk>', login_required(courseDelete), name="CourseDelete"),
     path('Professores-Ausentes', login_required(absentsTeachers), name="AbsentsTeachers"),
+    path('excluir-ausencia/<int:pk>', login_required(absentDelete), name="absentDelete"),
 ]
 
 if settings.DEBUG:

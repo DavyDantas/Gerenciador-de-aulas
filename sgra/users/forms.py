@@ -37,7 +37,7 @@ class UserSignupForm(UserCreationForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
     imgProfileVariable = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-element hidden'}), required=False)
-    telephone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-element'}))
+    telephone = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'class': 'form-element', 'placeholder': "DDD 9 9999 9999"}))
 
     def clean(self):
         cleaned_data = super().clean()
@@ -66,7 +66,7 @@ class EditUser(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
     imgProfileVariable = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-element hidden'}), required=False)
-    telephone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-element'}))
+    telephone = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'class': 'form-element', 'placeholder': "DDD 9 9999 9999"}))
  
 
     class Meta:

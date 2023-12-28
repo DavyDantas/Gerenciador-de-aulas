@@ -87,7 +87,7 @@ class formsCourse(forms.ModelForm):
 
 class formsAbsent(forms.ModelForm):
 
-    absentClass = forms.MultipleChoiceField(choices=Absent.CLASS_CHOICES, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-element'}), required=True)
+    absentClass = forms.MultipleChoiceField(choices=Absent.CLASS_CHOICES, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-element checkbox'}), required=True)
  
     class Meta:
         model = Absent
