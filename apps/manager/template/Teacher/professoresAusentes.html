@@ -30,7 +30,7 @@
             <div class="form-group">
                 <span class="element-absent">Horários: </span>
                 <div class="element-absent-value">
-                    {{form.absentClass}}
+                {{form.absentClass}}
                 </div>
             </div>
             <div class="form-group">
@@ -55,17 +55,15 @@
             {% endif %}
             <div class="form-group">
                 <label class="element-absent" for="">Professor Substituto:</label>
-                {% if form.substituteTeacher.value != None or teacher == teachers_list|get_item:forloop.counter0 %}
+                {% if form.substituteTeacher.value != None %}
                 <span class="element-absent-value">
-                    {% if substitutes_list|get_item:forloop.counter0 == None %}
-                    Nenhum no momento
-                    {% else %}
                     {{ substitutes_list|get_item:forloop.counter0 }}
-                    {% endif %}
                 </span>
-                {% else %}
+                {% elif form.substituteTeacher.value == None or teacher == form.substituteTeacher.value or request.user|has_group:"GERENTE" %}
                 {{ form.substituteTeacher }}
                 {% endif %}
+
+
             </div>
 
             <div class="group-bottons">

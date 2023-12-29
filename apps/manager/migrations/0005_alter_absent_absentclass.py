@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("manager", "0003_alter_absent_absentclass"),
+        ("manager", "0004_alter_absent_absentclass"),
     ]
 
     operations = [
@@ -15,7 +15,6 @@ class Migration(migrations.Migration):
             name="absentClass",
             field=django.contrib.postgres.fields.ArrayField(
                 base_field=models.CharField(
-                    blank=True,
                     choices=[("1", "1º"), ("2", "2º"), ("3", "3º"), ("4", "4º"), ("5", "5º"), ("6", "6º")],
                     max_length=15,
                 ),

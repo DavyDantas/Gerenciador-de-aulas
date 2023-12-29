@@ -362,38 +362,30 @@ def absentsTeachers(request):
     teachers_list = [value.absentTeacher for value in absents]
     turms_list = [value.classObj for value in absents]
     substitutes_list = [value.substituteTeacher for value in absents]
-    schedule_list = [value.absentClass for value in absents] 
+    schedule_list = [str(value.absentClass) for value in absents]  
     timeTable_list = [value.timeTable for value in absents]
     if request.user.groups.filter(name="PROFESSOR").exists():
         teacher = get_object_or_404(Teacher, pk=request.user.teacher.pk)
     else:
         teacher = None
-    form_list = [formsAbsent(instance=absent, prefix=i, initial=absent.clean()) for i, absent in enumerate(absents)]
+    form_list = [formsAbsent(instance=absent, prefix=i+1, initial=absent.clean()) for i, absent in enumerate(absents)]
     absents_list = [get_object_or_404(Absent, pk=value.pk) for value in absents]
-    print([value.instance.absentClass for value in form_list])
+
     if request.method == "POST":
         prefix = request.POST.get('form-prefix', 'default_prefix')
 
         data_post = request.POST.copy()
-        if int(prefix) != 0: 
-            date = str(data_post[prefix+"-absentDate"]).split("-")
-            value_date = datetime.date(int(date[0]), int(date[1]), int(date[2])) 
-            data_post[prefix+"-absentDate"] = value_date
-            data_post[prefix+"-absentTeacher"] = absents_list[int(prefix)].absentTeacher 
-        else:
-            date = str(data_post["absentDate"]).split("-")
-            value_date = datetime.date(int(date[0]), int(date[1]), int(date[2])) 
-            data_post["absentDate"] = value_date
-            data_post["absentTeacher"] = absents_list[int(prefix)].absentTeacher 
-
-        form = formsAbsent(data_post, instance=absents[int(prefix)], prefix=prefix)
-        print(form) 
+        
+        data_post[prefix+"-absentTeacher"] = absents_list[int(prefix)-1].absentTeacher 
+         
+        form = formsAbsent(data_post, instance=absents[int(prefix)-1], prefix=prefix)
+        # print(form) 
         if form.is_valid():
             print("valido")
             form_value = form.save()
             if form.cleaned_data["substituteTeacher"] and teacher != form.cleaned_data["absentTeacher"]:
                 absentTeacher = get_object_or_404(Teacher, pk=form_value.substituteTeacher.pk)
-                absentTeacher.numberAbsents -= len(re.findall(r"\d+", form_value.absentClass))
+                absentTeacher.numberAbsents -= len(form_value.absentClass)
                 absentTeacher.save()
  
             return redirect("AbsentsTeachers")
@@ -416,7 +408,11 @@ def absentDelete(request, pk):
 
     absent = get_object_or_404(Absent, pk=pk)
     teacher = get_object_or_404(Teacher, pk=absent.absentTeacher.pk)
-    teacher.numberAbsents -= len(re.findall(r'\d+', absent.absentClass))
+    teacherSubstitute = get_object_or_404(Teacher, pk=absent.substituteTeacher.pk)
+    teacher.numberAbsents -= len(absent.absentClass)
+    if teacherSubstitute:
+        teacherSubstitute.numberAbsents += len(absent.absentClass)
+        teacherSubstitute.save()
     teacher.save()
     absent.delete()
 

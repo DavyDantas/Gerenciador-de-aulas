@@ -22,11 +22,11 @@
     
   }
 
-.title-add-absent{
+.title-add-option{
   display: flex;
   flex-direction: column;
 }
-.add-absent{
+.add-option{
   margin-top: 15px;
   background-color: var(--color3);
   width: max-content;
@@ -35,7 +35,7 @@
   padding: 10px 5px;
 }
 
-.add-absent a{
+.add-option a{
   text-decoration: None;
   color: white;
   font-size: 14pt;
@@ -394,7 +394,6 @@ h4{
   padding: 5px;
   height: 90px;
   display: flex;
-  flex-wrap: wrap;
   text-align: center;
   justify-content: space-around;
   min-width: 120px;

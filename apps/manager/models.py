@@ -105,7 +105,7 @@ class Absent(models.Model):
     substituteTeacher = models.ForeignKey(Teacher, related_name="substituteTeacher", on_delete=models.SET_NULL, null=True, blank=True)
     classObj = models.ForeignKey(Class, on_delete=models.CASCADE)
     timeTable = models.CharField(max_length=15, choices=PERIOD_CHOICES)
-    absentClass =  ArrayField(models.CharField(choices=CLASS_CHOICES,max_length=15, blank=True)) 
+    absentClass =  ArrayField(models.CharField(choices=CLASS_CHOICES, max_length=15, blank=True)) 
     absentDate = models.DateField(editable=True, help_text="Insira uma data de ausência")   
 
 

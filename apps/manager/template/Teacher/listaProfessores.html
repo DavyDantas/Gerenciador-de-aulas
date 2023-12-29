@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block main %}
+<div class="title-add-option">
 <h1 class="title-main">Tabela | Professores</h1>
+{% if request.user.teacher %}
+<span class="add-option"><a href="{% url 'SubjectsTeacher' request.user.teacher.pk %}"></a></span>
+{% endif %}
+</div>
 
 <div class="lista-teachers">
 

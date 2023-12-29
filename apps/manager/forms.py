@@ -8,6 +8,7 @@ from .models import *
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.admin.widgets import AdminDateWidget
+import re
 
 class formsTeacher(forms.ModelForm):
     class Meta:
@@ -98,7 +99,15 @@ class formsAbsent(forms.ModelForm):
         'timeTable': forms.Select(attrs={'class': 'form-element-select horary'}),
         'classObj' : forms.Select(attrs={'class': 'form-element-select'}),
         'absentDate': forms.TextInput(attrs={'type': 'date', 'class': 'form-element', 'placeholder': 'Selecione a data'}),
+        # 'absentClass': forms.CheckboxSelectMultiple(choices=Absent.CLASS_CHOICES,attrs={'class': 'form-element checkbox'})
         }  
+
+    def __init__(self, *args, **kwargs):
+        super(formsAbsent, self).__init__(*args, **kwargs)
+        if self.instance.absentClass:
+            print(dir(self.fields['absentClass']))
+            
+            self.fields['absentClass'].initial = self.instance.absentClass
 
 class EditAbsent(forms.ModelForm):
     class Meta:
