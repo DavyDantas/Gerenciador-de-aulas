@@ -255,6 +255,7 @@ def subjectsClass(request, pk):
     dayClasses_list_night = turm.dayclasses_set.filter(timeTable="Noturno")
 
     formAbsent = formsAbsent()
+    formAbsent.fields["absentTeacher"].queryset = Teacher.objects.filter( subject__first__classObj = turm).union(Teacher.objects.filter( subject__second__classObj = turm)).union(Teacher.objects.filter( subject__third__classObj = turm)).union(Teacher.objects.filter( subject__fourth__classObj = turm)).union(Teacher.objects.filter( subject__fifth__classObj = turm)).union(Teacher.objects.filter( subject__sixth__classObj = turm))
 
     if request.method == "POST":
         data = request.POST.copy()
@@ -267,9 +268,8 @@ def subjectsClass(request, pk):
         if formAbsent.is_valid():
             form_model = formAbsent.save()
             absentTeacher = get_object_or_404(Teacher, pk=form_model.absentTeacher.pk)
-            print(form_model.absentClass) 
-            #  absentTeacher.numberAbsents += len(re.findall(r'\d+', form_model.absentClass))
-            # absentTeacher.save()
+            absentTeacher.numberAbsents += len(form_model.absentClass)
+            absentTeacher.save()
 
             return redirect("SubjectsClass", pk=pk)
 
@@ -370,6 +370,9 @@ def absentsTeachers(request):
         teacher = None
     form_list = [formsAbsent(instance=absent, prefix=i+1, initial=absent.clean()) for i, absent in enumerate(absents)]
     absents_list = [get_object_or_404(Absent, pk=value.pk) for value in absents]
+
+    for form in form_list:
+        form.fields["substituteTeacher"].queryset = Teacher.objects.filter( subject__first__classObj = form.instance.classObj).union(Teacher.objects.filter( subject__second__classObj = form.instance.classObj)).union(Teacher.objects.filter( subject__third__classObj = form.instance.classObj)).union(Teacher.objects.filter( subject__fourth__classObj = form.instance.classObj)).union(Teacher.objects.filter( subject__fifth__classObj = form.instance.classObj)).union(Teacher.objects.filter( subject__sixth__classObj = form.instance.classObj))
 
     if request.method == "POST":
         prefix = request.POST.get('form-prefix', 'default_prefix')

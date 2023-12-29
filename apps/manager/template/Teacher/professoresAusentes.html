@@ -24,7 +24,7 @@
 
             {% if teacher == teachers_list|get_item:forloop.counter0 or request.user|has_group:"GERENTE" %}
             <div class="form-group">
-                <span class="element-absent">Turma: </span><span class="element-absent-value">{{ form.classObj }}</span>
+                <span class="element-absent">Turma: </span><span class="element-absent-value">{{ turms_list|get_item:forloop.counter0 }}</span>
                 <span class="element-absent">Turno: </span><span class="element-absent-value">{{ form.timeTable}}</span>
             </div>
             <div class="form-group">
@@ -55,11 +55,11 @@
             {% endif %}
             <div class="form-group">
                 <label class="element-absent" for="">Professor Substituto:</label>
-                {% if form.substituteTeacher.value != None %}
+                {% if form.substituteTeacher.value != None and teacher != form.substituteTeacher.value and not request.user|has_group:"GERENTE" %}
                 <span class="element-absent-value">
                     {{ substitutes_list|get_item:forloop.counter0 }}
                 </span>
-                {% elif form.substituteTeacher.value == None or teacher == form.substituteTeacher.value or request.user|has_group:"GERENTE" %}
+                {% else %}
                 {{ form.substituteTeacher }}
                 {% endif %}
 

@@ -14,4 +14,5 @@ def has_group(user, group_name):
 
 @register.filter
 def re_absent(value):
-    return re.sub(r'[\[\]"\']', '', value)
+    data = str(value)
+    return re.sub(r'[\[\]"\']', '', data)
