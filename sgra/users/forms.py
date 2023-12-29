@@ -38,6 +38,8 @@ class UserSignupForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-element'}))
     imgProfileVariable = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-element hidden'}), required=False)
     telephone = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'class': 'form-element', 'placeholder': "DDD 9 9999 9999"}))
+    password1 = forms.CharField(required=False, widget=forms.HiddenInput())
+    password2 = forms.CharField(required=False,widget=forms.HiddenInput())
 
     def clean(self):
         cleaned_data = super().clean()
@@ -48,8 +50,6 @@ class UserSignupForm(UserCreationForm):
         if username:
             cleaned_data['password1'] = name[0] + name[1] + username
             cleaned_data['password2'] = name[0] + name[1] + username
-
-        print(cleaned_data)
 
         return cleaned_data
 

@@ -30,6 +30,3 @@ urlpatterns = [
     path('Professores-Ausentes', login_required(absentsTeachers), name="AbsentsTeachers"),
     path('excluir-ausencia/<int:pk>', login_required(absentDelete), name="absentDelete"),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

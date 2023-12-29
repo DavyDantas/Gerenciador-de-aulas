@@ -97,8 +97,8 @@ class formsAbsent(forms.ModelForm):
         'substituteTeacher' : forms.Select(attrs={'class': 'form-element-select'}),
         'timeTable': forms.Select(attrs={'class': 'form-element-select horary'}),
         'classObj' : forms.Select(attrs={'class': 'form-element-select'}),
-        'absentDate': forms.DateInput(attrs={'type': 'date', 'class': 'form-element', 'placeholder': 'Selecione a data'}),
-        } 
+        'absentDate': forms.TextInput(attrs={'type': 'date', 'class': 'form-element', 'placeholder': 'Selecione a data'}),
+        }  
 
 class EditAbsent(forms.ModelForm):
     class Meta:

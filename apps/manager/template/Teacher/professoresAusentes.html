@@ -69,7 +69,7 @@
             </div>
 
             <div class="group-bottons">
-                {% if form.substituteTeacher.value == None or teacher == teachers_list|get_item:forloop.counter0 %}
+                {% if form.substituteTeacher.value == None or teacher == teachers_list|get_item:forloop.counter0 or request.user|has_group:"GERENTE" %}
                 <div class="submit-btn">
                     <button type="submit" class="">Salvar</button>
                 </div>

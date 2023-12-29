@@ -62,6 +62,7 @@ def teacherForm(request):
         
     else:
         form = UserSignupForm(request.POST, request.FILES)
+
         if form.is_valid():
             user = form.save()
             Teacher.objects.create(user=user)
@@ -266,8 +267,9 @@ def subjectsClass(request, pk):
         if formAbsent.is_valid():
             form_model = formAbsent.save()
             absentTeacher = get_object_or_404(Teacher, pk=form_model.absentTeacher.pk)
-            absentTeacher.numberAbsents += len(re.findall(r'\d+', form_model.absentClass))
-            absentTeacher.save()
+            print(form_model.absentClass) 
+            #  absentTeacher.numberAbsents += len(re.findall(r'\d+', form_model.absentClass))
+            # absentTeacher.save()
 
             return redirect("SubjectsClass", pk=pk)
 
@@ -368,7 +370,7 @@ def absentsTeachers(request):
         teacher = None
     form_list = [formsAbsent(instance=absent, prefix=i, initial=absent.clean()) for i, absent in enumerate(absents)]
     absents_list = [get_object_or_404(Absent, pk=value.pk) for value in absents]
-
+    print([value.instance.absentClass for value in form_list])
     if request.method == "POST":
         prefix = request.POST.get('form-prefix', 'default_prefix')
 

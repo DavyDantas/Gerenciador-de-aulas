@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import Group
 from sgra.users.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 class Teacher(models.Model):
@@ -98,12 +99,15 @@ class Absent(models.Model):
         ('6','6º'),
     ]
 
+
+
     absentTeacher = models.ForeignKey(Teacher, related_name="absentTeacher", on_delete=models.CASCADE)
     substituteTeacher = models.ForeignKey(Teacher, related_name="substituteTeacher", on_delete=models.SET_NULL, null=True, blank=True)
     classObj = models.ForeignKey(Class, on_delete=models.CASCADE)
     timeTable = models.CharField(max_length=15, choices=PERIOD_CHOICES)
-    absentClass = models.CharField(max_length=15, blank=True)
-    absentDate = models.DateField(help_text="Insira uma data de ausência") 
+    absentClass =  ArrayField(models.CharField(choices=CLASS_CHOICES,max_length=15, blank=True)) 
+    absentDate = models.DateField(editable=True, help_text="Insira uma data de ausência")   
+
 
     def clean(self) -> None:
         if self.substituteTeacher == self.absentTeacher:
